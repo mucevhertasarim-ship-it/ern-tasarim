@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ern Tasarım - Stüdyo Yönetim Paneli</title>
+    <meta name="description" content="Ern Tasarım mücevher kataloğu ve fiyat yönetim kontrol paneli.">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS (Reuses styles + admin specific styles) -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-box {
+            max-width: 500px;
+            margin: 8rem auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            box-shadow: var(--gold-glow);
+        }
+        .admin-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .admin-header i {
+            font-size: 3rem;
+            color: var(--gold-primary);
+            margin-bottom: 1rem;
+        }
+        .admin-header h2 {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+        }
+        .dashboard-container {
+            display: none;
+            max-width: 1100px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2.5rem;
+        }
+        .panel-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 2rem;
+            height: fit-content;
+        }
+        .panel-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: var(--gold-primary);
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 0.5rem;
+        }
+        .product-list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-light);
+            gap: 1rem;
+        }
+        .product-list-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-grow: 1;
+        }
+        .product-list-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #111827;
+            border: 1px solid var(--border-gold);
+        }
+        .btn-delete {
+            background: var(--danger-gradient);
+            color: #ffffff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: var(--transition-premium);
+        }
+        .btn-delete:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+        }
+        .badge-price {
+            color: var(--gold-primary);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                ERN TASARIM <span>Yönetici</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Siteden Çık</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Login Area -->
+    <section id="login-section">
+        <div class="admin-box">
+            <div class="admin-header">
+                <i class="fa-solid fa-user-shield"></i>
+                <h2>Stüdyo Yönetim Girişi</h2>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">Ürün kataloğunu ve fiyatlarını düzenlemek için oturum açın.</p>
+            </div>
+            
+            <form id="admin-login-form">
+                <div class="form-group" style="margin-bottom: 1.25rem;">
+                    <label class="form-label" for="admin-user">Kullanıcı Adı</label>
+                    <input type="text" id="admin-user" class="form-control" placeholder="admin" required>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label class="form-label" for="admin-pass">Şifre</label>
+                    <input type="password" id="admin-pass" class="form-control" placeholder="••••" required>
+                </div>
+                
+                <button type="submit" class="btn-gold form-submit-btn" style="width: 100%; justify-content: center;">Oturum Aç</button>
+            </form>
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: 1rem;">Test Giriş Bilgileri: Kullanıcı: <strong>admin</strong> | Şifre: <strong>admin</strong></p>
+        </div>
+    </section>
+
+    <!-- Dashboard Area (Hidden initially) -->
+    <section id="dashboard-section" class="dashboard-container">
+        
+        <div class="section-header" style="text-align: left; display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+            <div>
+                <h2 style="font-size: 2.2rem;"><i class="fa-solid fa-gem" style="color: var(--gold-primary);"></i> Kataloğunuzu Yönetin</h2>
+                <p style="color: var(--text-muted);">Yeni tasarımlar ekleyin, fiyatları güncelleyin ve mevcut ürünleri yönetin.</p>
+            </div>
+            <button id="btn-logout" class="btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem; border-color: rgba(239, 68, 68, 0.4); color: #ef4444;"><i class="fa-solid fa-right-from-bracket"></i> Çıkış Yap</button>
+        </div>
+
+        <div class="dashboard-grid">
+            
+            <!-- Left Column: Add Product Form -->
+            <div class="panel-card">
+                <h3>Yeni Ürün / Çizim Ekle</h3>
+                <form id="add-product-form">
+                    
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" for="prod-title">Ürün Başlığı</label>
+                        <input type="text" id="prod-title" class="form-control" placeholder="Yakut Damla Kolye" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" for="prod-category">Kategori</label>
+                        <select id="prod-category" class="form-control">
+                            <option value="yuzuk">Yüzük</option>
+                            <option value="kolye">Kolye</option>
+                            <option value="kelepce">Kelepçe</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" for="prod-price">Satış / Çizim Fiyatı (TL)</label>
+                        <input type="text" id="prod-price" class="form-control" placeholder="24,500" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1.25rem;">
+                        <label class="form-label">Ürün Görseli (Fotoğraf veya Çizim)</label>
+                        <div class="file-upload-wrapper" onclick="document.getElementById('prod-img').click()" style="padding: 1rem; border: 1px dashed var(--border-gold); border-radius: 10px; text-align: center; cursor: pointer;">
+                            <i class="fa-solid fa-image" style="font-size: 1.5rem; color: var(--gold-primary);"></i>
+                            <div class="file-upload-text" id="prod-img-text" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">Görsel Seç (PNG/JPG)</div>
+                        </div>
+                        <input type="file" id="prod-img" accept="image/*" style="display: none;" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label class="form-label" for="prod-desc">Kısa Açıklama</label>
+                        <textarea id="prod-desc" class="form-control" style="height: 80px;" placeholder="Ürünün karat bilgileri, altın ayarı ve taş detaylarını yazın..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-gold form-submit-btn" style="width: 100%; justify-content: center;"><i class="fa-solid fa-plus"></i> Ürünü Kataloğa Ekle</button>
+
+                </form>
+            </div>
+
+            <!-- Right Column: Product List -->
+            <div class="panel-card" style="max-height: 600px; overflow-y: auto;">
+                <h3>Mevcut Katalog Ürünleri</h3>
+                <div id="dashboard-product-list">
+                    <!-- Dynamic product list -->
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Customer Requests Section -->
+        <div class="panel-card" style="margin-top: 2.5rem;">
+            <h3>Gelen Özel Çizim & Sipariş Talepleri</h3>
+            <div id="dashboard-requests-list">
+                <!-- Dynamic requests list -->
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Custom Logic Script -->
+    <script>
+        // Basit Admin Giriş Kontrolü
+        const loginForm = document.getElementById('admin-login-form');
+        const loginSection = document.getElementById('login-section');
+        const dashboardSection = document.getElementById('dashboard-section');
+        const logoutBtn = document.getElementById('btn-logout');
+        
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = document.getElementById('admin-user').value.trim();
+            const pass = document.getElementById('admin-pass').value.trim();
+            
+            if (user === 'admin' && pass === 'admin') {
+                localStorage.setItem('ern_admin_logged', 'true');
+                showDashboard();
+            } else {
+                alert('Hatalı kullanıcı adı veya şifre!');
+            }
+        });
+        
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('ern_admin_logged');
+            showLogin();
+        });
+        
+        // Giriş Kontrolü
+        if (localStorage.getItem('ern_admin_logged') === 'true') {
+            showDashboard();
+        } else {
+            showLogin();
+        }
+        
+        function showDashboard() {
+            loginSection.style.display = 'none';
+            dashboardSection.style.display = 'block';
+            renderAdminProducts();
+            renderAdminRequests();
+        }
+        
+        function showLogin() {
+            loginSection.style.display = 'block';
+            dashboardSection.style.display = 'none';
+        }
+        
+        // Ürün Yönetimi Mantığı
+        const addProductForm = document.getElementById('add-product-form');
+        const prodImgInput = document.getElementById('prod-img');
+        const prodImgText = document.getElementById('prod-img-text');
+        let selectedBase64Image = '';
+        
+        // Resim dosyası seçildiğinde base64'e çevirme
+        prodImgInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            prodImgText.textContent = `${file.name} yükleniyor...`;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                selectedBase64Image = event.target.result;
+                prodImgText.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #25d366;"></i> Görsel Hazır`;
+            };
+            reader.readAsDataURL(file);
+        });
+        
+        // Ürün Kaydetme
+        addProductForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('prod-title').value.trim();
+            const category = document.getElementById('prod-category').value;
+            const price = document.getElementById('prod-price').value.trim();
+            const desc = document.getElementById('prod-desc').value.trim();
+            
+            if (!selectedBase64Image) {
+                alert('Lütfen bir ürün görseli seçin.');
+                return;
+            }
+            
+            const items = getPortfolioItems();
+            const newItem = {
+                id: 'custom_' + Date.now(),
+                title,
+                category,
+                price,
+                desc,
+                image: selectedBase64Image
+            };
+            
+            items.push(newItem);
+            localStorage.setItem('ern_portfolio_items', JSON.stringify(items));
+            
+            // Formu sıfırla
+            addProductForm.reset();
+            prodImgText.textContent = 'Görsel Seç (PNG/JPG)';
+            selectedBase64Image = '';
+            
+            renderAdminProducts();
+            alert('Ürün başarıyla kataloğa eklendi!');
+        });
+        
+        function getPortfolioItems() {
+            const data = localStorage.getItem('ern_portfolio_items');
+            return data ? JSON.parse(data) : [];
+        }
+        
+        function deleteProduct(id) {
+            if (!confirm('Bu ürünü katalogdan silmek istediğinize emin misiniz?')) return;
+            let items = getPortfolioItems();
+            items = items.filter(item => item.id !== id);
+            localStorage.setItem('ern_portfolio_items', JSON.stringify(items));
+            renderAdminProducts();
+        }
+        
+        function renderAdminProducts() {
+            const listContainer = document.getElementById('dashboard-product-list');
+            const items = getPortfolioItems();
+            
+            if (items.length === 0) {
+                listContainer.innerHTML = `<div class="status-message" style="padding: 2rem; color: var(--text-muted);">Kataloğunuzda henüz kendi eklediğiniz bir ürün bulunmuyor. Sol taraftaki formu kullanarak ilk çiziminizi/ürününüzü ekleyebilirsiniz.</div>`;
+                return;
+            }
+            
+            listContainer.innerHTML = items.map(item => `
+                <div class="product-list-item">
+                    <div class="product-list-info">
+                        <img src="${item.image}" class="product-list-img" alt="${item.title}">
+                        <div>
+                            <div style="font-weight: 600; font-size: 0.95rem;">${item.title}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">${item.category}</div>
+                        </div>
+                    </div>
+                    <div class="badge-price">${item.price} TL</div>
+                    <button onclick="deleteProduct('${item.id}')" class="btn-delete"><i class="fa-solid fa-trash-can"></i> Sil</button>
+                </div>
+            `).join('');
+        }
+
+        // --- Gelen Özel Çizim Talepleri Yönetimi ---
+        function getRequests() {
+            const data = localStorage.getItem('ern_jewelry_requests');
+            return data ? JSON.parse(data) : [];
+        }
+
+        function deleteRequest(id) {
+            if (!confirm('Bu sipariş talebini silmek istediğinize emin misiniz?')) return;
+            let requests = getRequests();
+            requests = requests.filter(r => r.id !== id);
+            localStorage.setItem('ern_jewelry_requests', JSON.stringify(requests));
+            renderAdminRequests();
+        }
+
+        function toggleRequestStatus(id) {
+            let requests = getRequests();
+            requests = requests.map(r => {
+                if (r.id === id) {
+                    r.status = r.status === 'Bekliyor' ? 'İletişime Geçildi' : 'Bekliyor';
+                }
+                return r;
+            });
+            localStorage.setItem('ern_jewelry_requests', JSON.stringify(requests));
+            renderAdminRequests();
+        }
+
+        function renderAdminRequests() {
+            const container = document.getElementById('dashboard-requests-list');
+            if (!container) return;
+            
+            const requests = getRequests();
+            if (requests.length === 0) {
+                container.innerHTML = `<div class="status-message" style="padding: 2rem; color: var(--text-muted);">Henüz bir özel çizim veya sipariş talebi gelmedi. Ziyaretçileriniz ana sayfadaki sipariş formunu doldurduğunda burada listelenecektir.</div>`;
+                return;
+            }
+            
+            container.innerHTML = `
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; margin-top: 1rem; min-width: 700px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border-gold); color: var(--gold-primary);">
+                                <th style="padding: 1rem 0.5rem;">Tarih</th>
+                                <th style="padding: 1rem 0.5rem;">Müşteri Bilgileri</th>
+                                <th style="padding: 1rem 0.5rem;">Tasarım / Bütçe</th>
+                                <th style="padding: 1rem 0.5rem;">İstek Detayları</th>
+                                <th style="padding: 1rem 0.5rem;">Durum</th>
+                                <th style="padding: 1rem 0.5rem; text-align: right;">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${requests.map(req => {
+                                const statusColor = req.status === 'Bekliyor' ? '#f59e0b' : '#25d366';
+                                return `
+                                    <tr style="border-bottom: 1px solid var(--border-light);">
+                                        <td style="padding: 1rem 0.5rem; white-space: nowrap; color: var(--text-muted);">${req.date}</td>
+                                        <td style="padding: 1rem 0.5rem;">
+                                            <div style="font-weight: 600;">${req.name}</div>
+                                            <div style="font-size: 0.8rem; color: var(--text-muted);">${req.phone}</div>
+                                            <div style="font-size: 0.8rem; color: var(--text-muted);">${req.email}</div>
+                                        </td>
+                                        <td style="padding: 1rem 0.5rem;">
+                                            <div style="text-transform: capitalize; font-weight: 500;">${req.category}</div>
+                                            <div style="font-size: 0.8rem; color: var(--gold-primary);">${req.budget}</div>
+                                        </td>
+                                        <td style="padding: 1rem 0.5rem; max-width: 250px; font-style: italic; color: var(--text-muted);">${req.desc}</td>
+                                        <td style="padding: 1rem 0.5rem; font-weight: 600; color: ${statusColor};">${req.status}</td>
+                                        <td style="padding: 1rem 0.5rem; text-align: right; white-space: nowrap;">
+                                            <button onclick="toggleRequestStatus('${req.id}')" class="btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; border-color: rgba(212, 175, 55, 0.4); margin-right: 0.5rem; cursor: pointer;">
+                                                <i class="fa-solid fa-check"></i> ${req.status === 'Bekliyor' ? 'İletişime Geç' : 'Beklemeye Al'}
+                                            </button>
+                                            <button onclick="deleteRequest('${req.id}')" class="btn-delete" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

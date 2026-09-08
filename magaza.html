@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ern Tasarım - STL Çizim Mağazası</title>
+    <meta name="description" content="3D yazıcılara uygun, döküme hazır profesyonel mücevher STL çizim dosyaları. IBAN transferi ile hızlı ve güvenli satın alım.">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Three.js ve Eklentileri (3D Önizleme İçin) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Mağaza Özel Stilleri */
+        .shop-hero {
+            padding: 5rem 1.5rem 3rem 1.5rem;
+            text-align: center;
+            background: linear-gradient(rgba(5, 7, 12, 0.6), rgba(5, 7, 12, 0.9));
+        }
+        
+        .shop-badge {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--border-gold);
+            color: var(--gold-primary);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .shop-hero h1 {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #ffffff 0%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .shop-hero p {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1rem;
+        }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .shop-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: var(--transition-premium);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .shop-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212, 175, 55, 0.3);
+            box-shadow: var(--gold-glow);
+        }
+
+        .shop-item-media {
+            position: relative;
+            height: 240px;
+            background: #090d16;
+            overflow: hidden;
+        }
+
+        .shop-item-media video,
+        .shop-item-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-premium);
+        }
+
+        .shop-item-info {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .shop-item-category {
+            color: var(--gold-primary);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .shop-item-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .shop-item-desc {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 1.25rem;
+            line-height: 1.4;
+            flex-grow: 1;
+        }
+
+        .shop-item-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .shop-item-price-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .shop-item-price {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .shop-actions-row {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .btn-buy-stl {
+            background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%);
+            color: #05070c;
+            border: none;
+            padding: 0.6rem 0.85rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: var(--transition-premium);
+        }
+
+        .btn-buy-stl:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Sepet Bölümü */
+        .cart-item-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .cart-item-row img,
+        .cart-item-row video {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+            background: #090d16;
+            border: 1px solid var(--border-gold);
+        }
+
+        .cart-item-details {
+            flex-grow: 1;
+        }
+
+        .cart-item-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+
+        .cart-item-code {
+            font-size: 0.7rem;
+            color: var(--gold-primary);
+            font-weight: 700;
+        }
+
+        .cart-item-price-remove {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.25rem;
+        }
+
+        .cart-item-price {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .btn-cart-remove {
+            background: none;
+            border: none;
+            color: #ef4444;
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 2px;
+            transition: var(--transition-premium);
+        }
+
+        .btn-cart-remove:hover {
+            opacity: 0.8;
+            transform: scale(1.1);
+        }
+
+        /* IBAN Modal Stilleri */
+        .iban-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(5, 7, 12, 0.95);
+            backdrop-filter: blur(12px);
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .iban-modal-content {
+            background: #0f172a;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: relative;
+            margin: auto;
+        }
+
+        .iban-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .iban-modal-header h3 {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .btn-modal-close {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            transition: var(--transition-premium);
+        }
+
+        .btn-modal-close:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        .iban-modal-body {
+            padding: 1.5rem;
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        .iban-box {
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px dashed rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .iban-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .iban-row:last-child {
+            border-bottom: none;
+        }
+
+        .iban-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .iban-value {
+            font-size: 0.9rem;
+            color: #ffffff;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--gold-primary);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition-premium);
+        }
+
+        .copy-btn:hover {
+            background: var(--gold-primary);
+            color: #05070c;
+        }
+
+        .payment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .form-input {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #ffffff;
+            padding: 0.65rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition-premium);
+        }
+
+        .form-input:focus {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+        }
+
+        .form-notice {
+            background: rgba(212, 175, 55, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.75rem;
+            color: #e2e8f0;
+            line-height: 1.4;
+        }
+
+        .btn-submit-payment {
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            transition: var(--transition-premium);
+            margin-top: 0.5rem;
+        }
+
+        .btn-submit-payment:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(37, 211, 102, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                ERN TASARIM <span>Stüdyo</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Ana Sayfa</a>
+                <a href="index.html#portfolio" class="nav-link">Portföyümüz</a>
+                <a href="magaza.html" class="nav-link active"><i class="fa-solid fa-cart-shopping"></i> STL Mağazası</a>
+                <a href="index.html#order-form" class="nav-link">Özel Sipariş</a>
+                <a href="kitap/index.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Kitap Köşesi</a>
+            </nav>
+            <div class="header-actions">
+                <!-- Sepet Butonu -->
+                <button onclick="toggleCart()" class="btn-outline" style="position: relative; padding: 0.6rem 1.1rem; margin-right: 0.5rem; display: flex; align-items: center; gap: 0.5rem; border-color: var(--border-gold); color: #ffffff; cursor: pointer; border-radius: 8px;">
+                    <i class="fa-solid fa-shopping-bag" style="color: var(--gold-primary);"></i>
+                    <span>Sepetim</span>
+                    <span id="cart-badge" style="background: var(--gold-primary); color: #05070c; border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; position: absolute; top: -6px; right: -6px; box-shadow: 0 0 10px rgba(212,175,55,0.4);">0</span>
+                </button>
+                <a href="index.html#order-form" class="btn-gold">
+                    <i class="fa-solid fa-pen-nib"></i>
+                    <span>Çizim Talep Et</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Shop Hero -->
+    <section class="shop-hero">
+        <div class="shop-badge">
+            <i class="fa-solid fa-print"></i> 3D Baskı ve Döküme Hazır
+        </div>
+        <h1>STL Çizim Mağazası</h1>
+        <p>Projeleriniz ve üretimleriniz için hassas ölçülü, pırlanta taş yuvaları açılmış ve döküme hazır profesyonel mücevher 3D CAD (.STL) modelleri.</p>
+    </section>
+
+    <!-- Main Container -->
+    <main class="container">
+        
+        <!-- Shop Filters -->
+        <div class="portfolio-filters" style="display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+            <button class="filter-btn active" onclick="filterShop('all', this)">⭐ Tüm Modeller</button>
+            <button class="filter-btn" onclick="filterShop('yuzuk', this)">💎 Yüzükler</button>
+            <button class="filter-btn" onclick="filterShop('kolye', this)">🦁 Kolyeler</button>
+            <button class="filter-btn" onclick="filterShop('kilit', this)">🔒 Kilit ve Diğer</button>
+        </div>
+
+        <!-- Shop Grid -->
+        <div class="shop-grid" id="shop-grid">
+            
+            <!-- 1. Aslan Kolye STL -->
+            <div class="shop-item" data-category="kolye">
+                <div class="shop-item-media">
+                    <video src="media/aslan yzk.mp4" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
+                        <i class="fa-solid fa-cube"></i> STL Dosyası
+                    </div>
+                </div>
+                <div class="shop-item-info">
+                    <span class="shop-item-category">Kolye Modeli</span>
+                    <h3 class="shop-item-title">Aslan Motifli Kolye Ucu STL</h3>
+                    <p class="shop-item-desc">Detaylı yele işlemeli, 925 gümüş veya altın döküme uygun, 3D yazıcıyla üretilmeye hazır aslan kolye ucu model dosyası.</p>
+                    <div class="shop-item-footer">
+                        <div class="shop-item-price-actions">
+                            <span class="shop-item-price">$29</span>
+                            <div class="shop-actions-row">
+                                <button class="btn-outline" style="padding: 0.6rem 0.85rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; border-color: rgba(255,255,255,0.1); color: #fff;" onclick="open3dViewer('media/kolye56%20aslan.stl', 'Aslan Motifli Kolye Ucu')">
+                                    <i class="fa-solid fa-cube" style="color: var(--gold-primary);"></i> 3D İncele
+                                </button>
+                                <button class="btn-buy-stl" onclick="addToCart('item_1', 'Aslan Motifli Kolye Ucu STL', 29, 'ERN-STL101', 'media/aslan yzk.mp4')">
+                                    <i class="fa-solid fa-cart-plus"></i> Sepete Ekle
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. AK-47 Kolye STL -->
+            <div class="shop-item" data-category="kolye">
+                <div class="shop-item-media">
+                    <video src="media/ak5.mp4" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
+                        <i class="fa-solid fa-cube"></i> STL Dosyası
+                    </div>
+                </div>
+                <div class="shop-item-info">
+                    <span class="shop-item-category">Kolye Modeli</span>
+                    <h3 class="shop-item-title">AK-47 Özel Tüfek Kolye Ucu STL</h3>
+                    <p class="shop-item-desc">Üzerinde hassas taş yuvaları (pırlanta mıhlama) bulunan, yüksek kaliteli tüfek kolye ucu model dosyası.</p>
+                    <div class="shop-item-footer">
+                        <div class="shop-item-price-actions">
+                            <span class="shop-item-price">$39</span>
+                            <div class="shop-actions-row">
+                                <button class="btn-outline" style="padding: 0.6rem 0.85rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; border-color: rgba(255,255,255,0.1); color: #fff;" onclick="open3dViewer('media/kolye33-1%20ak47.stl', 'AK-47 Özel Tüfek Kolye Ucu')">
+                                    <i class="fa-solid fa-cube" style="color: var(--gold-primary);"></i> 3D İncele
+                                </button>
+                                <button class="btn-buy-stl" onclick="addToCart('item_2', 'AK-47 Özel Tüfek Kolye Ucu STL', 39, 'ERN-STL102', 'media/ak5.mp4')">
+                                    <i class="fa-solid fa-cart-plus"></i> Sepete Ekle
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Yıldız Kolye STL -->
+            <div class="shop-item" data-category="kolye">
+                <div class="shop-item-media">
+                    <video src="media/aybegunes.mp4" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
+                        <i class="fa-solid fa-cube"></i> STL Dosyası
+                    </div>
+                </div>
+                <div class="shop-item-info">
+                    <span class="shop-item-category">Kolye Modeli</span>
+                    <h3 class="shop-item-title">Taşlı Yıldız Kolye Ucu STL</h3>
+                    <p class="shop-item-desc">Işıltılı taş yuvaları içeren, döküme hazır ve 3D yazıcıyla kolayca basılabilen yıldız kolye ucu model dosyası.</p>
+                    <div class="shop-item-footer">
+                        <div class="shop-item-price-actions">
+                            <span class="shop-item-price">$25</span>
+                            <div class="shop-actions-row">
+                                <button class="btn-outline" style="padding: 0.6rem 0.85rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; border-color: rgba(255,255,255,0.1); color: #fff;" onclick="open3dViewer('media/yildiz%20tasli.stl', 'Taşlı Yıldız Kolye Ucu')">
+                                    <i class="fa-solid fa-cube" style="color: var(--gold-primary);"></i> 3D İncele
+                                </button>
+                                <button class="btn-buy-stl" onclick="addToCart('item_3', 'Taşlı Yıldız Kolye Ucu STL', 25, 'ERN-STL103', 'media/aybegunes.mp4')">
+                                    <i class="fa-solid fa-cart-plus"></i> Sepete Ekle
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Ejderha Figürü STL -->
+            <div class="shop-item" data-category="kilit">
+                <div class="shop-item-media">
+                    <video src="media/ejdera.mp4" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
+                        <i class="fa-solid fa-cube"></i> STL Dosyası
+                    </div>
+                </div>
+                <div class="shop-item-info">
+                    <span class="shop-item-category">Mitolojik Model</span>
+                    <h3 class="shop-item-title">Mitolojik Ejderha Figürü STL</h3>
+                    <p class="shop-item-desc">Detaylı ejderha başı, pullu kıvrımları ve heybetli yapısıyla döküme hazır mitolojik ejderha STL dosyası.</p>
+                    <div class="shop-item-footer">
+                        <div class="shop-item-price-actions">
+                            <span class="shop-item-price">$35</span>
+                            <div class="shop-actions-row">
+                                <button class="btn-outline" style="padding: 0.6rem 0.85rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; border-color: rgba(255,255,255,0.1); color: #fff;" onclick="open3dViewer('media/ejderha.stl', 'Mitolojik Ejderha Figürü')">
+                                    <i class="fa-solid fa-cube" style="color: var(--gold-primary);"></i> 3D İncele
+                                </button>
+                                <button class="btn-buy-stl" onclick="addToCart('item_4', 'Mitolojik Ejderha Figürü STL', 35, 'ERN-STL104', 'media/ejdera.mp4')">
+                                    <i class="fa-solid fa-cart-plus"></i> Sepete Ekle
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+
+        </div>
+
+    </main>
+
+    <!-- Slide-out Cart Sidebar -->
+    <div id="cart-sidebar" style="position: fixed; top: 0; right: -420px; width: 100%; max-width: 400px; height: 100%; background: #0f172a; border-left: 1px solid rgba(212, 175, 55, 0.3); z-index: 9999; box-shadow: -10px 0 30px rgba(0,0,0,0.6); transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column;">
+        
+        <!-- Cart Header -->
+        <div style="padding: 1.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; justify-content: space-between; align-items: center; background: #090d16;">
+            <h3 style="font-family: var(--font-serif); font-size: 1.25rem; color: #fff; margin: 0; display: flex; align-items: center; gap: 0.6rem;">
+                <i class="fa-solid fa-shopping-bag" style="color: var(--gold-primary);"></i> Sepetiniz
+            </h3>
+            <button onclick="toggleCart()" style="background: none; border: none; color: #fff; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; transition: var(--transition-premium);"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <!-- Cart Items (Scrollable) -->
+        <div id="cart-items-container" style="flex-grow: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+            <!-- Cart items injected here by JS -->
+        </div>
+        
+        <!-- Cart Footer -->
+        <div style="padding: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.05); background: #090d16; display: flex; flex-direction: column; gap: 1rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: 700; align-items: center;">
+                <span>Toplam Tutar:</span>
+                <span style="color: var(--gold-primary); font-size: 1.3rem; font-weight: 800;">$<span id="cart-total-price">0</span></span>
+            </div>
+            <button id="btn-checkout" onclick="openCheckoutWithCart()" class="btn-gold" style="width: 100%; justify-content: center; padding: 0.8rem; font-size: 0.95rem; font-weight: 800; border-radius: 10px; cursor: pointer;">
+                <i class="fa-solid fa-credit-card"></i> IBAN Ödemesine Geç
+            </button>
+        </div>
+    </div>
+
+    <!-- Cart Overlay Backdrop -->
+    <div id="cart-overlay" onclick="toggleCart()" style="display: none; position: fixed; inset: 0; background: rgba(5, 7, 12, 0.6); z-index: 9998; backdrop-filter: blur(4px); transition: all 0.3s;"></div>
+
+    <!-- IBAN Payment Modal -->
+    <div class="iban-modal-overlay" id="iban-modal">
+        <div class="iban-modal-content">
+            
+            <div class="iban-modal-header">
+                <h3>Banka Havalesi / EFT ile Satın Al</h3>
+                <button class="btn-modal-close" onclick="closeIbanModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="iban-modal-body">
+                
+                <!-- Product Overview -->
+                <div style="margin-bottom: 1.25rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 1.25rem;">
+                    <div style="font-size: 0.8rem; color: var(--gold-primary); font-weight: 700; text-transform: uppercase;">Satın Alınacak Ürünler:</div>
+                    <div id="modal-products-list" style="margin-top: 0.5rem; max-height: 120px; overflow-y: auto; background: rgba(255,255,255,0.02); padding: 0.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+                        <!-- Items list with codes -->
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.75rem; font-size: 0.95rem; font-weight: 700;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: var(--text-muted); font-size: 0.85rem;">Sepet Toplamı (USD):</span>
+                            <span style="color: #ffffff;">$<span id="modal-product-price">0</span></span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: var(--text-muted); font-size: 0.85rem;">Canlı Döviz Kuru (1 USD):</span>
+                            <span style="color: var(--gold-primary);" id="modal-live-rate">0.00 TL</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.5rem; margin-top: 0.25rem;">
+                            <span style="color: #ffffff; font-size: 1rem;">Ödenecek TL Tutarı:</span>
+                            <span style="color: #25d366; font-size: 1.25rem; font-weight: 800;" id="modal-product-price-try">0.00 TL</span>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 400; margin-top: 0.25rem;">
+                            Ödeme Açıklama Kodları: <strong id="modal-product-codes" style="color: #fff;">ERN-STL101</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IBAN Information -->
+                <div class="iban-box">
+                    <div style="font-size: 0.8rem; color: var(--gold-primary); font-weight: 700; margin-bottom: 0.5rem; text-transform: uppercase;">
+                        <i class="fa-solid fa-building-columns"></i> Alıcı Banka Bilgileri (TL Hesabı)
+                    </div>
+                    
+                    <div class="iban-row">
+                        <span class="iban-label">Banka Adı:</span>
+                        <span class="iban-value">Garanti BBVA</span>
+                    </div>
+                    <div class="iban-row">
+                        <span class="iban-label">Hesap Sahibi:</span>
+                        <span class="iban-value">[Hesap Sahibi Adı Soyadı]</span>
+                    </div>
+                    <div class="iban-row">
+                        <span class="iban-label">TL IBAN:</span>
+                        <span class="iban-value">
+                            <span id="iban-text">TR00 0000 0000 0000 0000 0000 00</span>
+                            <button class="copy-btn" onclick="copyIban()"><i class="fa-solid fa-copy"></i> Kopyala</button>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Instruction Box -->
+                <div class="form-notice" style="margin-bottom: 1.25rem;">
+                    <i class="fa-solid fa-circle-info" style="color: var(--gold-primary); font-size: 0.95rem;"></i> 
+                    <strong>Önemli Adım:</strong> Banka uygulamanızdan TL havalesi yaparken açıklama kısmına mutlaka sadece şu kodları yazınız: 
+                    <strong id="modal-desc-code" style="color: var(--gold-primary); font-size: 0.9rem; word-break: break-all;">ERN-STL101</strong> ve tam olarak <strong id="modal-desc-price-try" style="color: #25d366;">0.00 TL</strong> gönderdiğinizden emin olunuz.
+                </div>
+
+                <!-- Payment Form -->
+                <form class="payment-form" id="iban-payment-form" onsubmit="sendIbanOrderNotification(event)">
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                        <div class="form-group">
+                            <label class="form-label" for="pay-name">Adınız Soyadınız:</label>
+                            <input type="text" id="pay-name" class="form-input" placeholder="Ahmet Yılmaz" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="pay-phone">Telefon Numaranız:</label>
+                            <input type="tel" id="pay-phone" class="form-input" placeholder="05XX XXX XX XX" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="pay-email">E-Posta Adresiniz (Hassas):</label>
+                        <input type="email" id="pay-email" class="form-input" placeholder="tasarimci@ornek.com" required>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: -0.2rem;">* STL indirme linkleri onaylandıktan sonra bu mail adresine gönderilecektir.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="pay-sender-name">Ödeme Yapan Hesap Sahibi Adı (Doğrulama için):</label>
+                        <input type="text" id="pay-sender-name" class="form-input" placeholder="Transferi yapan kişinin ad soyadı" required>
+                    </div>
+
+                    <button type="submit" class="btn-submit-payment">
+                        <i class="fa-brands fa-whatsapp"></i> Ödemeyi Yaptım, WhatsApp'tan Bildir
+                    </button>
+                </form>
+
+            </div>
+            
+        </div>
+    </div>
+
+
+
+    <!-- 3D Preview Modal -->
+    <div class="iban-modal-overlay" id="threejs-modal" style="z-index: 10005;">
+        <div class="iban-modal-content" style="max-width: 900px; width: 95%;">
+            <div class="iban-modal-header">
+                <h3 id="threejs-modal-title">3D Tasarım Önizleme</h3>
+                <button class="btn-modal-close" onclick="close3dViewer()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="iban-modal-body" style="padding: 0; display: flex; flex-direction: row; flex-wrap: wrap;">
+                
+                <!-- 3D Canvas Container (Left / Top) -->
+                <div id="canvas-container" style="flex: 1; min-width: 300px; height: 480px; background: #020617; position: relative; overflow: hidden;">
+                    <!-- Loading Indicator -->
+                    <div id="threejs-loading" style="position: absolute; inset: 0; background: rgba(5,7,12,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; color: #fff; z-index: 5;">
+                        <i class="fa-solid fa-spinner fa-spin" style="font-size: 2.5rem; color: var(--gold-primary);"></i>
+                        <span id="threejs-loading-text">3D Model Yükleniyor...</span>
+                    </div>
+                </div>
+
+                <!-- Analysis Sidebar Panel (Right / Bottom) -->
+                <div id="analysis-panel" style="width: 300px; min-width: 300px; background: #0f172a; border-left: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto;">
+                    
+                    <!-- Title -->
+                    <div style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); background: #090d16; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fa-solid fa-calculator" style="color: var(--gold-primary);"></i>
+                        <span style="font-size: 0.9rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">Tasarım Ölçü ve Metal Analizi</span>
+                    </div>
+
+                    <!-- Body Specs -->
+                    <div style="padding: 1rem; display: flex; flex-direction: column; gap: 1rem; flex-grow: 1;">
+                        <!-- Dimensions -->
+                        <div>
+                            <div style="font-size: 0.75rem; color: var(--gold-primary); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.3rem;">
+                                <i class="fa-solid fa-ruler-combined"></i> Model Boyutları (X, Y, Z):
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; text-align: center;">
+                                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 0.4rem 0.2rem; border-radius: 6px;">
+                                    <span style="display: block; font-size: 0.65rem; color: var(--text-muted); margin-bottom: 0.15rem;">Genişlik (X)</span>
+                                    <strong id="spec-dim-x" style="color: #fff; font-size: 0.8rem;">0.0 mm</strong>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 0.4rem 0.2rem; border-radius: 6px;">
+                                    <span style="display: block; font-size: 0.65rem; color: var(--text-muted); margin-bottom: 0.15rem;">Yükseklik (Y)</span>
+                                    <strong id="spec-dim-y" style="color: #fff; font-size: 0.8rem;">0.0 mm</strong>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 0.4rem 0.2rem; border-radius: 6px;">
+                                    <span style="display: block; font-size: 0.65rem; color: var(--text-muted); margin-bottom: 0.15rem;">Derinlik (Z)</span>
+                                    <strong id="spec-dim-z" style="color: #fff; font-size: 0.8rem;">0.0 mm</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Weights Table -->
+                        <div>
+                            <div style="font-size: 0.75rem; color: var(--gold-primary); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.3rem;">
+                                <i class="fa-solid fa-weight-hanging"></i> Metal Döküm Ağırlıkları (Tahmini):
+                            </div>
+                            <div id="weight-list" style="display: flex; flex-direction: column; gap: 0.35rem; max-height: 220px; overflow-y: auto; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 8px;">
+                                <!-- Will be filled by JS -->
+                                <div style="text-align: center; color: var(--text-muted); font-size: 0.75rem; padding: 1rem;">Hesaplanıyor...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Material selection & Info Footer -->
+                    <div style="background: #090d16; padding: 1rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 0.6rem;">
+                        <!-- Material selectors -->
+                        <div>
+                            <div style="font-size: 0.75rem; color: #cbd5e1; font-weight: 600; margin-bottom: 0.35rem;">Kaplama:</div>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem;">
+                                <button onclick="change3dMaterial('gold')" class="copy-btn" style="background: #d4af37; color: #000; border-color: #d4af37; font-weight: 700; font-size: 0.75rem; padding: 0.35rem 0; width: 100%; text-align: center;">Sarı Altın</button>
+                                <button onclick="change3dMaterial('silver')" class="copy-btn" style="background: #e2e8f0; color: #000; border-color: #cbd5e1; font-weight: 700; font-size: 0.75rem; padding: 0.35rem 0; width: 100%; text-align: center;">Gümüş</button>
+                                <button onclick="change3dMaterial('rose')" class="copy-btn" style="background: #b76e79; color: #fff; border-color: #b76e79; font-weight: 700; font-size: 0.75rem; padding: 0.35rem 0; width: 100%; text-align: center;">Rose Altın</button>
+                            </div>
+                        </div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted); text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.25rem;">
+                            <i class="fa-solid fa-circle-info" style="color: var(--gold-primary);"></i> Döndürmek için sürükleyin, yakınlaştırmak için tekerleği kullanın.
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">ERN TASARIM</div>
+        <p class="footer-text">© 2026 Ern Tasarım. Tüm Hakları Saklıdır. "Siz hayal edin, biz yapalım."</p>
+    </footer>
+
+    <!-- JS Logic -->
+    <script>
+        // Google E-Tablolar Entegrasyon Linki (Apps Script Dağıtım URL'sini buraya yapıştırın)
+        const googleWebAppUrl = 'BURAYA_GOOGLE_WEB_APP_LINKINI_YAZIN';
+
+        // Canlı Dolar Kuru Altyapısı
+        let usdToTryRate = 34.25; // API çalışmazsa kullanılacak varsayılan yedek kur
+
+        // Sepet Veri Yapısı
+        let cart = JSON.parse(localStorage.getItem('ern_stl_cart')) || [];
+
+        // Three.js Değişkenleri
+        let scene, camera, renderer, controls, currentMesh;
+        let activeMaterial = 'gold';
+
+        // 3D Önizleme Malzemeleri (Altın, Gümüş, Rose Altın - Canlılık için Ayarlandı)
+        const materials = {
+            gold: new THREE.MeshStandardMaterial({
+                color: 0xffd700,
+                metalness: 0.8,
+                roughness: 0.28,
+                name: 'gold'
+            }),
+            silver: new THREE.MeshStandardMaterial({
+                color: 0xe6e6e6,
+                metalness: 0.8,
+                roughness: 0.28,
+                name: 'silver'
+            }),
+            rose: new THREE.MeshStandardMaterial({
+                color: 0xe5a396,
+                metalness: 0.8,
+                roughness: 0.28,
+                name: 'rose'
+            })
+        };
+
+        // Ürün Kataloğu (Yeni STL modellerini kolayca buraya ekleyebilirsiniz)
+        const products = [
+            {
+                id: 'item_1',
+                title: 'Aslan Motifli Kolye Ucu STL',
+                category: 'kolye',
+                price: 29,
+                code: 'ERN-STL101',
+                media: 'media/aslan yzk.mp4',
+                stl: 'media/kolye56%20aslan.stl',
+                desc: 'Detaylı yele işlemeli, 925 gümüş veya altın döküme uygun, 3D yazıcıyla üretilmeye hazır aslan kolye ucu model dosyası.'
+            },
+            {
+                id: 'item_2',
+                title: 'AK-47 Özel Tüfek Kolye Ucu STL',
+                category: 'kolye',
+                price: 39,
+                code: 'ERN-STL102',
+                media: 'media/ak5.mp4',
+                stl: 'media/kolye33-1%20ak47.stl',
+                desc: 'Üzerinde hassas taş yuvaları (pırlanta mıhlama) bulunan, yüksek kaliteli tüfek kolye ucu model dosyası.'
+            },
+            {
+                id: 'item_3',
+                title: 'Taşlı Yıldız Kolye Ucu STL',
+                category: 'kolye',
+                price: 25,
+                code: 'ERN-STL103',
+                media: 'media/aybegunes.mp4',
+                stl: 'media/yildiz%20tasli.stl',
+                desc: 'Işıltılı taş yuvaları içeren, döküme hazır ve 3D yazıcıyla kolayca basılabilen yıldız kolye ucu model dosyası.'
+            },
+            {
+                id: 'item_4',
+                title: 'Mitolojik Ejderha Figürü STL',
+                category: 'yuzuk',
+                price: 35,
+                code: 'ERN-STL104',
+                media: 'media/ejdera.mp4',
+                stl: 'media/ejderha.stl',
+                desc: 'Detaylı ejderha başı, pullu kıvrımları ve heybetli yapısıyla döküme hazır mitolojik ejderha STL dosyası.'
+            },
+            {
+                id: 'item_5',
+                title: 'Bozkurt Motifli Tasarım STL',
+                category: 'yuzuk',
+                price: 29,
+                code: 'ERN-STL105',
+                media: '',
+                stl: 'media/bozkurt.stl',
+                desc: 'Bozkurt motifli, pürüzsüz hatlara sahip döküme ve üretime hazır özel erkek yüzük/kolye ucu STL dosyası.'
+            },
+            {
+                id: 'item_6',
+                title: 'Detaylı Akrep Figürü STL',
+                category: 'kolye',
+                price: 35,
+                code: 'ERN-STL106',
+                media: '',
+                stl: 'media/akrep.stl',
+                desc: 'Gerçekçi gövde hatları ve kıvrımlı kuyruk detaylarıyla döküme hazır modern akrep kolye ucu çizimi.'
+            },
+            {
+                id: 'item_7',
+                title: 'Asma Kilit Mekanizması STL',
+                category: 'kilit',
+                price: 29,
+                code: 'ERN-STL107',
+                media: '',
+                stl: 'media/kolye53%20asma%20kilit.stl',
+                desc: 'İşlevsel görünümlü, modern kilit tasarımı içeren mücevher döküm ve yazıcı şablonu.'
+            },
+            {
+                id: 'item_8',
+                title: 'Kaplan Başlı Erkek Takı STL',
+                category: 'kolye',
+                price: 32,
+                code: 'ERN-STL108',
+                media: '',
+                stl: 'media/kaplan.stl',
+                desc: 'Güçlü hatlara sahip, kükreyen kaplan kafası figürlü döküme uygun kolye ucu dosyası.'
+            },
+            {
+                id: 'item_9',
+                title: 'Zarif Yunus Balığı STL',
+                category: 'kolye',
+                price: 24,
+                code: 'ERN-STL109',
+                media: '',
+                stl: 'media/yunus.stl',
+                desc: 'Yuvarlak hatlı, parlatılmış gümüş dökümüne son derece uygun yunus figürlü kolye ucu.'
+            },
+            {
+                id: 'item_10',
+                title: 'Mistik Boynuzlu Geyik STL',
+                category: 'kolye',
+                price: 28,
+                code: 'ERN-STL110',
+                media: '',
+                stl: 'media/geyik.stl',
+                desc: 'İnce boynuz detayları içeren, modern ve şık geyik motifli kolye ucu tasarım dosyası.'
+            },
+            {
+                id: 'item_11',
+                title: 'Meryem Ana Madalyon STL',
+                category: 'kolye',
+                price: 35,
+                code: 'ERN-STL111',
+                media: '',
+                stl: 'media/2cm%20meryem1.stl',
+                desc: '2cm çapında, ince kabartma işçilikli, etrafı taş yuvalı Meryem Ana madalyonu STL dosyası.'
+            },
+            {
+                id: 'item_12',
+                title: 'Kraliyet Şövalye Yüzüğü STL',
+                category: 'yuzuk',
+                price: 39,
+                code: 'ERN-STL112',
+                media: '',
+                stl: 'media/shovalye.stl',
+                desc: 'Ortaçağ şövalye zırhı ve miğferi motifli, gösterişli döküme hazır erkek yüzük şablonu.'
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchExchangeRate();
+            updateCartUI();
+            renderShopGrid('all');
+        });
+
+        // Canlı Kur Çekme Fonksiyonu
+        async function fetchExchangeRate() {
+            try {
+                const response = await fetch('https://open.er-api.com/v6/latest/USD');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.rates && data.rates.TRY) {
+                        usdToTryRate = data.rates.TRY;
+                        console.log('Canlı USD/TRY kuru başarıyla güncellendi:', usdToTryRate);
+                    }
+                }
+            } catch (error) {
+                console.error('Döviz kuru API bağlantı hatası, yedek kur devrede:', error);
+            }
+        }
+
+        // Mağaza Grid'ini Çizdirme
+        function renderShopGrid(filterCategory = 'all') {
+            const grid = document.getElementById('shop-grid');
+            const filtered = products.filter(p => filterCategory === 'all' || p.category === filterCategory);
+            
+            grid.innerHTML = filtered.map(item => {
+                const hasVideo = item.media && item.media.endsWith('.mp4');
+                const mediaHTML = hasVideo
+                    ? `<video src="${item.media}" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>`
+                    : `<div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); gap: 0.5rem; text-align: center; padding: 1rem;">
+                        <i class="fa-solid fa-cube" style="font-size: 3.5rem; color: rgba(212,175,55,0.25);"></i>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">3D Model Önizleme</span>
+                       </div>`;
+
+                return `
+                    <div class="shop-item">
+                        <div class="shop-item-media">
+                            ${mediaHTML}
+                            <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
+                                <i class="fa-solid fa-cube"></i> STL Dosyası
+                            </div>
+                        </div>
+                        <div class="shop-item-info">
+                            <span class="shop-item-category">${item.category === 'yuzuk' ? 'Yüzük Modeli' : item.category === 'kolye' ? 'Kolye Modeli' : item.category === 'kilit' ? 'Kilit Modeli' : 'Mücevher Tasarımı'}</span>
+                            <h3 class="shop-item-title">${item.title}</h3>
+                            <p class="shop-item-desc">${item.desc}</p>
+                            <div class="shop-item-footer">
+                                <div class="shop-item-price-actions">
+                                    <span class="shop-item-price">$${item.price}</span>
+                                    <div class="shop-actions-row">
+                                        <button class="btn-outline" style="padding: 0.6rem 0.85rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; border-color: rgba(255,255,255,0.1); color: #fff;" onclick="open3dViewer('${item.stl}', '${item.title}')">
+                                            <i class="fa-solid fa-cube" style="color: var(--gold-primary);"></i> 3D İncele
+                                        </button>
+                                        <button class="btn-buy-stl" onclick="addToCart('${item.id}', '${item.title}', ${item.price}, '${item.code}', '${item.media}')">
+                                            <i class="fa-solid fa-cart-plus"></i> Sepete Ekle
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Ürün Filtreleme
+        function filterShop(category, btn) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderShopGrid(category);
+        }
+
+        // Sepet Paneli Aç / Kapat
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            
+            if (sidebar.style.right === '0px') {
+                sidebar.style.right = '-420px';
+                overlay.style.display = 'none';
+            } else {
+                sidebar.style.right = '0px';
+                overlay.style.display = 'block';
+                renderCartItems();
+            }
+        }
+
+        // Sepete Ürün Ekleme
+        function addToCart(id, title, price, code, media) {
+            const exists = cart.some(item => item.id === id);
+            if (exists) {
+                alert('Bu ürün zaten sepetinizde ekli!');
+                toggleCart();
+                return;
+            }
+
+            cart.push({ id, title, price, code, media });
+            localStorage.setItem('ern_stl_cart', JSON.stringify(cart));
+            
+            updateCartUI();
+            
+            showToastNotification(title);
+            setTimeout(() => {
+                toggleCart();
+            }, 800);
+        }
+
+        // Sepetten Ürün Silme
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            localStorage.setItem('ern_stl_cart', JSON.stringify(cart));
+            updateCartUI();
+            renderCartItems();
+        }
+
+        // Sepet İkonu ve Rozeti Güncelleme
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            badge.textContent = cart.length;
+            
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('cart-total-price').textContent = total;
+
+            const checkoutBtn = document.getElementById('btn-checkout');
+            if (cart.length === 0) {
+                checkoutBtn.disabled = true;
+                checkoutBtn.style.opacity = '0.5';
+                checkoutBtn.style.cursor = 'not-allowed';
+            } else {
+                checkoutBtn.disabled = false;
+                checkoutBtn.style.opacity = '1';
+                checkoutBtn.style.cursor = 'pointer';
+            }
+        }
+
+        // Sepet Elemanlarını Çizdirme
+        function renderCartItems() {
+            const container = document.getElementById('cart-items-container');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
+                        <i class="fa-solid fa-shopping-basket" style="font-size: 3rem; color: rgba(255,255,255,0.05); margin-bottom: 1rem; display: block;"></i>
+                        Sepetiniz henüz boş.<br>STL modellerini inceleyerek sepete ekleyebilirsiniz.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = cart.map(item => {
+                const hasVideo = item.media && item.media.endsWith('.mp4');
+                const mediaTag = hasVideo
+                    ? `<video src="${item.media}" muted playsinline></video>`
+                    : `<div style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; background: #1e293b; border-radius: 6px; border: 1px solid var(--border-gold);"><i class="fa-solid fa-cube" style="color: var(--gold-primary); font-size: 1.2rem;"></i></div>`;
+
+                return `
+                    <div class="cart-item-row">
+                        ${mediaTag}
+                        <div class="cart-item-details">
+                            <div class="cart-item-name">${item.title}</div>
+                            <div class="cart-item-code">${item.code}</div>
+                        </div>
+                        <div class="cart-item-price-remove">
+                            <span class="cart-item-price">$${item.price}</span>
+                            <button onclick="removeFromCart('${item.id}')" class="btn-cart-remove" title="Sepetten Çıkar">
+                                <i class="fa-solid fa-trash-can"></i> Sil
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Sepetten IBAN Ödemesine Geçiş (Canlı Kur Hesaplamalı)
+        function openCheckoutWithCart() {
+            if (cart.length === 0) return;
+
+            toggleCart();
+
+            const totalPriceUsd = cart.reduce((sum, item) => sum + item.price, 0);
+            const totalPriceTry = (totalPriceUsd * usdToTryRate).toFixed(2);
+            const allCodes = cart.map(item => item.code).join(' + ');
+
+            const listContainer = document.getElementById('modal-products-list');
+            listContainer.innerHTML = cart.map(item => `
+                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.25rem 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                    <span style="color: #fff;">• ${item.title}</span>
+                    <span style="color: var(--gold-primary); font-weight: 700;">$${item.price}</span>
+                </div>
+            `).join('');
+
+            // Fiyatları ve Canlı Kur Bilgisini Aktarma
+            document.getElementById('modal-product-price').textContent = totalPriceUsd;
+            document.getElementById('modal-live-rate').textContent = `${usdToTryRate.toFixed(2)} TL`;
+            document.getElementById('modal-product-price-try').textContent = `${totalPriceTry} TL`;
+            document.getElementById('modal-desc-price-try').textContent = `${totalPriceTry} TL`;
+            
+            document.getElementById('modal-product-codes').textContent = allCodes;
+            document.getElementById('modal-desc-code').textContent = allCodes;
+
+            const modal = document.getElementById('iban-modal');
+            modal.style.display = 'flex';
+        }
+
+        function closeIbanModal() {
+            const modal = document.getElementById('iban-modal');
+            modal.style.display = 'none';
+            document.getElementById('iban-payment-form').reset();
+        }
+
+        function copyIban() {
+            const ibanText = document.getElementById('iban-text').textContent;
+            navigator.clipboard.writeText(ibanText.replace(/\s+/g, '')).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Kopyalandı!';
+                btn.style.background = '#25d366';
+                btn.style.color = '#ffffff';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = 'rgba(212, 175, 55, 0.15)';
+                    btn.style.color = 'var(--gold-primary)';
+                }, 2000);
+            }).catch(err => {
+                alert('IBAN kopyalanamadı, lütfen elle seçip kopyalayın.');
+            });
+        }
+
+        // WhatsApp Bildirimi
+        function sendIbanOrderNotification(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('pay-name').value.trim();
+            const phone = document.getElementById('pay-phone').value.trim();
+            const email = document.getElementById('pay-email').value.trim();
+            const senderName = document.getElementById('pay-sender-name').value.trim();
+
+            const whatsappNumber = '905320000000'; // Ern Tasarım telefon numarası buraya girilecek
+
+            const totalPriceUsd = cart.reduce((sum, item) => sum + item.price, 0);
+            const totalPriceTry = (totalPriceUsd * usdToTryRate).toFixed(2);
+            const allCodes = cart.map(item => item.code).join(' + ');
+
+            let message = `*ERN TASARIM - STL SATIN ALMA TALEBİ* 📥\n`;
+            message += `--------------------------------------\n`;
+            message += `📦 *Sepetteki Ürünler:*\n`;
+            cart.forEach((item, index) => {
+                message += `${index + 1}. ${item.title} (${item.code}) - $${item.price}\n`;
+            });
+            message += `--------------------------------------\n`;
+            message += `📈 *Canlı Döviz Kuru:* 1 USD = ${usdToTryRate.toFixed(2)} TL\n`;
+            message += `💰 *Toplam Dolar Tutarı:* $${totalPriceUsd}\n`;
+            message += `💵 *Ödenecek TL Tutarı:* ${totalPriceTry} TL\n`;
+            message += `--------------------------------------\n`;
+            message += `🔑 *Açıklama Kodları:* ${allCodes}\n`;
+            message += `👤 *Müşteri Adı:* ${name}\n`;
+            message += `📞 *Telefon:* ${phone}\n`;
+            message += `📧 *E-Posta:* ${email}\n`;
+            message += `🏦 *Ödeme Yapan Hesap (TL):* ${senderName}\n\n`;
+            message += `_Not: Havale/EFT işlemi canlı kur hesabı üzerinden TL olarak gerçekleştirildi. Kontrol sonrasında STL dosyalarının linklerini mail adresime bekliyorum._`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+            // Google E-Tabloya Gönder (Eğer link tanımlanmışsa)
+            if (googleWebAppUrl && googleWebAppUrl !== 'BURAYA_GOOGLE_WEB_APP_LINKINI_YAZIN') {
+                const orderData = {
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    senderName: senderName,
+                    items: cart.map(item => `${item.title} (${item.code})`).join(', '),
+                    codes: allCodes,
+                    totalPriceUsd: totalPriceUsd,
+                    totalPriceTry: totalPriceTry
+                };
+                
+                fetch(googleWebAppUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                }).catch(err => console.error('E-Tablo kayıt hatası:', err));
+            }
+
+            alert(`Ödeme bildiriminiz oluşturuldu. Onay almak için şimdi WhatsApp'a yönlendiriliyorsunuz. Lütfen WhatsApp penceresinde 'Gönder' butonuna basınız. Ödemeniz onaylandıktan sonra dosyalarınız teslim edilecektir.`);
+            
+            // Sepeti Temizle
+            cart = [];
+            localStorage.setItem('ern_stl_cart', JSON.stringify(cart));
+            updateCartUI();
+
+            closeIbanModal();
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Sepete Eklendi Tost Bildirimi
+        function showToastNotification(itemTitle) {
+            const toast = document.createElement('div');
+            toast.style.position = 'fixed';
+            toast.style.bottom = '2rem';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%) translateY(20px)';
+            toast.style.background = 'rgba(15, 18, 28, 0.95)';
+            toast.style.border = '1px solid #d4af37';
+            toast.style.color = '#ffffff';
+            toast.style.padding = '0.85rem 1.75rem';
+            toast.style.borderRadius = '10px';
+            toast.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.2)';
+            toast.style.zIndex = '20000';
+            toast.style.display = 'flex';
+            toast.style.alignItems = 'center';
+            toast.style.gap = '0.65rem';
+            toast.style.opacity = '0';
+            toast.style.transition = 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+            
+            toast.innerHTML = `
+                <i class="fa-solid fa-cart-shopping" style="color: #d4af37; font-size: 1.1rem;"></i>
+                <div>
+                    <span style="font-size: 0.85rem; color: #f3f4f6; font-weight: 500;">"${itemTitle}" sepete eklendi!</span>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+            }, 50);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 2500);
+        }
+
+        // =====================================================================================
+        // THREE.JS 3D STL VIEWER LOGIC
+        // =====================================================================================
+
+        function open3dViewer(stlUrl, title) {
+            document.getElementById('threejs-modal-title').textContent = `3D Önizleme - ${title}`;
+            document.getElementById('threejs-modal').style.display = 'flex';
+            document.getElementById('threejs-loading').style.display = 'flex';
+            document.getElementById('threejs-loading-text').textContent = "3D Model Yükleniyor...";
+
+            const container = document.getElementById('canvas-container');
+
+            // 1. Sahne Kurulumu
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x020617);
+
+            // 2. Kamera Kurulumu
+            camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(0, 0, 100);
+
+            // 3. Renderer Kurulumu
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.shadowMap.enabled = true;
+            
+            // Eğer önceden kalmış canvas varsa temizle
+            const oldCanvas = container.querySelector('canvas');
+            if (oldCanvas) oldCanvas.remove();
+            
+            container.appendChild(renderer.domElement);
+
+            // 4. Kontroller (OrbitControls)
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.maxPolarAngle = Math.PI / 1.5; // Yerin altına girmeyi engelle
+
+            // 5. Işıklar (Gelişmiş Stüdyo Işıklandırması - Karanlık Noktaları Çözmek İçin)
+            // Hemisferik Işık (Gökyüzü ve Yer Işığı - Gölgeleri yumuşakça doldurur)
+            const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.85);
+            hemiLight.position.set(0, 200, 0);
+            scene.add(hemiLight);
+
+            // Ortam Işığı (Genel aydınlık seviyesi)
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            // Ana Işık (Key Light - Sağ Üst Ön)
+            const keyLight = new THREE.DirectionalLight(0xffffff, 0.9);
+            keyLight.position.set(100, 100, 100);
+            scene.add(keyLight);
+
+            // Dolgu Işığı (Fill Light - Sol Ön)
+            const fillLight = new THREE.DirectionalLight(0xffffff, 0.55);
+            fillLight.position.set(-100, 50, 100);
+            scene.add(fillLight);
+
+            // Kenar Işığı (Rim/Back Light - Arkadan parlamalar için)
+            const backLight = new THREE.DirectionalLight(0xffffff, 0.7);
+            backLight.position.set(0, 100, -100);
+            scene.add(backLight);
+
+            // Noktasal Parlama Işığı
+            const pointLight = new THREE.PointLight(0xffffff, 0.6, 100);
+            pointLight.position.set(0, 50, 50);
+            scene.add(pointLight);
+
+
+
+        // STL dosyasının hacmini hesaplayan matematiksel fonksiyon (cm³ cinsinden döner)
+        function calculateVolume(geometry) {
+            if (!geometry.attributes.position) return 0;
+            const position = geometry.attributes.position;
+            let sum = 0;
+            
+            const p1 = new THREE.Vector3();
+            const p2 = new THREE.Vector3();
+            const p3 = new THREE.Vector3();
+            
+            if (geometry.index) {
+                const index = geometry.index;
+                const count = index.count;
+                for (let i = 0; i < count; i += 3) {
+                    p1.fromBufferAttribute(position, index.getX(i + 0));
+                    p2.fromBufferAttribute(position, index.getX(i + 1));
+                    p3.fromBufferAttribute(position, index.getX(i + 2));
+                    
+                    const v321 = p3.x * p2.y * p1.z;
+                    const v231 = p2.x * p3.y * p1.z;
+                    const v312 = p3.x * p1.y * p2.z;
+                    const v132 = p1.x * p3.y * p2.z;
+                    const v213 = p2.x * p1.y * p3.z;
+                    const v123 = p1.x * p2.y * p3.z;
+                    
+                    sum += (-v321 + v231 + v312 - v132 - v213 + v123) / 6.0;
+                }
+            } else {
+                const count = position.count;
+                for (let i = 0; i < count; i += 3) {
+                    p1.fromBufferAttribute(position, i + 0);
+                    p2.fromBufferAttribute(position, i + 1);
+                    p3.fromBufferAttribute(position, i + 2);
+                    
+                    const v321 = p3.x * p2.y * p1.z;
+                    const v231 = p2.x * p3.y * p1.z;
+                    const v312 = p3.x * p1.y * p2.z;
+                    const v132 = p1.x * p3.y * p2.z;
+                    const v213 = p2.x * p1.y * p3.z;
+                    const v123 = p1.x * p2.y * p3.z;
+                    
+                    sum += (-v321 + v231 + v312 - v132 - v213 + v123) / 6.0;
+                }
+            }
+            
+            // STL birimi genellikle mm'dir, bu yüzden hacim mm³ olur. 
+            // cm³'e çevirmek için 1000'e bölüyoruz.
+            return Math.abs(sum) / 1000;
+        }
+
+        // Metal Yoğunluk Listesi (Yoğunluk: g/cm³)
+        const metalDensities = [
+            { name: "8K Altın", density: 11.10, color: "#eab308" },
+            { name: "10K Altın", density: 11.60, color: "#fbbf24" },
+            { name: "14K Altın", density: 13.00, color: "#ffd700" },
+            { name: "18K Altın", density: 15.50, color: "#f59e0b" },
+            { name: "21K Altın", density: 16.60, color: "#d97706" },
+            { name: "22K Altın", density: 17.50, color: "#b45309" },
+            { name: "925 Gümüş", density: 10.40, color: "#cbd5e1" },
+            { name: "Bakır", density: 8.96, color: "#fca5a5" },
+            { name: "Alloy (Pirinç)", density: 8.50, color: "#a1a1aa" },
+            { name: "Çelik", density: 7.80, color: "#94a3b8" }
+        ];
+
+        function updateAnalysisData(geometry) {
+            // 1. Boyut Hesaplama
+            geometry.computeBoundingBox();
+            const boundingBox = geometry.boundingBox;
+            const size = new THREE.Vector3();
+            boundingBox.getSize(size);
+            
+            document.getElementById('spec-dim-x').textContent = size.x.toFixed(1) + ' mm';
+            document.getElementById('spec-dim-y').textContent = size.y.toFixed(1) + ' mm';
+            document.getElementById('spec-dim-z').textContent = size.z.toFixed(1) + ' mm';
+            
+            // 2. Hacim ve Ağırlık Hesaplama
+            const volumeCm3 = calculateVolume(geometry);
+            const weightContainer = document.getElementById('weight-list');
+            
+            if (volumeCm3 < 0.0001) {
+                weightContainer.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 0.75rem; padding: 1rem;">Hacim hesaplanamadı (Hatalı geometri).</div>`;
+            } else {
+                weightContainer.innerHTML = metalDensities.map(item => {
+                    const weight = (volumeCm3 * item.density).toFixed(2);
+                    return `
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; padding: 0.35rem 0.25rem; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <span style="color: ${item.color}; font-weight: 600;">${item.name}:</span>
+                            <strong style="color: #ffffff;">${weight} gr</strong>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        // 6. STL Yükleme
+        const loader = new THREE.STLLoader();
+        
+        loader.load(stlUrl, function (geometry) {
+            // Başarılı yükleme
+            geometry.center(); // Geometriyi merkezle
+            
+            currentMesh = new THREE.Mesh(geometry, materials[activeMaterial]);
+            scene.add(currentMesh);
+            
+            // Kamerayı ve Kontrolleri Konumlandır
+            adjustCameraToFitMesh(geometry);
+            
+            // Teknik Detayları Hesapla ve Güncelle
+            updateAnalysisData(geometry);
+            
+            document.getElementById('threejs-loading').style.display = 'none';
+            animate3d();
+            
+        }, function (xhr) {
+            if (xhr.lengthComputable) {
+                const percent = Math.round((xhr.loaded / xhr.total) * 100);
+                document.getElementById('threejs-loading-text').textContent = `%${percent} Yükleniyor...`;
+            }
+        }, function (error) {
+            console.warn("STL dosyası bulunamadı, demo model gösteriliyor:", error);
+            
+            document.getElementById('threejs-loading-text').innerHTML = `
+                <i class="fa-solid fa-cube" style="color: var(--gold-primary); font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                "${stlUrl.split('/').pop()}" yüklenemedi.<br>
+                <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 400; display: block; margin-top: 0.5rem;">
+                    Demo Altın Halka modeli yükleniyor...
+                </span>
+            `;
+            
+            setTimeout(() => {
+                createDemoModel();
+                document.getElementById('threejs-loading').style.display = 'none';
+                animate3d();
+            }, 1500);
+        });
+    }
+
+    function createDemoModel() {
+        // STL bulunamadığında gösterilecek şık altın düğüm (TorusKnot)
+        const geometry = new THREE.TorusKnotGeometry(12, 4.5, 120, 16);
+        geometry.center();
+        currentMesh = new THREE.Mesh(geometry, materials[activeMaterial]);
+        scene.add(currentMesh);
+        
+        camera.position.set(0, 0, 50);
+        controls.target.set(0, 0, 0);
+        controls.update();
+
+        // Analiz Raporunu Güncelle
+        updateAnalysisData(geometry);
+    }
+
+    function adjustCameraToFitMesh(geometry) {
+        geometry.computeBoundingSphere();
+        const sphere = geometry.boundingSphere;
+        const radius = sphere.radius;
+        
+        // Kamera uzaklığını model boyutuna göre otomatik ölçekle
+        camera.position.set(0, 0, radius * 2.5);
+        controls.target.set(0, 0, 0);
+        controls.update();
+    }
+
+    function change3dMaterial(matName) {
+        activeMaterial = matName;
+        if (currentMesh && materials[matName]) {
+            currentMesh.material = materials[matName];
+        }
+    }
+
+    function animate3d() {
+        if (!renderer) return;
+        requestAnimationFrame(animate3d);
+        
+        controls.update();
+        renderer.render(scene, camera);
+    }
+
+    function close3dViewer() {
+            document.getElementById('threejs-modal').style.display = 'none';
+            // Bellekten WebGL'i temizle
+            if (renderer) {
+                renderer.dispose();
+                renderer = null;
+            }
+            scene = null;
+            camera = null;
+            controls = null;
+            currentMesh = null;
+        }
+
+        // Pencere Boyut Değişim Desteği
+        window.addEventListener('resize', () => {
+            if (renderer && camera && document.getElementById('threejs-modal').style.display === 'flex') {
+                const container = document.getElementById('canvas-container');
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            }
+        });
+    </script>
+</body>
+</html>
