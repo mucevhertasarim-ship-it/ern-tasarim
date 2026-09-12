@@ -1505,7 +1505,7 @@
                             <label class="form-label" for="setting-instagram">
                                 <i class="fa-brands fa-instagram" style="color: #f04e84;"></i> Instagram Profil Linki
                             </label>
-                            <input type="text" id="setting-instagram" class="form-control" placeholder="Örn: https://instagram.com/eren_tasarim">
+                            <input type="text" id="setting-instagram" class="form-control" placeholder="https://www.instagram.com/e.r.n.tasarim/">
                             <small style="color: #94a3b8; font-size: 0.75rem;">Kendi Instagram adresiniz. Boş bırakırsanız sitede yabancı hesap açılmaz, müşteriler doğrudan WhatsApp hattınıza yönlendirilir.</small>
                         </div>
 
@@ -2551,7 +2551,7 @@
             whatsappHide: true,
             phone: '0532 000 00 00',
             email: 'info@erntasarim.com',
-            instagram: '',
+            instagram: 'https://www.instagram.com/e.r.n.tasarim/',
             facebook: '',
             tiktok: '',
             youtube: '',
@@ -2582,6 +2582,14 @@
             }
             if (!localStorage.getItem('ern_site_settings')) {
                 localStorage.setItem('ern_site_settings', JSON.stringify(DEFAULT_SETTINGS));
+            } else {
+                try {
+                    const s = JSON.parse(localStorage.getItem('ern_site_settings') || '{}');
+                    if (!s.instagram || s.instagram.includes('/erntasarim') || s.instagram === 'erntasarim' || s.instagram === '@erntasarim') {
+                        s.instagram = 'https://www.instagram.com/e.r.n.tasarim/';
+                        localStorage.setItem('ern_site_settings', JSON.stringify(s));
+                    }
+                } catch(e) {}
             }
         }
 
@@ -2933,7 +2941,13 @@
         function getSettings() {
             try {
                 const data = localStorage.getItem('ern_site_settings');
-                return data ? JSON.parse(data) : DEFAULT_SETTINGS;
+                const s = data ? JSON.parse(data) : { ...DEFAULT_SETTINGS };
+                // Eski hatalı çanta hesabı 'erntasarim' kalmışsa derhal Eren'in gerçek hesabına çevir:
+                if (!s.instagram || s.instagram.includes('/erntasarim') || s.instagram === 'erntasarim' || s.instagram === '@erntasarim') {
+                    s.instagram = 'https://www.instagram.com/e.r.n.tasarim/';
+                    try { localStorage.setItem('ern_site_settings', JSON.stringify(s)); } catch(e) {}
+                }
+                return { ...DEFAULT_SETTINGS, ...s };
             } catch (e) {
                 return DEFAULT_SETTINGS;
             }
@@ -4225,7 +4239,7 @@
             document.getElementById('setting-phone').value = settings.phone || '0532 000 00 00';
             document.getElementById('setting-email').value = settings.email || 'info@erntasarim.com';
             const igEl = document.getElementById('setting-instagram');
-            if (igEl) igEl.value = settings.instagram || '';
+            if (igEl) igEl.value = settings.instagram || 'https://www.instagram.com/e.r.n.tasarim/';
             const fbEl = document.getElementById('setting-facebook');
             if (fbEl) fbEl.value = settings.facebook || '';
             const ttEl = document.getElementById('setting-tiktok');
@@ -4275,6 +4289,16 @@
             const dispVal = document.getElementById('setting-whatsapp-display') ? document.getElementById('setting-whatsapp-display').value.trim() : (current.whatsappDisplay || '+90 (532) 000 00 00');
             const hideVal = document.getElementById('setting-whatsapp-hide') ? document.getElementById('setting-whatsapp-hide').checked : true;
 
+            let rawIg = document.getElementById('setting-instagram') ? document.getElementById('setting-instagram').value.trim() : (current.instagram || '');
+            if (rawIg && !rawIg.includes('instagram.com') && !rawIg.startsWith('http')) {
+                rawIg = 'https://instagram.com/' + rawIg.replace(/^@/, '');
+            }
+            if (!rawIg) rawIg = 'https://www.instagram.com/e.r.n.tasarim/';
+            let rawFb = document.getElementById('setting-facebook') ? document.getElementById('setting-facebook').value.trim() : (current.facebook || '');
+            if (rawFb && !rawFb.includes('facebook.com') && !rawFb.startsWith('http')) {
+                rawFb = 'https://facebook.com/' + rawFb.replace(/^@/, '');
+            }
+
             const newSettings = {
                 ...current,
                 whatsapp: document.getElementById('setting-whatsapp').value.trim() || '905320000000',
@@ -4282,8 +4306,8 @@
                 whatsappHide: hideVal,
                 phone: document.getElementById('setting-phone').value.trim() || '0532 000 00 00',
                 email: document.getElementById('setting-email').value.trim() || 'info@erntasarim.com',
-                instagram: document.getElementById('setting-instagram') ? document.getElementById('setting-instagram').value.trim() : (current.instagram || ''),
-                facebook: document.getElementById('setting-facebook') ? document.getElementById('setting-facebook').value.trim() : (current.facebook || ''),
+                instagram: rawIg,
+                facebook: rawFb,
                 tiktok: document.getElementById('setting-tiktok') ? document.getElementById('setting-tiktok').value.trim() : (current.tiktok || ''),
                 youtube: document.getElementById('setting-youtube') ? document.getElementById('setting-youtube').value.trim() : (current.youtube || ''),
                 bankName: document.getElementById('setting-bank-name') ? document.getElementById('setting-bank-name').value.trim() : (current.bankName || ''),
