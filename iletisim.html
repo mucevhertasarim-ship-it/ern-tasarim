@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim & Atölye Konumu - ERN TASARIM</title>
+    <meta name="description" content="ERN TASARIM ile iletişime geçin. WhatsApp, Facebook, Instagram, info e-posta adresimiz ve Kapalıçarşı atölye harita konumumuz.">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .contact-hero {
+            padding: 5rem 1.5rem 3rem 1.5rem;
+            text-align: center;
+            background: radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.12) 0%, transparent 60%);
+        }
+
+        .contact-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: rgba(212, 175, 55, 0.12);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            padding: 0.45rem 1.25rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1);
+        }
+
+        .contact-hero h1 {
+            font-family: var(--font-serif);
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.8rem;
+            line-height: 1.2;
+        }
+
+        .contact-hero p {
+            color: var(--text-muted);
+            max-width: 680px;
+            margin: 0 auto;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* 4-Hızlı İletişim Kartı Grid */
+        .quick-contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .quick-contact-card {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.85) 0%, rgba(7, 10, 18, 0.95) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 18px;
+            padding: 1.8rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition-premium);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .quick-contact-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-primary);
+            box-shadow: var(--gold-glow);
+        }
+
+        .card-icon-wrap {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .icon-wa {
+            background: rgba(37, 211, 102, 0.15);
+            border: 1px solid rgba(37, 211, 102, 0.4);
+            color: #25d366;
+        }
+
+        .icon-ig {
+            background: rgba(225, 48, 108, 0.15);
+            border: 1px solid rgba(225, 48, 108, 0.4);
+            color: #e1306c;
+        }
+
+        .icon-fb {
+            background: rgba(24, 119, 242, 0.15);
+            border: 1px solid rgba(24, 119, 242, 0.4);
+            color: #1877f2;
+        }
+
+        .icon-mail {
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            color: var(--gold-primary);
+        }
+
+        .quick-contact-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.35rem;
+        }
+
+        .quick-contact-card p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 1.25rem;
+        }
+
+        .quick-contact-card .contact-link {
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-premium);
+        }
+
+        /* 2-Kolon Ana İletişim Bölümü */
+        .contact-main-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 2.5rem;
+            align-items: stretch;
+            margin-bottom: 4rem;
+        }
+
+        @media (max-width: 900px) {
+            .contact-main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .contact-form-panel {
+            background: linear-gradient(180deg, rgba(17, 24, 39, 0.95) 0%, rgba(9, 13, 22, 0.98) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            border-radius: 22px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .contact-map-panel {
+            background: linear-gradient(180deg, rgba(17, 24, 39, 0.95) 0%, rgba(9, 13, 22, 0.98) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            border-radius: 22px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        @media (max-width: 600px) {
+            .contact-form-panel, .contact-map-panel {
+                padding: 1.5rem;
+            }
+        }
+
+        .form-row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        @media (max-width: 600px) {
+            .form-row-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            background: #0d1424;
+            border: 1px solid #232f48;
+            color: #ffffff;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition-premium);
+            font-family: var(--font-sans);
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.25);
+            background: #111a2f;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .map-frame-wrapper {
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            margin: 1.2rem 0;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+        }
+
+        .map-frame-wrapper iframe {
+            width: 100%;
+            height: 280px;
+            display: block;
+            border: none;
+            filter: contrast(1.05) saturate(1.1);
+        }
+
+        .address-detail-item {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+
+        .address-icon {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            border-radius: 10px;
+            background: rgba(212, 175, 55, 0.12);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-primary);
+            font-size: 0.95rem;
+        }
+
+        .address-text h5 {
+            font-size: 0.85rem;
+            color: var(--gold-primary);
+            font-weight: 700;
+            margin-bottom: 0.15rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .address-text p {
+            font-size: 0.85rem;
+            color: #e2e8f0;
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        /* Sosyal Medya Şeridi */
+        .social-strip {
+            background: linear-gradient(135deg, rgba(21, 28, 44, 0.95) 0%, rgba(10, 15, 26, 0.98) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            margin-bottom: 3.5rem;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .social-buttons-flex {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .social-pill-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.75rem 1.4rem;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: var(--transition-premium);
+        }
+
+        .pill-wa {
+            background: rgba(37, 211, 102, 0.12);
+            border: 1px solid rgba(37, 211, 102, 0.4);
+            color: #25d366;
+        }
+        .pill-wa:hover {
+            background: #25d366;
+            color: #05070c;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        .pill-ig {
+            background: rgba(225, 48, 108, 0.12);
+            border: 1px solid rgba(225, 48, 108, 0.4);
+            color: #f04e84;
+        }
+        .pill-ig:hover {
+            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(225, 48, 108, 0.4);
+        }
+
+        .pill-fb {
+            background: rgba(24, 119, 242, 0.12);
+            border: 1px solid rgba(24, 119, 242, 0.4);
+            color: #4293f5;
+        }
+        .pill-fb:hover {
+            background: #1877f2;
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(24, 119, 242, 0.4);
+        }
+
+        .pill-mail {
+            background: rgba(212, 175, 55, 0.12);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            color: var(--gold-primary);
+        }
+        .pill-mail:hover {
+            background: var(--gold-primary);
+            color: #05070c;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                ERN TASARIM <span>Stüdyo</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Ana Sayfa</a>
+                <a href="portfoy.html" class="nav-link"><i class="fa-solid fa-film"></i> Yaptıklarımız</a>
+                <a href="3d_vitrin.html" class="nav-link" style="color: #d4af37;"><i class="fa-solid fa-cube"></i> 3D Vitrin</a>
+                <a href="magaza.html" class="nav-link"><i class="fa-solid fa-cart-shopping"></i> STL Mağazası</a>
+                <a href="siparis.html" class="nav-link"><i class="fa-solid fa-pen-nib"></i> Özel Sipariş</a>
+                <a href="iletisim.html" class="nav-link active" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-phone"></i> İletişim</a>
+                <a href="kitap/index.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Kitap Köşesi</a>
+            </nav>
+            <div class="header-actions">
+                <a href="https://wa.me/905320000000?text=Merhaba,%20tasarım%20ve%20sipariş%20hakkında%20bilgi%20almak%20istiyorum." target="_blank" class="btn-gold">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>Hızlı WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- İletişim Hero -->
+    <section class="contact-hero">
+        <div class="contact-badge">
+            <i class="fa-solid fa-comments"></i> 7/24 Bize Ulaşın
+        </div>
+        <h1>İletişim & Atölye Bilgileri</h1>
+        <p>Mücevher CAD modelleme, özel döküm siparişleri, mağaza STL dosyaları veya atölye randevularınız için aşağıdaki kanallardan bize dilediğiniz an ulaşabilirsiniz.</p>
+    </section>
+
+    <!-- Main Container -->
+    <main class="container">
+        
+        <!-- 4'lü Hızlı İletişim Kartları -->
+        <div class="quick-contact-grid">
+            
+            <!-- 1. WhatsApp -->
+            <div class="quick-contact-card">
+                <div>
+                    <div class="card-icon-wrap icon-wa">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <h3>WhatsApp Danışma</h3>
+                    <p>Çizimleriniz ve acil projeleriniz için 7/24 doğrudan usta tasarımcımıza mesaj atın.</p>
+                </div>
+                <div>
+                    <div class="wa-display-number" style="font-size: 1.1rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">+90 532 000 00 00</div>
+                    <a href="https://wa.me/905320000000?text=Merhaba%20ERN%20Tasarım,%20bilgi%20almak%20istiyorum." target="_blank" class="contact-link" style="color: #25d366;">
+                        <span>WhatsApp'tan Yaz</span> <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2. Instagram & Facebook -->
+            <div class="quick-contact-card">
+                <div>
+                    <div class="card-icon-wrap icon-ig">
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                    <h3>Sosyal Medya</h3>
+                    <p>En yeni MatrixGold tasarımlarımızı, döküm videolarımızı ve reels paylaşımlarımızı takip edin.</p>
+                </div>
+                <div>
+                    <div style="font-size: 1.05rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">@erntasarim</div>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="https://instagram.com/erntasarim" target="_blank" class="contact-link" style="color: #f04e84;">
+                            <i class="fa-brands fa-instagram"></i> Instagram
+                        </a>
+                        <a href="https://facebook.com/erntasarim" target="_blank" class="contact-link" style="color: #4293f5;">
+                            <i class="fa-brands fa-facebook"></i> Facebook
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. E-Posta / Info Mail -->
+            <div class="quick-contact-card">
+                <div>
+                    <div class="card-icon-wrap icon-mail">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <h3>Resmi E-Posta</h3>
+                    <p>Fiyat teklifleri, kurumsal çizim projeleri ve fatura bildirimleri için bize mail atın.</p>
+                </div>
+                <div>
+                    <div style="font-size: 1.05rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem; word-break: break-all;">info@erntasarim.com</div>
+                    <a href="mailto:info@erntasarim.com?subject=Tasarim%20ve%20Siparis%20Talebi" class="contact-link" style="color: var(--gold-primary);">
+                        <span>E-Posta Gönder</span> <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 4. Atölye & Telefon -->
+            <div class="quick-contact-card">
+                <div>
+                    <div class="card-icon-wrap icon-fb">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <h3>Atölye Telefonu</h3>
+                    <p>Randevu almak ve üretim aşamasındaki siparişleriniz hakkında bilgi almak için arayın.</p>
+                </div>
+                <div>
+                    <div style="font-size: 1.1rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">+90 212 555 00 00</div>
+                    <a href="tel:+902125550000" class="contact-link" style="color: #60a5fa;">
+                        <span>Hemen Arayın</span> <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 2-Kolon: İletişim Formu & Harita Konumu -->
+        <div class="contact-main-grid">
+            
+            <!-- SOL: Hızlı Mesaj Formu -->
+            <div class="contact-form-panel">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+                        <i class="fa-solid fa-pen-fancy" style="color: var(--gold-primary);"></i>
+                        <span style="color: var(--gold-primary); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Doğrudan İletin</span>
+                    </div>
+                    <h2 style="font-family: var(--font-serif); font-size: 1.7rem; color: #fff; margin-bottom: 0.4rem;">Bize Mesaj Gönderin</h2>
+                    <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.5rem;">
+                        Mesajınızı ister <strong>info@erntasarim.com</strong> adresimize e-posta olarak, isterseniz tek tıkla <strong>WhatsApp</strong> hattımıza iletebilirsiniz.
+                    </p>
+
+                    <form id="contact-message-form" onsubmit="handleContactMessage(event)">
+                        
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label class="form-label" for="msg-name"><i class="fa-solid fa-user" style="color: var(--gold-primary);"></i> Adınız Soyadınız *</label>
+                                <input type="text" id="msg-name" class="form-input" placeholder="Ahmet Yılmaz" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="msg-phone"><i class="fa-solid fa-phone" style="color: var(--gold-primary);"></i> Telefon Numaranız *</label>
+                                <input type="tel" id="msg-phone" class="form-input" placeholder="0532 123 45 67" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label class="form-label" for="msg-email"><i class="fa-solid fa-envelope" style="color: var(--gold-primary);"></i> E-Posta Adresiniz *</label>
+                                <input type="email" id="msg-email" class="form-input" placeholder="ornek@mail.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="msg-subject"><i class="fa-solid fa-list-check" style="color: var(--gold-primary);"></i> Konu *</label>
+                                <select id="msg-subject" class="form-select">
+                                    <option value="Özel Çizim & Sipariş">💎 Özel Çizim & Sipariş Talebi</option>
+                                    <option value="STL Dosyası Satın Alma">📁 STL Dosyası & Mağaza Sorusu</option>
+                                    <option value="Döküm & Mücevher Üretimi">🔥 Döküm & İmalat Süreci</option>
+                                    <option value="Atölye Ziyareti & Randevu">🏬 Atölye Ziyareti & Randevu</option>
+                                    <option value="Genel Bilgi">💬 Genel Bilgi & Diğer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="msg-text"><i class="fa-solid fa-message" style="color: var(--gold-primary);"></i> Mesajınız *</label>
+                            <textarea id="msg-text" class="form-textarea" placeholder="Bizimle paylaşmak istediğiniz proje detaylarını veya sorularınızı yazınız..." required></textarea>
+                        </div>
+
+                        <!-- Görünmez Bot Tuzağı (Honeypot): İnsanlar görmez, botlar doldurunca bloke edilir -->
+                        <div style="display: none !important; opacity: 0; position: absolute; left: -9999px;" aria-hidden="true">
+                            <label for="ern_honeypot_trap">Lütfen bu alanı boş bırakın</label>
+                            <input type="text" id="ern_honeypot_trap" name="ern_honeypot_trap" tabindex="-1" autocomplete="off">
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 1rem;">
+                            <button type="button" onclick="sendContactViaWhatsApp()" style="background: linear-gradient(135deg, #25d366, #128c7e); color: white; border: none; padding: 0.85rem; border-radius: 12px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); transition: var(--transition-premium);">
+                                <i class="fa-brands fa-whatsapp" style="font-size: 1.15rem;"></i> WhatsApp'tan İlet
+                            </button>
+                            <button type="submit" style="background: var(--gold-gradient); color: #05070c; border: none; padding: 0.85rem; border-radius: 12px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); transition: var(--transition-premium);">
+                                <i class="fa-solid fa-paper-plane"></i> Mail At (info@)
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+            <!-- SAĞ: Atölye Adresi & Google Haritası -->
+            <div class="contact-map-panel">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+                        <i class="fa-solid fa-map-location-dot" style="color: var(--gold-primary);"></i>
+                        <span style="color: var(--gold-primary); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Atölye & Konum</span>
+                    </div>
+                    <h2 style="font-family: var(--font-serif); font-size: 1.7rem; color: #fff; margin-bottom: 0.4rem;">Bizi Ziyaret Edin</h2>
+                    <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.2rem;">
+                        İstanbul'un tarihi kuyumculuk kalbinde, atölyemizde sizleri ağırlamaktan ve tasarımlarınızı yüz yüze planlamaktan mutluluk duyarız.
+                    </p>
+
+                    <!-- Adres Detayı -->
+                    <div class="address-detail-item">
+                        <div class="address-icon"><i class="fa-solid fa-building"></i></div>
+                        <div class="address-text">
+                            <h5>Atölye Adresi</h5>
+                            <p>Kapalıçarşı Kuyumcular Caddesi, No: 42 Kat: 2, Fatih / İSTANBUL</p>
+                        </div>
+                    </div>
+
+                    <!-- Çalışma Saatleri -->
+                    <div class="address-detail-item">
+                        <div class="address-icon"><i class="fa-solid fa-clock"></i></div>
+                        <div class="address-text">
+                            <h5>Çalışma & Ziyaret Saatleri</h5>
+                            <p>Pazartesi - Cuma: <strong>09:00 - 18:30</strong><br>Cumartesi: <strong>09:30 - 16:00</strong> | Pazar: Randevu ile</p>
+                        </div>
+                    </div>
+
+                    <!-- Canlı Google Harita Iframe -->
+                    <div class="map-frame-wrapper">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3010.536785864389!2d28.9682183!3d41.0105374!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab9906d091e9f%3A0xb23a23479fa157a9!2zS2FwYWzEscOnYXLFn8Sx!5e0!3m2!1str!2str!4v1710000000000!5m2!1str!2str" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="ERN TASARIM Atölye Konumu">
+                        </iframe>
+                    </div>
+
+                    <!-- Yol Tarifi Butonu -->
+                    <a href="https://maps.google.com/?q=Kapalicarsi,Fatih,Istanbul" target="_blank" class="btn-outline" style="width: 100%; justify-content: center; padding: 0.75rem; font-weight: 700; text-decoration: none;">
+                        <i class="fa-solid fa-diamond-turn-right" style="color: var(--gold-primary);"></i> Google Haritalar'da Yol Tarifi Al
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sosyal Medya Geniş Takip Alanı -->
+        <div class="social-strip">
+            <div style="color: var(--gold-primary); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.5rem;">
+                <i class="fa-solid fa-share-nodes"></i> Sosyal Medyada Biz
+            </div>
+            <h3 style="font-family: var(--font-serif); font-size: 1.8rem; color: #fff; margin-bottom: 0.6rem;">
+                ERN TASARIM'ı Takip Edin & İletişimde Kalın
+            </h3>
+            <p style="color: var(--text-muted); max-width: 620px; margin: 0 auto; font-size: 0.95rem;">
+                Her hafta yeni 3D CAD çizimlerimizi, döküm püf noktalarını ve atölye kamera arkasını sosyal medya hesaplarımızda paylaşıyoruz.
+            </p>
+
+            <div class="social-buttons-flex">
+                <a href="https://wa.me/905320000000?text=Merhaba%20ERN%20Tasarım,%20iletişime%20geçmek%20istiyorum." target="_blank" class="social-pill-btn pill-wa">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> WhatsApp (+90 532 000 00 00)
+                </a>
+                <a href="https://instagram.com/erntasarim" target="_blank" class="social-pill-btn pill-ig">
+                    <i class="fa-brands fa-instagram" style="font-size: 1.2rem;"></i> Instagram (@erntasarim)
+                </a>
+                <a href="https://facebook.com/erntasarim" target="_blank" class="social-pill-btn pill-fb">
+                    <i class="fa-brands fa-facebook" style="font-size: 1.2rem;"></i> Facebook (ERN Tasarım)
+                </a>
+                <a href="mailto:info@erntasarim.com" class="social-pill-btn pill-mail">
+                    <i class="fa-solid fa-envelope" style="font-size: 1.1rem;"></i> info@erntasarim.com
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">ERN TASARIM</div>
+        <p class="footer-text">
+            © 2026 Ern Tasarım. Tüm Hakları Saklıdır. "Siz hayal edin, biz yapalım."
+            <span style="margin: 0 8px; opacity: 0.3;">|</span>
+            <a href="yonetici.html" style="color: var(--gold-primary); text-decoration: none; font-size: 0.8rem; opacity: 0.8; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
+                <i class="fa-solid fa-shield-halved"></i> Yönetici Girişi
+            </a>
+        </p>
+    </footer>
+
+    <!-- WhatsApp Sabit Buton -->
+    <a href="https://wa.me/905320000000?text=Merhaba,%20iletişime%20geçmek%20istiyorum." class="whatsapp-float" target="_blank" title="WhatsApp ile İletişime Geç">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- İletişim JS -->
+    <script>
+        function sendContactViaWhatsApp() {
+        function sanitizeText(str) {
+            return (str || '').replace(/<[^>]*>?/gm, '').trim();
+        }
+
+        function checkContactCooldown() {
+            const now = Date.now();
+            const lastSend = parseInt(sessionStorage.getItem('ern_contact_last_send') || '0', 10);
+            if (now - lastSend < 20000) {
+                const rem = Math.ceil((20000 - (now - lastSend)) / 1000);
+                alert(`🛡️ Güvenlik Kalkanı: Lütfen tekrar mesaj göndermeden önce ${rem} saniye bekleyin.`);
+                return false;
+            }
+            return true;
+        }
+
+        function isBotDetected() {
+            const hp = document.getElementById('ern_honeypot_trap');
+            if (hp && hp.value.trim() !== '') {
+                console.warn('Bot submission blocked via honeypot.');
+                return true;
+            }
+            return false;
+        }
+
+        function sendContactViaWhatsApp() {
+            if (isBotDetected()) return;
+            if (!checkContactCooldown()) return;
+
+            const name = sanitizeText(document.getElementById('msg-name').value);
+            const phone = sanitizeText(document.getElementById('msg-phone').value);
+            const email = sanitizeText(document.getElementById('msg-email').value);
+            const subject = document.getElementById('msg-subject').value;
+            const text = sanitizeText(document.getElementById('msg-text').value);
+
+            if (!name || !phone || !text) {
+                alert('Lütfen Adınız, Telefon Numaranız ve Mesajınız alanlarını doldurunuz.');
+                return;
+            }
+
+            sessionStorage.setItem('ern_contact_last_send', Date.now().toString());
+
+            let msg = `*ERN TASARIM - İLETİŞİM FORMU MESAJI* 💬\n`;
+            msg += `--------------------------------------\n`;
+            msg += `👤 *Ad Soyad:* ${name}\n`;
+            msg += `📞 *Telefon:* ${phone}\n`;
+            msg += `📧 *E-Posta:* ${email}\n`;
+            msg += `📌 *Konu:* ${subject}\n\n`;
+            msg += `📝 *Mesaj:*\n"${text}"\n`;
+            msg += `--------------------------------------\n`;
+            msg += `_Web sitesi İletişim sayfasından gönderildi._`;
+
+            let whatsappNumber = '905320000000';
+            try {
+                const s = JSON.parse(localStorage.getItem('ern_site_settings') || '{}');
+                if (s.whatsapp) whatsappNumber = s.whatsapp.replace(/[^0-9]/g, '');
+            } catch(e) {}
+
+            const url = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank');
+        }
+
+        function handleContactMessage(e) {
+            e.preventDefault();
+            if (isBotDetected()) return;
+            if (!checkContactCooldown()) return;
+
+            const name = sanitizeText(document.getElementById('msg-name').value);
+            const phone = sanitizeText(document.getElementById('msg-phone') ? document.getElementById('msg-phone').value : '');
+            const email = sanitizeText(document.getElementById('msg-email').value);
+            const subject = document.getElementById('msg-subject').value;
+            const text = sanitizeText(document.getElementById('msg-text').value);
+
+            sessionStorage.setItem('ern_contact_last_send', Date.now().toString());
+
+            let targetEmail = 'info@erntasarim.com';
+            try {
+                const siteSettings = JSON.parse(localStorage.getItem('ern_site_settings') || '{}');
+                const mailSettings = JSON.parse(localStorage.getItem('ern_mail_settings') || '{}');
+                targetEmail = mailSettings.officialEmail || siteSettings.email || 'info@erntasarim.com';
+
+                // Save into admin panel contact messages
+                const messages = JSON.parse(localStorage.getItem('ern_contact_messages') || '[]');
+                const newMsg = {
+                    id: 'mail_' + Date.now(),
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    subject: subject,
+                    message: text,
+                    date: new Date().toLocaleString('tr-TR'),
+                    status: 'Yeni'
+                };
+                messages.unshift(newMsg);
+                localStorage.setItem('ern_contact_messages', JSON.stringify(messages));
+            } catch (err) {
+                console.error('Mesaj kaydetme hatası:', err);
+            }
+
+            // Mailto oluşturup mail istemcisini açma
+            const mailtoUrl = `mailto:${targetEmail}?subject=${encodeURIComponent('[İletişim Formu] ' + subject)}&body=${encodeURIComponent('Ad Soyad: ' + name + '\nTelefon: ' + phone + '\nE-Posta: ' + email + '\n\nMesaj:\n' + text)}`;
+            window.location.href = mailtoUrl;
+
+            alert(`Teşekkürler Sayın ${name}!\n\nMesajınız yönetici sistemimize kaydedildi ve ${targetEmail} adresimize iletilmek üzere hazırlandı. En kısa sürede geri dönüş yapacağız.`);
+            document.getElementById('contact-message-form').reset();
+        }
+    </script>
+    <script src="tracker.js"></script>
+</body>
+</html>

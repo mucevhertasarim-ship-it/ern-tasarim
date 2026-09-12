@@ -21,7 +21,7 @@ function renderPortfolio() {
             <div class="portfolio-img-wrapper">
                 <img src="${item.image}" class="portfolio-img" alt="${item.title}">
                 <div class="portfolio-overlay">
-                    <a href="#order-form" class="btn-gold" style="padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="fa-solid fa-pen-nib"></i> Benzerini Çizdir</a>
+                    <a href="siparis.html" class="btn-gold" style="padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="fa-solid fa-pen-nib"></i> Benzerini Çizdir</a>
                 </div>
             </div>
             <div class="portfolio-info">
@@ -57,7 +57,26 @@ function openMediaModal(mediaUrl, title, category) {
     if (titleEl) titleEl.textContent = title;
     if (catEl) catEl.textContent = category;
     
-    if (mediaUrl.endsWith('.mp4') || mediaUrl.endsWith('.webm')) {
+    if (mediaUrl.endsWith('.glb')) {
+        const posterUrl = mediaUrl.replace('.glb', '.jpg');
+        container.innerHTML = `
+            <div style="position: relative; width: 100%; height: 380px;">
+                <model-viewer src="${mediaUrl}"
+                              poster="${posterUrl}"
+                              bounds="tight"
+                              camera-controls
+                              interaction-prompt="none"
+                              shadow-intensity="1.5"
+                              shadow-softness="0.8"
+                              exposure="1.2"
+                              environment-image="neutral"
+                              style="width: 100%; height: 100%; background: radial-gradient(circle at center, #172033 0%, #080c16 100%); border-radius: 10px;">
+                </model-viewer>
+                <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); color: #d4af37; padding: 4px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; pointer-events: none; border: 1px solid rgba(212,175,55,0.4);">
+                    <i class="fa-solid fa-hand-pointer"></i> Fareyle çevirin | Tekerlekle zoom yapın
+                </div>
+            </div>`;
+    } else if (mediaUrl.includes('.mp4') || mediaUrl.includes('.webm')) {
         container.innerHTML = `<video src="${mediaUrl}" controls autoplay loop style="width:100%; max-height:350px; object-fit:contain; border-radius:8px;"></video>`;
     } else {
         container.innerHTML = `<img src="${mediaUrl}" style="width:100%; max-height:350px; object-fit:contain; border-radius:8px;">`;
@@ -100,7 +119,28 @@ function sendOrderViaWhatsApp() {
     msg += `📧 *E-Posta:* ${email}\n\n`;
     msg += `_Sitedeki form üzerinden oluşturuldu._`;
     
-    const waUrl = `https://wa.me/905320000000?text=${encodeURIComponent(msg)}`;
+    let waNum = '905320000000';
+    try {
+        const s = JSON.parse(localStorage.getItem('ern_site_settings'));
+        if (s && s.whatsapp) waNum = s.whatsapp;
+        
+        const requests = JSON.parse(localStorage.getItem('ern_jewelry_requests')) || [];
+        requests.push({
+            id: 'ord_' + Date.now(),
+            name: name,
+            phone: phone,
+            email: email,
+            items: currentSelectedProduct,
+            type: '💎 Hızlı Sipariş Formu',
+            metal: metal,
+            notes: `${type} | ${gram} | ${delivery}`,
+            date: new Date().toLocaleDateString('tr-TR'),
+            status: 'Bekliyor'
+        });
+        localStorage.setItem('ern_jewelry_requests', JSON.stringify(requests));
+    } catch(e) {}
+    
+    const waUrl = `https://wa.me/${waNum}?text=${encodeURIComponent(msg)}`;
     window.open(waUrl, '_blank');
 }
 
@@ -143,8 +183,9 @@ function initPortfolioFilters() {
             
             portfolioItems.forEach(item => {
                 const category = item.getAttribute('data-category');
+                const tags = item.getAttribute('data-tags') || '';
                 
-                if (filterValue === 'all' || category === filterValue) {
+                if (filterValue === 'all' || category === filterValue || tags.split(' ').includes(filterValue)) {
                     item.style.display = 'block';
                     setTimeout(() => {
                         item.style.opacity = '1';

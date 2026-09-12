@@ -1,0 +1,159 @@
+// =====================================================================================
+// ERN TASARIM - GOOGLE E-TABLOLAR VE OTOMATİK STL TESLİMAT SCRIPT KODU
+// =====================================================================================
+//
+// BU KODU NASIL KULLANACAKSINIZ?
+// 1. Bir Google E-Tablo (Google Sheet) oluşturun.
+// 2. Tablonun ilk satırına (başlıklar) sırasıyla şunları yazın:
+//    A1: Tarih | B1: Müşteri Adı | C1: Telefon | D1: E-Posta | E1: Ödeme Yapan Hesap | F1: Ürünler | G1: Ürün Kodları | H1: Dolar Tutarı | I1: TL Tutarı | J1: Durum
+// 3. Üst menüden "Uzantılar" (Extensions) -> "Apps Script" seçeneğine tıklayın.
+// 4. Açılan editördeki tüm kodları silin ve aşağıdaki kodun TAMAMINI yapıştırın.
+// 5. Aşağıdaki "STL DOSYA LİNKLERİ" kısmına kendi Google Drive dosya linklerinizi yapıştırın.
+// 6. Sağ üstteki "Dağıt" (Deploy) -> "Yeni dağıtım" (New deployment) seçeneğine tıklayın.
+// 7. Tür seçin (Dişli çark) -> "Web uygulaması" (Web app) yapın.
+// 8. Ayarları şu şekilde yapın:
+//    - Açıklama: Ern Tasarım Mağaza Altyapısı
+//    - Web uygulaması şu kişi olarak yürütülsün: Ben (E-postanız)
+//    - Erişimi olan kişi: Herkes (Anyone)  <-- Bu çok önemli!
+// 9. "Dağıt" butonuna basın. Google sizden izin isteyecektir, izinleri onaylayın.
+// 10. Dağıtım tamamlandığında size bir "Web uygulaması URL'si" verecektir.
+// 11. O URL'yi kopyalayın ve sitenizdeki magaza.html dosyasının en altındaki 'googleWebAppUrl' değişkenine yapıştırın.
+
+// =====================================================================================
+// 1. STL DOSYA LİNKLERİ (Kendi Google Drive linkleriniz ile değiştirin)
+// =====================================================================================
+const STL_LINKLERI = {
+  "ERN-STL101": "https://drive.google.com/file/d/ASLAN_YUZUK_DRIVE_LINKI/view?usp=sharing",
+  "ERN-STL102": "https://drive.google.com/file/d/AK47_KOLYE_DRIVE_LINKI/view?usp=sharing",
+  "ERN-STL103": "https://drive.google.com/file/d/AY_GUNES_KOLYE_DRIVE_LINKI/view?usp=sharing",
+  "ERN-STL104": "https://drive.google.com/file/d/EJDERHA_YUZUK_DRIVE_LINKI/view?usp=sharing"
+  // Yeni ürün eklendikçe buraya kodunu ve Drive linkini ekleyebilirsiniz. Virgüllere dikkat edin.
+};
+
+// Yönetici E-Posta adresi (Yeni sipariş geldiğinde size mail gelmesi için)
+const YONETICI_EMAIL = "tasarimci@ornek.com"; // Kendi e-postanızı yazın
+
+// =====================================================================================
+// 2. SİTEDEN GELEN SİPARİŞİ ETABLOYA YAZMA (doPost)
+// =====================================================================================
+function doPost(e) {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const data = JSON.parse(e.postData.contents);
+    
+    // Satır ekle: Tarih | Müşteri Adı | Telefon | E-Posta | Ödeme Yapan | Ürünler | Kodlar | USD | TRY | Durum
+    sheet.appendRow([
+      new Date(),
+      data.name,
+      data.phone,
+      data.email,
+      data.senderName,
+      data.items,
+      data.codes,
+      data.totalPriceUsd,
+      data.totalPriceTry,
+      "Bekliyor" // Başlangıç durumu
+    ]);
+    
+    // Yöneticiye (Sana) Yeni Sipariş Bildirim Maili Gönder
+    try {
+      MailApp.sendEmail({
+        to: YONETICI_EMAIL,
+        subject: "🚨 ERN TASARIM - YENİ SİPARİŞ GELDİ!",
+        htmlBody: `
+          <h3>Yeni bir STL sipariş bildirimi alındı.</h3>
+          <p><strong>Müşteri:</strong> ${data.name}</p>
+          <p><strong>E-Posta:</strong> ${data.email}</p>
+          <p><strong>Ödeme Yapan Hesap:</strong> ${data.senderName}</p>
+          <p><strong>Alınan Ürünler:</strong> ${data.items}</p>
+          <p><strong>Ödenecek TL Tutarı:</strong> ${data.totalPriceTry} TL</p>
+          <p>Siparişi onaylamak ve STL dosyasını müşteriye göndermek için lütfen telefonundan veya bilgisayarından Google E-Tablo dosyasını açıp durumunu <b>"Onaylandı"</b> yapın.</p>
+        `
+      });
+    } catch(mailErr) {
+      console.error("Yönetici bildirim maili gönderilemedi: " + mailErr);
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify({"result": "success"}))
+                         .setMimeType(ContentService.MimeType.JSON);
+                         
+  } catch(error) {
+    return ContentService.createTextOutput(JSON.stringify({"result": "error", "message": error.toString()}))
+                         .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// =====================================================================================
+// 3. TABLODA DURUM "Onaylandı" YAPILDIĞINDA MÜŞTERİYE STL MAİLİ ATMA (onEdit)
+// =====================================================================================
+function onEdit(e) {
+  const range = e.range;
+  const sheet = range.getSheet();
+  const row = range.getRow();
+  const col = range.getColumn();
+  
+  // Sadece J sütunundaki (10. Sütun: Durum sütunu) değişiklikleri izle
+  // İlk satır başlık olduğu için row > 1 olmalı
+  if (col === 10 && row > 1) {
+    const statusValue = range.getValue().toString().trim().toLowerCase();
+    
+    if (statusValue === "onaylandı" || statusValue === "onaylandi") {
+      // Satırdaki diğer verileri çek
+      const customerName = sheet.getRange(row, 2).getValue().toString(); // B sütunu: Müşteri Adı
+      const customerEmail = sheet.getRange(row, 4).getValue().toString(); // D sütunu: E-Posta
+      const productCodesStr = sheet.getRange(row, 7).getValue().toString(); // G sütunu: Ürün Kodları (örn: ERN-STL101 + ERN-STL102)
+      
+      // Kodları ayır (örn: ["ERN-STL101", "ERN-STL102"])
+      const codes = productCodesStr.split("+").map(c => c.trim());
+      
+      // İndirme linklerini hazırla
+      let linkHtml = "<ul>";
+      let foundLinksCount = 0;
+      
+      codes.forEach(code => {
+        const link = STL_LINKLERI[code];
+        if (link) {
+          linkHtml += `<li><strong>${code} Kodlu Çizim:</strong> <a href="${link}" target="_blank">Buraya Tıklayarak İndir (Google Drive)</a></li>`;
+          foundLinksCount++;
+        } else {
+          linkHtml += `<li><strong>${code} Kodlu Çizim:</strong> (Hata: Dosya linki sistemde bulunamadı. Lütfen yönetici ile iletişime geçin.)</li>`;
+        }
+      });
+      linkHtml += "</ul>";
+      
+      if (foundLinksCount > 0) {
+        // Müşteriye Otomatik STL Teslimat Maili Gönder
+        try {
+          MailApp.sendEmail({
+            to: customerEmail,
+            subject: "✨ Ern Tasarım - STL Çizim Dosyalarınız Teslim Edildi!",
+            htmlBody: `
+              <div style="font-family: Arial, sans-serif; padding: 20px; color: #333333; max-width: 600px; border: 1px solid #d4af37; border-radius: 12px; background-color: #fafafa;">
+                <h2 style="color: #aa7c11; font-family: 'Playfair Display', serif; border-bottom: 2px solid #d4af37; padding-bottom: 10px;">Ern Tasarım Stüdyosu</h2>
+                <p>Merhaba Sayın <strong>${customerName}</strong>,</p>
+                <p>Banka havalesi ödemeniz başarıyla onaylanmıştır! Satın aldığınız 3D döküme hazır STL çizim dosyalarınızın indirme linkleri aşağıdadır:</p>
+                
+                <div style="background: #ffffff; padding: 15px; border-radius: 8px; border: 1px solid #e5e7eb; margin: 20px 0;">
+                  ${linkHtml}
+                </div>
+                
+                <p style="font-size: 0.9rem; color: #6b7280;">* Bu indirme linkleri Google Drive üzerinde güvenli bir şekilde barındırılmaktadır. Dosyaları bilgisayarınıza indirip 3D mum yazıcınızda doğrudan üretime alabilirsiniz.</p>
+                <p style="margin-top: 30px;">Bizleri tercih ettiğiniz için teşekkür eder, iyi çalışmalar dileriz. 🎨</p>
+                
+                <div style="margin-top: 20px; font-size: 0.8rem; color: #9ca3af; text-align: center; border-top: 1px solid #e5e7eb; padding-top: 15px;">
+                  © 2026 Ern Tasarım Stüdyosu. Tüm Hakları Saklıdır.
+                </div>
+              </div>
+            `
+          });
+          
+          // E-Tabloda durumu "Teslim Edildi" olarak güncelle ki tekrar tekrar mail atmasın
+          sheet.getRange(row, 10).setValue("Teslim Edildi");
+          
+        } catch (mailError) {
+          SpreadsheetApp.getUi().alert("Müşteriye e-posta gönderilirken hata oluştu: " + mailError.toString());
+        }
+      }
+    }
+  }
+}

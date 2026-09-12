@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitap Ern Tasarım - Mobil Kitap Okuma Platformu</title>
+    <meta name="description" content="İnternetteki ücretsiz ve telifsiz PDF kitapları arayın, mobil uyumlu okuyucumuzla kaldığınız yerden okumaya devam edin.">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Local jQuery & Page-Flip Library -->
+    <script src="jquery.min.js"></script>
+    <script src="page-flip.browser.min.js"></script>
+    
+    <script>
+        // Sunucu yollarının bozulmaması için (CSS ve JS'lerin doğru yüklenmesi için) sonuna eğik çizgi (/) ekle
+        if (window.location.pathname.endsWith('/kitap')) {
+            window.location.pathname += '/';
+        }
+    </script>
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Local PDF.js Library -->
+    <script src="pdf.min.js"></script>
+    <script src="pdf.worker.min.js"></script>
+</head>
+<body>
+    <!-- Premium Büyüteç Merceği (Sağ Tıkla Çalışır) -->
+    <div id="reader-magnifier" style="
+        position: absolute;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 0 10px 35px rgba(0,0,0,0.6), inset 0 0 25px rgba(0,0,0,0.25);
+        background-repeat: no-repeat;
+        display: none;
+        pointer-events: none;
+        z-index: 10001;
+        background-color: #ffffff;
+    "></div>
+
+    <!-- Header / Navbar -->
+    <header>
+        <div class="nav-container">
+            <a href="../index.html" class="logo" id="brand-logo">
+                KİTAP <span>Ern Tasarım</span>
+            </a>
+            <div class="header-actions">
+                <button class="search-nav-btn" onclick="document.getElementById('local-file-input').click()" style="display: flex; align-items: center; gap: 0.5rem; background: var(--primary-gradient); border: none; padding: 0.6rem 1.2rem; font-weight: 600;">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <span>Cihazımdan Oku</span>
+                </button>
+                <input type="file" id="local-file-input" accept="application/pdf" style="display: none;">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+        
+        <!-- Search Section -->
+        <section class="search-section">
+            <h1 id="main-heading" style="font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; background: linear-gradient(135deg, #ffffff, #c7d2fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                İstediğiniz Kitabı Cebinize Getiriyoruz
+            </h1>
+            <p style="font-size: 1.05rem; color: var(--text-secondary); margin-top: 0.75rem; font-weight: 400; max-width: 680px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+                İnternetteki binlerce kitabı arayın, tarayıcınızda 3D kitap konforunda okuyun ve kaldığınız yerden okumaya devam edin. İnsanları kitaplarla buluşturuyoruz!
+            </p>
+            
+            <div class="search-wrapper" style="position: relative; max-width: 650px; margin: 1.75rem auto 0 auto;">
+                <i class="fa-solid fa-wand-magic-sparkles search-icon" style="color: #8b5cf6;"></i>
+                <input type="text" id="main-search" class="search-input" placeholder="Okumak istediğiniz kitabın adını veya PDF linkini yapıştırın..." style="padding-right: 130px;">
+                <button id="btn-quick-read" style="position: absolute; right: 6px; top: 6px; bottom: 6px; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border: none; padding: 0 1.2rem; border-radius: 25px; font-weight: 600; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);">
+                    <span>Kitap Ara</span>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+            
+            <!-- Google Dork PDF Arama Butonu -->
+            <div style="margin-top: 0.85rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+                <button onclick="searchGoogleDork()" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.78rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; backdrop-filter: blur(8px); transition: all 0.3s ease;" title="Google Dork ile Tüm Web'de PDF Dosyası Ara">
+                    <i class="fa-brands fa-google"></i>
+                    <span>Google Dork ile Tüm Web'de PDF Ara (filetype:pdf)</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Search Results -->
+        <section id="search-results-section" style="display: none; margin-bottom: 3.5rem;">
+            <h2 class="section-title"><i class="fa-solid fa-square-poll-horizontal" style="color: #8b5cf6;"></i> Arama Sonuçları</h2>
+            <div id="search-loading" class="loading-wrapper">
+                <div class="spinner"></div>
+                <p style="color: var(--text-secondary);">Kitaplar aranıyor...</p>
+            </div>
+            <div id="search-results-grid" class="books-grid"></div>
+        </section>
+
+        <!-- Recent Books (Okumaya Devam Et & Son Yüklenen Kitaplar) -->
+        <section id="recent-section">
+            <h2 class="section-title"><i class="fa-solid fa-clock-rotate-left" style="color: #f59e0b;"></i> Okumaya Devam Et</h2>
+            <div id="recent-grid" class="books-grid"></div>
+        </section>
+
+    </main>
+
+    <!-- Reader Modal -->
+    <div id="reader-modal" class="reader-modal">
+        
+        <!-- Reader Header -->
+        <div class="reader-header">
+            <div class="reader-left">
+                <button class="btn-icon" id="close-reader" title="Kapat">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <div class="reader-book-title" id="reader-title">Kitap Yükleniyor...</div>
+                <button id="btn-toggle-embed" onclick="toggleEmbedReader()" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 0.35rem 0.75rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.35rem; margin-left: 0.75rem;" title="Resmî Orijinal Arşiv Okuyucusuna Geç">
+                    <i class="fa-solid fa-globe"></i>
+                    <span>Orijinal Arşiv Görünümü</span>
+                </button>
+            </div>
+            
+            <div class="reader-center">
+                <button class="btn-icon" id="zoom-out" title="Uzaklaştır"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+                <div class="page-input-wrapper">
+                    <input type="number" id="current-page-input" class="page-input" value="1" min="1">
+                    <span id="total-pages-span">/ 0</span>
+                </div>
+                <button class="btn-icon" id="zoom-in" title="Yakınlaştır"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+            </div>
+            
+            <div class="reader-right">
+                <!-- Büyüteç Gücü Sürgüsü -->
+                <div class="magnifier-slider-container" style="display: flex; align-items: center; gap: 0.5rem; margin-right: 0.75rem; background: rgba(255,255,255,0.06); padding: 0.35rem 0.75rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08);">
+                    <i class="fa-solid fa-eye" style="color: #8b5cf6; font-size: 0.8rem;" title="Büyüteç Ayarı"></i>
+                    <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">Büyüteç:</span>
+                    <input type="range" id="magnifier-zoom-slider" min="1.5" max="4.0" step="0.1" value="2.2" style="
+                        width: 70px;
+                        height: 4px;
+                        border-radius: 2px;
+                        background: rgba(255,255,255,0.15);
+                        outline: none;
+                        cursor: pointer;
+                        accent-color: #8b5cf6;
+                    ">
+                    <span id="magnifier-zoom-val" style="font-size: 0.75rem; color: #8b5cf6; font-weight: 600; min-width: 25px; text-align: right;">2.2x</span>
+                </div>
+                <button class="btn-icon" id="btn-toggle-tts" title="Sesli Kitap Oku (AI Seslendirme)">
+                    <i class="fa-solid fa-volume-high" style="color: #10b981;"></i>
+                </button>
+                <button class="btn-icon" id="btn-download-pdf" title="PDF Dosyasını Cihazıma İndir">
+                    <i class="fa-solid fa-download" style="color: #38bdf8;"></i>
+                </button>
+                <button class="btn-icon" id="toggle-view-mode" title="Tek/Çift Sayfa Modu">
+                    <i class="fa-solid fa-book-open-reader"></i>
+                </button>
+                <button class="btn-icon" id="add-bookmark" title="Kaldığım Yeri İşaretle">
+                    <i class="fa-regular fa-bookmark"></i>
+                </button>
+                <button class="btn-icon" id="toggle-search-drawer" title="Kitap İçi Arama">
+                    <i class="fa-solid fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Sesli Okuma Kontrol Çubuğu (TTS Bar) -->
+        <div id="tts-control-bar" style="display: none; align-items: center; justify-content: center; gap: 0.75rem; background: rgba(16, 185, 129, 0.12); border-bottom: 1px solid rgba(16, 185, 129, 0.2); padding: 0.4rem 1rem; flex-wrap: wrap;">
+            <span style="font-size: 0.8rem; color: #10b981; font-weight: 600; display: flex; align-items: center; gap: 0.4rem;">
+                <i class="fa-solid fa-headphones"></i> <span id="tts-status-text">Sesli Okuma Aktif...</span>
+            </span>
+            
+            <!-- Ses Modeli Seçici (Ahmet, Tolga, Google vb.) -->
+            <select id="tts-voice-select" style="background: #0f172a; color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 0.25rem 0.5rem; border-radius: 8px; font-size: 0.75rem; outline: none; cursor: pointer; max-width: 180px;">
+                <option value="">🎙️ Ahmet / Otomatik AI Sesi</option>
+            </select>
+
+            <!-- Canlı Türkçe Çeviri Butonu -->
+            <button id="tts-translate-toggle" style="background: rgba(99, 102, 241, 0.2); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.4); padding: 0.25rem 0.6rem; border-radius: 12px; font-size: 0.75rem; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.35rem;" title="Yabancı Dildeki Kitapları Canlı Türkçe'ye Çevirip Ahmet AI İle Oku">
+                <i class="fa-solid fa-language"></i> <span id="tts-translate-label">TR Çeviri: Kapalı</span>
+            </button>
+
+            <button id="tts-play-pause-btn" class="btn-icon" style="background: rgba(255,255,255,0.1); width: 32px; height: 32px; font-size: 0.8rem; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1);" title="Duraklat / Oynat">
+                <i class="fa-solid fa-pause"></i>
+            </button>
+            <button id="tts-speed-btn" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.75rem; cursor: pointer; font-weight: 600;">1.0x</button>
+            <button id="tts-stop-btn" class="btn-icon" style="background: rgba(239, 68, 68, 0.2); color: #ef4444; width: 32px; height: 32px; font-size: 0.8rem; border-radius: 50%; border: 1px solid rgba(239,68,68,0.3);" title="Durdur">
+                <i class="fa-solid fa-stop"></i>
+            </button>
+        </div>
+
+        <!-- Bookmarks Drawer -->
+        <div id="bookmarks-drawer" class="search-drawer">
+            <div style="color: var(--text-primary); font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fa-solid fa-bookmark" style="color: #f59e0b;"></i> Kaydedilen Yer İşaretleri:
+            </div>
+            <div id="bookmarks-list" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-left: 1rem;">
+                <!-- Dynamically loaded bookmarks -->
+            </div>
+        </div>
+
+        <!-- Search Drawer -->
+        <div id="search-drawer" class="search-drawer" style="flex-direction: column; align-items: flex-start;">
+            <div style="display: flex; align-items: center; width: 100%; gap: 1rem; flex-wrap: wrap;">
+                <div class="drawer-search-wrapper">
+                    <i class="fa-solid fa-search search-icon" style="left: 0.8rem; font-size: 0.9rem;"></i>
+                    <input type="text" id="drawer-search" class="drawer-search-input" placeholder="Kitap içinde kelime ara...">
+                </div>
+                <span id="search-results-indicator" class="search-results-indicator"></span>
+                <button id="search-prev" class="search-nav-btn" disabled><i class="fa-solid fa-chevron-left"></i></button>
+                <button id="search-next" class="search-nav-btn" disabled><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            <div id="search-results-list" style="display: none; width: 100%; max-height: 180px; overflow-y: auto; margin-top: 0.75rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem; flex-direction: column; gap: 0.5rem; scrollbar-width: thin;"></div>
+        </div>
+
+        <!-- Reader PDF Viewport (Turn.js Flipbook Container) -->
+        <div class="reader-body" style="padding: 1rem 0;">
+            <div id="flipbook-wrapper" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+                <div id="flipbook"></div>
+            </div>
+        </div>
+
+        <!-- Floating Mobile Navigation -->
+        <div class="floating-nav">
+            <button id="prev-page-floating">
+                <i class="fa-solid fa-chevron-left"></i>
+                <span>Geri</span>
+            </button>
+            <span>
+                <span id="floating-current-page">1</span> / <span id="floating-total-pages">0</span>
+            </span>
+            <button id="next-page-floating">
+                <span>İleri</span>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- PDF İndir & Sesli Oku Özel İletişim Kutusu -->
+    <div id="pdf-download-prompt-modal" onclick="closePdfPromptModal()" style="display: none; position: fixed; inset: 0; z-index: 999999; background: rgba(8, 11, 17, 0.9); align-items: center; justify-content: center; padding: 1rem;">
+        <div onclick="event.stopPropagation()" style="background: #0f172a; border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 20px; max-width: 440px; width: 100%; padding: 1.75rem; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.8); animation: modalPop 0.3s ease-out; position: relative;">
+            <button onclick="closePdfPromptModal()" style="position: absolute; top: 12px; right: 14px; background: transparent; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer; padding: 4px 8px;">✕</button>
+            <div style="width: 60px; height: 60px; background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto; font-size: 1.6rem; color: #a855f7;">
+                <i class="fa-solid fa-headphones"></i>
+            </div>
+            <h3 style="color: #fff; font-size: 1.2rem; font-weight: 700;">Yapay Zeka Sesli Okuyucu (Audiobook)</h3>
+            <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.6rem; line-height: 1.5;">
+                Yapay zekanın sayfadaki metinleri okuyabilmesi için PDF dosyasının cihazınıza indirilmesi gerekmektedir.
+            </p>
+            
+            <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
+                <button onclick="executePdfDownloadAndPromptRead()" style="background: linear-gradient(135deg, #8b5cf6, #6366f1); color: white; border: none; padding: 0.85rem 1.2rem; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);">
+                    <i class="fa-solid fa-download"></i> PDF'i İndir
+                </button>
+                <button onclick="closePdfPromptModal()" style="background: transparent; color: #94a3b8; border: 1px solid #334155; padding: 0.6rem; border-radius: 12px; font-size: 0.85rem; cursor: pointer; font-weight: 600;">
+                    Kapat / İptal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom App Script -->
+    <script src="app.js"></script>
+</body>
+</html>

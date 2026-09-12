@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D CAD Video & Render Portföyü - ERN Tasarım</title>
+    <meta name="description" content="ERN Tasarım atölye çizim ve sinematik render portföyü. MatrixGold ve 3D CAD ile modellenen 28 adet özel mücevher video sunumu.">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header / Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                ERN TASARIM <span>Stüdyo</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Ana Sayfa</a>
+                <a href="portfoy.html" class="nav-link active" style="color: #d4af37; font-weight: 700;"><i class="fa-solid fa-film"></i> Yaptıklarımız</a>
+                <a href="3d_vitrin.html" class="nav-link"><i class="fa-solid fa-cube"></i> 3D Vitrin</a>
+                <a href="magaza.html" class="nav-link"><i class="fa-solid fa-cart-shopping"></i> STL Mağazası</a>
+                <a href="siparis.html" class="nav-link"><i class="fa-solid fa-pen-nib"></i> Özel Sipariş</a>
+                <a href="iletisim.html" class="nav-link"><i class="fa-solid fa-phone"></i> İletişim</a>
+                <a href="kitap/index.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Kitap Köşesi</a>
+            </nav>
+            <div class="header-actions">
+                <a href="siparis.html" class="btn-gold">
+                    <i class="fa-solid fa-pen-nib"></i>
+                    <span>Çizim Talep Et</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Video Portföyü Section -->
+    <main class="container" style="margin-top: 3rem; margin-bottom: 4rem;">
+        
+        <!-- Section Header -->
+        <div class="section-header" style="text-align: center; margin-bottom: 2.5rem;">
+            <div style="color: #d4af37; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.5rem;">
+                <i class="fa-solid fa-film"></i> ATÖLYE ÇALIŞMALARIMIZ & VİDEOLAR
+            </div>
+            <h1 style="font-size: 2.4rem; font-weight: 800; background: linear-gradient(135deg, #ffffff 0%, #d4af37 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Yaptıklarımız (3D CAD Videoları)
+            </h1>
+            <p style="color: #94a3b8; max-width: 650px; margin: 0.75rem auto 0 auto; line-height: 1.6;">
+                Müşterilerimiz ve atölyemiz için sıfırdan 3D CAD ortamında tasarlayıp hazırladığımız özel takıların sinematik CAD video sunumları. Videonun üzerine gelerek veya tıklayarak izleyebilirsiniz.
+            </p>
+        </div>
+
+        <!-- Portfolio Filters -->
+        <div class="portfolio-filters" style="display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+            <button class="filter-btn active" data-filter="all">⭐ Tüm Videolar (28)</button>
+            <button class="filter-btn" data-filter="yuzuk">💎 Lüks Yüzük & Kolyeler</button>
+            <button class="filter-btn" data-filter="hayvan">🦁 Hayvan & Doğa Figürleri</button>
+            <button class="filter-btn" data-filter="mitoloji">🏛️ Mitolojik & Tarihi</button>
+            <button class="filter-btn" data-filter="kilit">🔒 Özel Kilit Mekanizmaları</button>
+        </div>
+
+        <!-- Portfolio Grid (28 ADET CAD VİDEOSU) -->
+        <div class="portfolio-grid" id="portfolio-items">
+            <!-- 1. AK-47 Özel Tüfek Kolye Ucu -->
+            <div class="portfolio-item" data-category="yuzuk" onclick="openMediaModal('media/ak5.mp4', 'AK-47 Özel Tüfek Kolye Ucu', 'Lüks Özel Konsept')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/ak5.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Lüks Özel Konsept</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">AK-47 Özel Tüfek Kolye Ucu</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">3D CAD ile sıfırdan çizilmiş, pırlanta taş yuvaları içeren tüfek tasarımı.</div>
+                </div>
+            </div>
+
+            <!-- 2. Aslan Motifli 3D Erkek Yüzüğü -->
+            <div class="portfolio-item" data-category="hayvan" onclick="openMediaModal('media/aslan yzk.mp4', 'Aslan Motifli 3D Erkek Yüzüğü', 'Hayvan Figürü')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/aslan yzk.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Hayvan Figürü</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Aslan Motifli 3D Erkek Yüzüğü</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Detaylı yele ve rölyef işçilikli lüks erkek yüzüğü.</div>
+                </div>
+            </div>
+
+            <!-- 3. Aslan Büstü 3D CAD Modeli -->
+            <div class="portfolio-item" data-category="hayvan" onclick="openMediaModal('media/aslan.mp4', 'Aslan Büstü 3D CAD Modeli', 'Hayvan Figürü')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/aslan.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Hayvan Figürü</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Aslan Büstü 3D CAD Modeli</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">3D mum yazıcılar için hassas ölçülendirilmiş aslan figürü.</div>
+                </div>
+            </div>
+
+            <!-- 4. Safir Gözlü Lüks Aslan Yüzüğü -->
+            <div class="portfolio-item" data-category="hayvan" onclick="openMediaModal('media/aslan1.mp4', 'Safir Gözlü Lüks Aslan Yüzüğü', 'Hayvan Figürü')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/aslan1.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Hayvan Figürü</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Safir Gözlü Lüks Aslan Yüzüğü</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Gözlerinde doğal safir taş yuvaları olan özel döküm model.</div>
+                </div>
+            </div>
+
+            <!-- 5. Mistik Ay & Güneş Tasarımı -->
+            <div class="portfolio-item" data-category="mitoloji" onclick="openMediaModal('media/aybegunes.mp4', 'Mistik Ay & Güneş Tasarımı', 'Mitoloji')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/aybegunes.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Mitoloji</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Mistik Ay & Güneş Tasarımı</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Gece ve gündüz sembolizmini işleyen hassas oyma kolye.</div>
+                </div>
+            </div>
+
+            <!-- 6. Dalgıç Kaskı Temalı 3D Erkek Yüzüğü -->
+            <div class="portfolio-item" data-category="yuzuk" onclick="openMediaModal('media/dalgic.mp4', 'Dalgıç Kaskı Temalı 3D Erkek Yüzüğü', 'Özel Konsept')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/dalgic.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Özel Konsept</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Dalgıç Kaskı Temalı 3D Erkek Yüzüğü</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Nostaljik denizci kaskı ve pervaneli özel 3D mücevher tasarımı.</div>
+                </div>
+            </div>
+
+            <!-- 7. Yaban Domuzu Büstü 3D Çizimi -->
+            <div class="portfolio-item" data-category="hayvan" onclick="openMediaModal('media/domuz.mp4', 'Yaban Domuzu Büstü 3D Çizimi', 'Hayvan Figürü')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/domuz.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Hayvan Figürü</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Yaban Domuzu Büstü 3D Çizimi</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Vahşi doğa temalı detaylı diş ve kürk oyma işçilikli model.</div>
+                </div>
+            </div>
+
+            <!-- 8. Mitolojik Ejderha Figürlü Yüzük -->
+            <div class="portfolio-item" data-category="mitoloji" onclick="openMediaModal('media/ejdera.mp4', 'Mitolojik Ejderha Figürlü Yüzük', 'Mitoloji')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/ejdera.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Mitoloji</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Mitolojik Ejderha Figürlü Yüzük</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Pullu gövde yapısı ve ağzında taş yuvası barındıran heybetli 3D tasarım.</div>
+                </div>
+            </div>
+
+            <!-- 9. Eric Davis Özel 3D Madalyon -->
+            <div class="portfolio-item" data-category="yuzuk" onclick="openMediaModal('media/eric davis.mp4', 'Eric Davis Özel 3D Madalyon', 'Özel Madalyon')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/eric davis.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Özel Madalyon</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Eric Davis Özel 3D Madalyon</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Kişiye özel portre ve rölyef oyma işlemeli 3D madalyon kolye.</div>
+                </div>
+            </div>
+
+            <!-- 10. Zümrüt Taşlı Fil Figürlü Kolye -->
+            <div class="portfolio-item" data-category="hayvan" onclick="openMediaModal('media/fil kol.mp4', 'Zümrüt Taşlı Fil Figürlü Kolye', 'Hayvan Figürü')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/fil kol.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Hayvan Figürü</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Zümrüt Taşlı Fil Figürlü Kolye</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Mor ve yeşil pırlanta mıhlama yuvaları olan şans fili kolye ucu.</div>
+                </div>
+            </div>
+
+            <!-- 11. Geyik Boynuzu Motifli 3D Çizim -->
+            <div class="portfolio-item" data-category="hayvan" onclick="openMediaModal('media/geyik.mp4', 'Geyik Boynuzu Motifli 3D Çizim', 'Hayvan Figürü')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/geyik.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Hayvan Figürü</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Geyik Boynuzu Motifli 3D Çizim</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Estetik boynuz açısı ve zarafet dolu 3D takı modeli.</div>
+                </div>
+            </div>
+
+            <!-- 12. Patentli Halka Kilit Mekanizması -->
+            <div class="portfolio-item" data-category="kilit" onclick="openMediaModal('media/halka kilit.mp4', 'Patentli Halka Kilit Mekanizması', 'Kilit Mekanizması')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/halka kilit.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Kilit Mekanizması</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Patentli Halka Kilit Mekanizması</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Bileklik ve kolyeler için yaylı, güvenli açma-kapama mekanizması.</div>
+                </div>
+            </div>
+
+            <!-- 13. Çift Başlı Kartal Motifli Yüzük -->
+            <div class="portfolio-item" data-category="hayvan" onclick="openMediaModal('media/kartal yzk.mp4', 'Çift Başlı Kartal Motifli Yüzük', 'Hayvan Figürü')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/kartal yzk.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Hayvan Figürü</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Çift Başlı Kartal Motifli Yüzük</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Selçuklu esintili kabartma kanatlar ve siyah oksitli gümüş model.</div>
+                </div>
+            </div>
+
+            <!-- 14. Saat Formlu Lüks Kilit Mekanizması -->
+            <div class="portfolio-item" data-category="kilit" onclick="openMediaModal('media/saat kilidi.mp4', 'Saat Formlu Lüks Kilit Mekanizması', 'Kilit Mekanizması')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/saat kilidi.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Kilit Mekanizması</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Saat Formlu Lüks Kilit Mekanizması</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Lüks bileklik ve kolyeler için hassas dişli saat kilidi tasarımı.</div>
+                </div>
+            </div>
+
+            <!-- 15. Gotik Kurukafa Rölyefli 3D Yüzük -->
+            <div class="portfolio-item" data-category="yuzuk" onclick="openMediaModal('media/kurukafa.mp4', 'Gotik Kurukafa Rölyefli 3D Yüzük', 'Lüks Yüzük')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/kurukafa.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Lüks Yüzük</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Gotik Kurukafa Rölyefli 3D Yüzük</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Karakteristik anatomi ve karanlık tarz mücevher döküm modeli.</div>
+                </div>
+            </div>
+
+            <!-- 16. Pırlantalı Panter Yüzük Modeli -->
+            <div class="portfolio-item" data-category="hayvan" onclick="openMediaModal('media/panter.mp4', 'Pırlantalı Panter Yüzük Modeli', 'Hayvan Figürü')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/panter.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Hayvan Figürü</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Pırlantalı Panter Yüzük Modeli</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Zümrüt gözlü ve pırlanta mıhlama yuvalı vahşi panter tasarımı.</div>
+                </div>
+            </div>
+
+            <!-- 17. Versace Stil Medusa Rölyefli Yüzük -->
+            <div class="portfolio-item" data-category="yuzuk" onclick="openMediaModal('media/versage.mp4', 'Versace Stil Medusa Rölyefli Yüzük', 'Lüks Yüzük')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/versage.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Lüks Yüzük</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Versace Stil Medusa Rölyefli Yüzük</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Yunan anahtarı desenli kenarlar ve altın döküm için hassas model.</div>
+                </div>
+            </div>
+
+            <!-- 18. Antik Mısır Piramit & Horus Gözü -->
+            <div class="portfolio-item" data-category="mitoloji" onclick="openMediaModal('media/misir.mp4', 'Antik Mısır Piramit & Horus Gözü', 'Mitoloji')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/misir.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Mitoloji</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Antik Mısır Piramit & Horus Gözü</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Horus'un gözü ve geometrik piramit rölyefli altın kolye ucu.</div>
+                </div>
+            </div>
+
+            <!-- 19. Firavun Ramses Antik Madalyon -->
+            <div class="portfolio-item" data-category="mitoloji" onclick="openMediaModal('media/ramses.mp4', 'Firavun Ramses Antik Madalyon', 'Mitoloji')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/ramses.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Mitoloji</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Firavun Ramses Antik Madalyon</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Tarihi Mısır firavunu Ramses kabartması ve hiyeroglif çerçeveli kolye.</div>
+                </div>
+            </div>
+
+            <!-- 20. Mısır Kraliçesi Nefertiti Madalyon -->
+            <div class="portfolio-item" data-category="mitoloji" onclick="openMediaModal('media/kralice dyn.mp4', 'Mısır Kraliçesi Nefertiti Madalyon', 'Mitoloji')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/kralice dyn.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Mitoloji</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Mısır Kraliçesi Nefertiti Madalyon</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Zarif kraliçe profili ve taş bezemeli taç detaylı 3D madalyon.</div>
+                </div>
+            </div>
+
+            <!-- 21. Hz. İsa Rölyefli Heykelsi Madalyon -->
+            <div class="portfolio-item" data-category="mitoloji" onclick="openMediaModal('media/isa.mp4', 'Hz. İsa Rölyefli Heykelsi Madalyon', 'Mitolojik & Tarihi')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/isa.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Mitolojik & Tarihi</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Hz. İsa Rölyefli Heykelsi Madalyon</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Derin rölyef ve heykelsi yüz hatlarıyla tasarlanmış manevi madalyon.</div>
+                </div>
+            </div>
+
+            <!-- 22. Hz. İsa Taşlı Özel Haç Kolye -->
+            <div class="portfolio-item" data-category="mitoloji" onclick="openMediaModal('media/isa kolye.mp4', 'Hz. İsa Taşlı Özel Haç Kolye', 'Mitolojik & Tarihi')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/isa kolye.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Mitolojik & Tarihi</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Hz. İsa Taşlı Özel Haç Kolye</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Döküme ve üretime hazır mikron taş yuvalı lüks haç kolye ucu.</div>
+                </div>
+            </div>
+
+            <!-- 23. Koruyucu Hırz & Tılsım Madalyonu -->
+            <div class="portfolio-item" data-category="mitoloji" onclick="openMediaModal('media/hirz.mp4', 'Koruyucu Hırz & Tılsım Madalyonu', 'Mitolojik & Tarihi')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/hirz.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Mitolojik & Tarihi</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Koruyucu Hırz & Tılsım Madalyonu</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Geometrik tılsım motifleri ve koruyucu semboller içeren özel tasarım.</div>
+                </div>
+            </div>
+
+            <!-- 24. TJ Miller Özel Pırlantalı Kolye -->
+            <div class="portfolio-item" data-category="yuzuk" onclick="openMediaModal('media/tj miles.mp4', 'TJ Miller Özel Pırlantalı Kolye', 'Özel Madalyon')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/tj miles.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Özel Madalyon</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">TJ Miller Özel Pırlantalı Kolye</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Çerçevesi mikro pavé pırlanta sıralarıyla çevrili lüks madalyon.</div>
+                </div>
+            </div>
+
+            <!-- 25. TJ Miller Iced-Out Hip-Hop Kolye -->
+            <div class="portfolio-item" data-category="yuzuk" onclick="openMediaModal('media/tjmayles.mp4', 'TJ Miller Iced-Out Hip-Hop Kolye', 'Özel Konsept')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/tjmayles.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Özel Konsept</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">TJ Miller Iced-Out Hip-Hop Kolye</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Tamamı taş kaplama (iced-out) Amerikan hip-hop tarzı kolye ucu.</div>
+                </div>
+            </div>
+
+            <!-- 26. Yeşil Yumruk Güç Yüzüğü -->
+            <div class="portfolio-item" data-category="yuzuk" onclick="openMediaModal('media/yumruk.mp4', 'Yeşil Yumruk Güç Yüzüğü', 'Lüks Yüzük')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/yumruk.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Lüks Yüzük</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">Yeşil Yumruk Güç Yüzüğü</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Sıkılmış yumruk rölyefi ve zümrüt renk kaplamalı güç tasarımı.</div>
+                </div>
+            </div>
+
+            <!-- 27. 100$ Dolar Temalı Lüks Yüzük -->
+            <div class="portfolio-item" data-category="yuzuk" onclick="openMediaModal('media/yuz dolar.mp4', '100$ Dolar Temalı Lüks Yüzük', 'Lüks Yüzük')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/yuz dolar.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Lüks Yüzük</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">100$ Dolar Temalı Lüks Yüzük</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Banknot rölyefleri ve pırlanta dizim kanalları içeren benzersiz konsept.</div>
+                </div>
+            </div>
+
+            <!-- 28. ERN Tasarım Stüdyo Tanıtım Videosu -->
+            <div class="portfolio-item" data-category="yuzuk" onclick="openMediaModal('media/sona intro.mp4', 'ERN Tasarım Stüdyo Tanıtım Videosu', 'Stüdyo Konsept')">
+                <div class="portfolio-img-wrapper" style="position: relative; overflow: hidden; border-radius: 14px; background: #0f172a; height: 260px;">
+                    <video src="media/sona intro.mp4#t=0.001" preload="metadata" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
+                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); border: 1px solid rgba(212,175,55,0.4);">
+                        <i class="fa-solid fa-play"></i> 3D CAD Video
+                    </div>
+                </div>
+                <div class="portfolio-info" style="padding: 1rem 0.5rem 0.5rem 0.5rem;">
+                    <div class="portfolio-category" style="color: #d4af37; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Stüdyo Konsept</div>
+                    <h3 class="portfolio-title" style="font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-top: 0.2rem;">ERN Tasarım Stüdyo Tanıtım Videosu</h3>
+                    <div class="portfolio-desc" style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.3rem;">Atölyemizin CAD modelleme ve render süreçlerinden sinematik kesitler.</div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal for Videos -->
+    <div id="media-modal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,7,12,0.92); backdrop-filter: blur(10px); z-index: 9999; justify-content: center; align-items: center;">
+        <div class="modal-content" style="background: #0f172a; border: 1px solid rgba(212,175,55,0.4); border-radius: 16px; width: 90%; max-width: 600px; padding: 1.5rem; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.8);">
+            <button onclick="closeMediaModal()" style="position: absolute; top: 12px; right: 15px; background: transparent; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            <div id="modal-category" style="color: #d4af37; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.3rem;"></div>
+            <h3 id="modal-title" style="font-size: 1.3rem; font-weight: 800; color: #fff; margin-bottom: 1rem;"></h3>
+            <div id="modal-media-container" style="border-radius: 12px; overflow: hidden; background: #000; display: flex; justify-content: center; align-items: center;"></div>
+            <div style="margin-top: 1.2rem; display: flex; justify-content: flex-end; gap: 0.8rem;">
+                <button onclick="closeMediaModal()" class="btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.85rem;">Kapat</button>
+                <a href="siparis.html" class="btn-gold" style="padding: 0.6rem 1.2rem; font-size: 0.85rem; text-decoration: none;">
+                    <i class="fa-solid fa-pen-nib"></i> Benzerini Çizdir
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">ERN TASARIM</div>
+        <p class="footer-text">
+            © 2026 Ern Tasarım. Tüm Hakları Saklıdır. "Siz hayal edin, biz yapalım."
+            <span style="margin: 0 8px; opacity: 0.3;">|</span>
+            <a href="yonetici.html" style="color: var(--gold-primary); text-decoration: none; font-size: 0.8rem; opacity: 0.8; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
+                <i class="fa-solid fa-shield-halved"></i> Yönetici Girişi
+            </a>
+        </p>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/905320000000?text=Merhaba,%20video%20portföyünüzdeki%20tasarımlar%20hakkında%20bilgi%20almak%20istiyorum." class="whatsapp-float" target="_blank" title="WhatsApp ile İletişime Geç">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+    <script>
+        // Kategori Filtreleme
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.getAttribute('data-filter');
+                portfolioItems.forEach(item => {
+                    const category = item.getAttribute('data-category');
+                    if (filter === 'all' || category === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+    <script src="tracker.js"></script>
+</body>
+</html>

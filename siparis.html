@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Özel Sipariş & 3D Çizim Talebi - ERN TASARIM</title>
+    <meta name="description" content="Hayalinizdeki mücevheri kaleme dökün. MatrixGold ve Rhino ile döküme hazır 3D CAD çizimler veya 15 günde atölyemizden bitmiş gerçek mücevher üretimi.">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .order-hero {
+            padding: 5rem 1.5rem 3rem 1.5rem;
+            text-align: center;
+            background: radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.12) 0%, transparent 60%);
+        }
+
+        .order-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: rgba(212, 175, 55, 0.12);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            padding: 0.45rem 1.25rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1);
+        }
+
+        .order-hero h1 {
+            font-family: var(--font-serif);
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.8rem;
+            line-height: 1.2;
+        }
+
+        .order-hero p {
+            color: var(--text-muted);
+            max-width: 680px;
+            margin: 0 auto;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* 2-Kolon Düzeni */
+        .order-layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.35fr;
+            gap: 2.5rem;
+            align-items: start;
+            margin-bottom: 4rem;
+        }
+
+        @media (max-width: 960px) {
+            .order-layout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sol Kolon Bilgi Kartları */
+        .info-card {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.85) 0%, rgba(7, 10, 18, 0.95) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            margin-bottom: 1.8rem;
+        }
+
+        .info-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            color: #ffffff;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .info-step-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .info-step-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-step-num {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-primary);
+            font-weight: 800;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .info-step-content h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-step-content p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .guarantee-badge-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .guarantee-badge {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .guarantee-badge i {
+            color: var(--gold-primary);
+            font-size: 1.2rem;
+        }
+
+        .guarantee-badge span {
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            font-weight: 600;
+        }
+
+        /* Sağ Kolon Formu */
+        .order-form-card {
+            background: linear-gradient(180deg, rgba(17, 24, 39, 0.95) 0%, rgba(9, 13, 22, 0.98) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 25px rgba(212, 175, 55, 0.1);
+        }
+
+        .form-row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        @media (max-width: 600px) {
+            .form-row-2 {
+                grid-template-columns: 1fr;
+            }
+            .order-form-card {
+                padding: 1.5rem;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            background: #0d1424;
+            border: 1px solid #232f48;
+            color: #ffffff;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition-premium);
+            font-family: var(--font-sans);
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.25);
+            background: #111a2f;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+
+        .upload-dropzone {
+            border: 2px dashed rgba(212, 175, 55, 0.35);
+            background: rgba(212, 175, 55, 0.03);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-premium);
+        }
+
+        .upload-dropzone:hover {
+            border-color: var(--gold-primary);
+            background: rgba(212, 175, 55, 0.08);
+        }
+
+        .btn-whatsapp-submit {
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: #ffffff;
+            border: none;
+            padding: 0.9rem;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            transition: var(--transition-premium);
+            width: 100%;
+        }
+
+        .btn-whatsapp-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+        }
+
+        .btn-gold-submit {
+            background: var(--gold-gradient);
+            color: #05070c;
+            border: none;
+            padding: 0.9rem;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            transition: var(--transition-premium);
+            width: 100%;
+        }
+
+        .btn-gold-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.45);
+        }
+
+        .form-notice-box {
+            background: rgba(212, 175, 55, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 10px;
+            padding: 0.85rem;
+            font-size: 0.78rem;
+            color: #e2e8f0;
+            line-height: 1.45;
+            margin-bottom: 1.2rem;
+        }
+
+        /* FAQ Accordion */
+        .faq-card {
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: var(--transition-premium);
+        }
+
+        .faq-card:hover {
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .faq-card summary {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gold-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            list-style: none;
+            outline: none;
+        }
+
+        .faq-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.8rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                ERN TASARIM <span>Stüdyo</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Ana Sayfa</a>
+                <a href="portfoy.html" class="nav-link"><i class="fa-solid fa-film"></i> Yaptıklarımız</a>
+                <a href="3d_vitrin.html" class="nav-link" style="color: #d4af37;"><i class="fa-solid fa-cube"></i> 3D Vitrin</a>
+                <a href="magaza.html" class="nav-link"><i class="fa-solid fa-cart-shopping"></i> STL Mağazası</a>
+                <a href="siparis.html" class="nav-link active" style="color: var(--gold-primary); font-weight: 700;"><i class="fa-solid fa-pen-nib"></i> Özel Sipariş</a>
+                <a href="iletisim.html" class="nav-link"><i class="fa-solid fa-phone"></i> İletişim</a>
+                <a href="kitap/index.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Kitap Köşesi</a>
+            </nav>
+            <div class="header-actions">
+                <a href="https://wa.me/905320000000?text=Merhaba,%20özel%20mücevher%20tasarımı%20yaptırmak%20istiyorum." target="_blank" class="btn-gold">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>Hızlı WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Özel Sipariş Hero -->
+    <section class="order-hero">
+        <div class="order-hero-badge">
+            <i class="fa-solid fa-pen-nib"></i> Kişiye & Atölyelere Özel CAD Tasarım
+        </div>
+        <h1>Özel Sipariş & 3D Çizim Stüdyosu</h1>
+        <p>Aklınızdaki tasarımı, beğendiğiniz bir fotoğrafı veya atölyeniz için ihtiyaç duyduğunuz özel mücevher modelini kaleme dökün. MatrixGold ve Rhino ile döküme ve üretime hazır kusursuz CAD modelleri hazırlayalım.</p>
+    </section>
+
+    <!-- Main Container: 2-Kolon Stüdyo Formu -->
+    <main class="container">
+        <div class="order-layout-grid">
+            
+            <!-- SOL KOLON: Süreç, Güvenceler ve Hızlı Danışma -->
+            <div>
+                
+                <!-- 1. Süreç Nasıl İşler? -->
+                <div class="info-card">
+                    <h3><i class="fa-solid fa-route" style="color: var(--gold-primary);"></i> Çizim & Üretim Süreci</h3>
+                    
+                    <div class="info-step-item">
+                        <div class="info-step-num">1</div>
+                        <div class="info-step-content">
+                            <h4>Fikrinizi & Ölçülerinizi İletin</h4>
+                            <p>Yandaki form üzerinden hayalinizdeki takının detaylarını, varsa el çizimi karalamanızı veya ilham aldığınız görselleri yükleyin.</p>
+                        </div>
+                    </div>
+
+                    <div class="info-step-item">
+                        <div class="info-step-num">2</div>
+                        <div class="info-step-content">
+                            <h4>Hassas 3D CAD Çizimi</h4>
+                            <p>Tasarımınız MatrixGold ve Rhino ortamında mikron düzeyinde pırlanta yuvaları, döküm toleransları ve ergonomik ölçülerle çizilir.</p>
+                        </div>
+                    </div>
+
+                    <div class="info-step-item">
+                        <div class="info-step-num">3</div>
+                        <div class="info-step-content">
+                            <h4>Canlı 360° Tarayıcı Onayı</h4>
+                            <p>Çizim bittiğinde cep telefonunuzdan veya bilgisayarınızdan farenizle modeli 360° döndürerek canlı onaylarsınız.</p>
+                        </div>
+                    </div>
+
+                    <div class="info-step-item">
+                        <div class="info-step-num">4</div>
+                        <div class="info-step-content">
+                            <h4>Döküm veya STL Teslimatı</h4>
+                            <p>İster döküme hazır <strong>.STL / .3DM</strong> dosyasını anında alın, ister 15 günde bitmiş altın veya gümüş takı olarak atölyemizden teslim alın.</p>
+                        </div>
+                    </div>
+
+                    <div class="guarantee-badge-row">
+                        <div class="guarantee-badge">
+                            <i class="fa-solid fa-gem"></i>
+                            <span>HRD / GIA Uyumlu Taş Yuvaları</span>
+                        </div>
+                        <div class="guarantee-badge">
+                            <i class="fa-solid fa-scale-balanced"></i>
+                            <span>Hassas Gramaj Optimizasyonu</span>
+                        </div>
+                        <div class="guarantee-badge">
+                            <i class="fa-solid fa-shield-check"></i>
+                            <span>Döküm & Üretim Garantisi</span>
+                        </div>
+                        <div class="guarantee-badge">
+                            <i class="fa-solid fa-truck-fast"></i>
+                            <span>Sigortalı Özel Kurye Teslimatı</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. WhatsApp Hızlı Destek Kutusu -->
+                <div class="info-card" style="border-color: rgba(37, 211, 102, 0.4); background: linear-gradient(180deg, rgba(18, 140, 126, 0.15) 0%, rgba(7, 10, 18, 0.95) 100%);">
+                    <h3><i class="fa-brands fa-whatsapp" style="color: #25d366;"></i> Doğrudan Tasarımcıyla Görüşün</h3>
+                    <p style="color: #cbd5e1; font-size: 0.88rem; line-height: 1.5; margin-bottom: 1.2rem;">
+                        Aklınızda netleşmeyen bir model veya acil bir atölye çizimi mi var? WhatsApp hattımız üzerinden çizimcinizle birebir sesli veya görüntülü görüşebilirsiniz.
+                    </p>
+                    <a href="https://wa.me/905320000000?text=Merhaba%20ERN%20Tasarım,%20özel%20mücevher%20çizimi%20için%20danışmak%20istiyorum." target="_blank" class="btn-whatsapp-submit" style="text-decoration: none;">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> WhatsApp Danışma Hattını Aç
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- SAĞ KOLON: Kapsamlı Sipariş Formu -->
+            <div>
+                <div class="order-form-card">
+                    <div style="margin-bottom: 1.5rem; text-align: center;">
+                        <span style="color: var(--gold-primary); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;">Özel Proje Başlat</span>
+                        <h2 style="font-family: var(--font-serif); font-size: 1.7rem; color: #fff; margin-top: 0.3rem;">Sipariş & Çizim Formu</h2>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.4rem;">Lütfen formu eksiksiz doldurunuz. Bilgileriniz gizli tutulur.</p>
+                    </div>
+
+                    <form id="standalone-order-form" onsubmit="handleCustomOrderSubmit(event)">
+                        
+                        <!-- 1. Ad Soyad & Telefon -->
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label class="form-label" for="client-name"><i class="fa-solid fa-user" style="color: var(--gold-primary);"></i> Adınız Soyadınız *</label>
+                                <input type="text" id="client-name" class="form-input" placeholder="Ahmet Yılmaz" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="client-phone"><i class="fa-solid fa-phone" style="color: var(--gold-primary);"></i> Telefon Numaranız (WhatsApp) *</label>
+                                <input type="tel" id="client-phone" class="form-input" placeholder="0532 123 45 67" required>
+                            </div>
+                        </div>
+
+                        <!-- 2. E-Posta & Sipariş Türü -->
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label class="form-label" for="client-email"><i class="fa-solid fa-envelope" style="color: var(--gold-primary);"></i> E-Posta Adresiniz *</label>
+                                <input type="email" id="client-email" class="form-input" placeholder="ornek@mail.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="client-order-type"><i class="fa-solid fa-tag" style="color: var(--gold-primary);"></i> Talep Türü *</label>
+                                <select id="client-order-type" class="form-select" onchange="updateNoticeText()">
+                                    <option value="Sadece 3D CAD Çizim Dosyası (.STL / .3DM)">🎨 Sadece 3D Çizim Dosyası (STL / 3DM)</option>
+                                    <option value="Bitmiş Gerçek Mücevher Üretimi (Altın/Gümüş)">💎 Bitmiş Gerçek Mücevher İmalatı (15 Gün)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 3. Tasarım Kategorisi & Maden Tercihi -->
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label class="form-label" for="client-category"><i class="fa-solid fa-gem" style="color: var(--gold-primary);"></i> Takı Kategorisi *</label>
+                                <select id="client-category" class="form-select">
+                                    <option value="Yüzük Tasarımı">💍 Yüzük (Tektaş, Şövalye, Alyans)</option>
+                                    <option value="Kolye & Madalyon">🦁 Kolye Ucu / Madalyon</option>
+                                    <option value="Bileklik & Kelepçe">✨ Bileklik / Kelepçe Tasarımı</option>
+                                    <option value="Küpe Tasarımı">💎 Küpe Tasarımı</option>
+                                    <option value="Kilit & Özel Mekanizma">🔒 Kilit & Takı Mekanizması</option>
+                                    <option value="Diğer / Özel Konsept">⭐ Diğer / Özel Konsept Çizim</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="client-metal"><i class="fa-solid fa-coins" style="color: var(--gold-primary);"></i> Maden / Ayar Tercihi</label>
+                                <select id="client-metal" class="form-select">
+                                    <option value="14 Ayar Altın (585)">🟡 14 Ayar Altın (Sarı / Beyaz / Rose)</option>
+                                    <option value="18 Ayar Altın (750)">🟡 18 Ayar Altın (Sarı / Beyaz / Rose)</option>
+                                    <option value="22 Ayar Altın (916)">🟡 22 Ayar Altın</option>
+                                    <option value="925 Ayar Gümüş">⚪ 925 Ayar Gümüş</option>
+                                    <option value="Platin">⚪ Platin</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 4. Bütçe & Parmak / Ölçü -->
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label class="form-label" for="client-budget"><i class="fa-solid fa-wallet" style="color: var(--gold-primary);"></i> Tahmini Bütçe Aralığı</label>
+                                <select id="client-budget" class="form-select">
+                                    <option value="15.000 TL - 30.000 TL">15.000 TL - 30.000 TL</option>
+                                    <option value="30.000 TL - 75.000 TL">30.000 TL - 75.000 TL</option>
+                                    <option value="75.000 TL ve üzeri">75.000 TL ve üzeri (Lüks Koleksiyon)</option>
+                                    <option value="Sadece CAD Çizim Ücreti">Sadece Çizim Ücreti (Atölye Fiyatı)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="client-size"><i class="fa-solid fa-ruler" style="color: var(--gold-primary);"></i> Ölçü / Gramaj (Varsa)</label>
+                                <input type="text" id="client-size" class="form-input" placeholder="Örn: 14 Numara / ~12 Gram">
+                            </div>
+                        </div>
+
+                        <!-- 5. Referans Görsel Yükleme -->
+                        <div class="form-group">
+                            <label class="form-label"><i class="fa-solid fa-cloud-arrow-up" style="color: var(--gold-primary);"></i> Varsa Referans Çizim veya Fotoğraf</label>
+                            <div class="upload-dropzone" onclick="document.getElementById('file-upload-input').click()">
+                                <i class="fa-solid fa-file-image" style="font-size: 2rem; color: var(--gold-primary); margin-bottom: 0.5rem; display: block;"></i>
+                                <span id="upload-label-text" style="font-size: 0.85rem; color: #cbd5e1; font-weight: 500;">
+                                    Bilgisayarınızdan veya telefonunuzdan görsel seçmek için tıklayın
+                                </span>
+                                <span style="display: block; font-size: 0.72rem; color: var(--text-muted); margin-top: 0.3rem;">
+                                    Desteklenen: JPG, PNG, PDF, WEBP (Maks: 20MB)
+                                </span>
+                            </div>
+                            <input type="file" id="file-upload-input" accept="image/*,application/pdf" style="display: none;" onchange="handleFileSelected(this)">
+                        </div>
+
+                        <!-- 6. Açıklama & İstekler -->
+                        <div class="form-group">
+                            <label class="form-label" for="client-notes"><i class="fa-solid fa-pencil" style="color: var(--gold-primary);"></i> Hayalinizdeki Tasarımın Detayları *</label>
+                            <textarea id="client-notes" class="form-textarea" placeholder="Takınızın üzerinde hangi taşlar olmalı? (Pırlanta, safir, yakut vb.) Hangi altın rengini tercih edersiniz? Aklınızdaki tüm özel istekleri yazınız..." required></textarea>
+                        </div>
+
+                        <!-- Bilgilendirme Notu -->
+                        <div class="form-notice-box" id="form-dynamic-notice">
+                            <i class="fa-solid fa-shield-halved" style="color: var(--gold-primary);"></i>
+                            <strong>Güvenilirlik & Kapora:</strong> Özel çizim projeleri onayınız ve kapora teyidi alındıktan sonra 3D CAD ortamında hazırlanır. Çizim tamamlandığında canlı 360° kontrol linki iletilir.
+                        </div>
+
+                        <!-- Butonlar -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 1rem;">
+                            <button type="button" onclick="submitToWhatsAppDirect()" class="btn-whatsapp-submit">
+                                <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> WhatsApp ile İlet
+                            </button>
+                            <button type="submit" class="btn-gold-submit">
+                                <i class="fa-solid fa-paper-plane"></i> Çizim Talebini Kaydet
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sıkça Sorulan Sorular Bölümü -->
+        <section style="margin-top: 4rem; margin-bottom: 4rem;">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <div style="display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); padding: 0.4rem 1.1rem; border-radius: 30px; margin-bottom: 0.75rem;">
+                    <i class="fa-solid fa-circle-question" style="color: var(--gold-primary);"></i>
+                    <span style="color: var(--gold-primary); font-weight: 700; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase;">Merak Edilenler</span>
+                </div>
+                <h2 style="font-family: var(--font-serif); font-size: 2.2rem; color: #ffffff; margin-bottom: 0.6rem;">
+                    Özel Sipariş Hakkında Sıkça Sorulanlar
+                </h2>
+                <p style="color: var(--text-muted); max-width: 620px; margin: 0 auto; font-size: 0.95rem;">
+                    Çizim süresi, revizyon hakları, eski altın dönüşümü ve teslimat süreçleriyle ilgili tüm sorularınızın cevapları:
+                </p>
+            </div>
+
+            <div style="max-width: 800px; margin: 0 auto;">
+                
+                <details class="faq-card" open>
+                    <summary>
+                        <span>3D Çizim ve Modelleme Ne Kadar Sürer?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </summary>
+                    <p>
+                        Tasarımın zorluk derecesine bağlı olarak 3D CAD çiziminiz genellikle <strong>1 ila 3 iş günü</strong> içerisinde tamamlanır. Çizim bittiğinde doğrudan telefonunuza 360° interaktif önizleme linki gönderilir.
+                    </p>
+                </details>
+
+                <details class="faq-card">
+                    <summary>
+                        <span>Çizim Sonrası Revizyon İsteyebilir Miyim?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </summary>
+                    <p>
+                        Kesinlikle! Çizim modelleme aşamasındayken taş yerleşimi, yükseklik veya motiflerde dilediğiniz düzeltmeleri talep edebilirsiniz. Siz %100 memnun kalana kadar model üretime veya baskıya gönderilmez.
+                    </p>
+                </details>
+
+                <details class="faq-card">
+                    <summary>
+                        <span>Kendi Hurda Altınımı veya Taşımı Getirebilir Miyim?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </summary>
+                    <p>
+                        Evet. Atölyemizde dönüştürme (re-crafting) hizmeti veriyoruz. Elinizdeki eski bilezik veya takı altınlarını eritip dökümde kullanabilir, pırlanta veya değerli taşlarınızı yeni çizdiğimiz modern yuvaya aktarabiliriz.
+                    </p>
+                </details>
+
+                <details class="faq-card">
+                    <summary>
+                        <span>Bitmiş Mücevher Teslimatı Nasıl Yapılıyor?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </summary>
+                    <p>
+                        Üretimi tamamlanan takılar, HRD/GIA taş sertifikaları ve lüks ışıklı ERN TASARIM kutusuyla birlikte sigortalı özel kurye kargo ile adresinize ulaştırılır veya İstanbul'daki atölyemizden randevu ile şahsen teslim alınabilir.
+                    </p>
+                </details>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">ERN TASARIM</div>
+        <p class="footer-text">
+            © 2026 Ern Tasarım. Tüm Hakları Saklıdır. "Siz hayal edin, biz yapalım."
+            <span style="margin: 0 8px; opacity: 0.3;">|</span>
+            <a href="yonetici.html" style="color: var(--gold-primary); text-decoration: none; font-size: 0.8rem; opacity: 0.8; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
+                <i class="fa-solid fa-shield-halved"></i> Yönetici Girişi
+            </a>
+        </p>
+    </footer>
+
+    <!-- WhatsApp Sabit Buton -->
+    <a href="https://wa.me/905320000000?text=Merhaba,%20özel%20çizim%20talebi%20oluşturmak%20istiyorum." id="whatsapp-float-btn" class="whatsapp-float" target="_blank" title="WhatsApp ile İletişime Geç">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Form & WhatsApp Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const s = JSON.parse(localStorage.getItem('ern_site_settings'));
+                if (s && s.whatsapp) {
+                    const btn = document.getElementById('whatsapp-float-btn');
+                    if (btn) btn.href = `https://wa.me/${s.whatsapp}?text=Merhaba,%20özel%20çizim%20talebi%20oluşturmak%20istiyorum.`;
+                }
+            } catch(e) {}
+        });
+
+        let selectedFileName = '';
+
+        function handleFileSelected(input) {
+            if (input.files && input.files[0]) {
+                selectedFileName = input.files[0].name;
+                const sizeKb = Math.round(input.files[0].size / 1024);
+                document.getElementById('upload-label-text').innerHTML = `
+                    <span style="color: #25d366; font-weight: 700;">
+                        <i class="fa-solid fa-circle-check"></i> ${selectedFileName} (${sizeKb} KB)
+                    </span> - Değiştirmek için tıklayın
+                `;
+            }
+        }
+
+        function updateNoticeText() {
+            const type = document.getElementById('client-order-type').value;
+            const noticeBox = document.getElementById('form-dynamic-notice');
+            if (type.includes('Sadece 3D CAD')) {
+                noticeBox.innerHTML = `
+                    <i class="fa-solid fa-cube" style="color: var(--gold-primary);"></i>
+                    <strong>3D Dosya Teslimatı:</strong> Çizim tamamlandığında mum yazıcıya (.STL) ve düzenlenebilir Rhino (.3DM) formatında e-posta veya wetransfer linkiyle anında teslim edilir.
+                `;
+            } else {
+                noticeBox.innerHTML = `
+                    <i class="fa-solid fa-gem" style="color: var(--gold-primary);"></i>
+                    <strong>Gerçek Takı İmalatı:</strong> Model onayından sonra atölyemizde altın dökümü, mıhlama ve cila işlemleri 15 iş günü içinde tamamlanarak sigortalı kargo ile gönderilir.
+                `;
+            }
+        }
+
+        function getFormData() {
+            return {
+                name: document.getElementById('client-name').value.trim(),
+                phone: document.getElementById('client-phone').value.trim(),
+                email: document.getElementById('client-email').value.trim(),
+                orderType: document.getElementById('client-order-type').value,
+                category: document.getElementById('client-category').value,
+                metal: document.getElementById('client-metal').value,
+                budget: document.getElementById('client-budget').value,
+                size: document.getElementById('client-size').value.trim(),
+                notes: document.getElementById('client-notes').value.trim(),
+                hasFile: selectedFileName ? selectedFileName : 'Yok'
+            };
+        }
+
+        function buildWhatsAppMessage(data) {
+            let msg = `*ERN TASARIM - ÖZEL SİPARİŞ & ÇİZİM TALEBİ* 💎\n`;
+            msg += `--------------------------------------\n`;
+            msg += `👤 *Müşteri:* ${data.name}\n`;
+            msg += `📞 *Telefon:* ${data.phone}\n`;
+            msg += `📧 *E-Posta:* ${data.email}\n`;
+            msg += `🎯 *Talep Türü:* ${data.orderType}\n`;
+            msg += `💍 *Kategori:* ${data.category}\n`;
+            msg += `🟡 *Maden/Ayar:* ${data.metal}\n`;
+            msg += `💰 *Bütçe Aralığı:* ${data.budget}\n`;
+            if (data.size) msg += `📐 *Ölçü/Gram:* ${data.size}\n`;
+            if (data.hasFile !== 'Yok') msg += `📎 *Ek Görsel:* ${data.hasFile}\n`;
+            msg += `\n📝 *Tasarım Detayları & Açıklama:*\n`;
+            msg += `"${data.notes}"\n`;
+            msg += `--------------------------------------\n`;
+            msg += `_Web sitesi Özel Sipariş sayfasından gönderildi._`;
+            return msg;
+        }
+
+        function getSiteSettings() {
+            try {
+                const s = localStorage.getItem('ern_site_settings');
+                if (s) return JSON.parse(s);
+            } catch(e) {}
+            return { whatsapp: '905320000000' };
+        }
+
+        function submitToWhatsAppDirect() {
+            const data = getFormData();
+            if (!data.name || !data.phone || !data.notes) {
+                alert('Lütfen Adınız, Telefon Numaranız ve Tasarım Detayları alanlarını doldurunuz.');
+                return;
+            }
+            saveRequestLocally(data);
+            const msg = buildWhatsAppMessage(data);
+            const settings = getSiteSettings();
+            const whatsappNumber = settings.whatsapp || '905320000000';
+            const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank');
+        }
+
+        function handleCustomOrderSubmit(e) {
+            e.preventDefault();
+            const data = getFormData();
+            saveRequestLocally(data);
+            
+            showSuccessModal(data.name);
+        }
+
+        function saveRequestLocally(data) {
+            try {
+                const requests = JSON.parse(localStorage.getItem('ern_jewelry_requests')) || [];
+                requests.push({
+                    id: 'req_' + Date.now(),
+                    ...data,
+                    type: '💎 Özel Sipariş Formu',
+                    status: 'Bekliyor',
+                    date: new Date().toLocaleDateString('tr-TR')
+                });
+                localStorage.setItem('ern_jewelry_requests', JSON.stringify(requests));
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function showSuccessModal(name) {
+            const toast = document.createElement('div');
+            toast.style.position = 'fixed';
+            toast.style.top = '50%';
+            toast.style.left = '50%';
+            toast.style.transform = 'translate(-50%, -50%)';
+            toast.style.background = '#0f172a';
+            toast.style.border = '1px solid #d4af37';
+            toast.style.borderRadius = '16px';
+            toast.style.padding = '2rem';
+            toast.style.maxWidth = '450px';
+            toast.style.width = '90%';
+            toast.style.textAlign = 'center';
+            toast.style.boxShadow = '0 25px 60px rgba(0,0,0,0.8), 0 0 30px rgba(212,175,55,0.3)';
+            toast.style.zIndex = '30000';
+            toast.style.color = '#ffffff';
+
+            toast.innerHTML = `
+                <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(37,211,102,0.15); border: 1px solid #25d366; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem auto; color: #25d366; font-size: 1.8rem;">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h3 style="font-family: var(--font-serif); font-size: 1.35rem; color: #ffffff; margin-bottom: 0.6rem;">
+                    Talebiniz Alındı!
+                </h3>
+                <p style="color: #94a3b8; font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem;">
+                    Sayın <strong>${name}</strong>, özel çizim ve sipariş talebiniz sistemimize kaydedildi. Şimdi doğrudan WhatsApp ile teyit göndermek ister misiniz?
+                </p>
+                <div style="display: flex; gap: 0.8rem; justify-content: center;">
+                    <button onclick="this.parentElement.parentElement.remove()" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 0.7rem 1.2rem; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                        Kapat
+                    </button>
+                    <button onclick="submitToWhatsAppDirect(); this.parentElement.parentElement.remove();" style="background: linear-gradient(135deg, #25d366, #128c7e); border: none; color: #fff; padding: 0.7rem 1.2rem; border-radius: 8px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
+                        <i class="fa-brands fa-whatsapp"></i> WhatsApp'tan İlet
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(toast);
+        }
+    </script>
+    <script src="tracker.js"></script>
+</body>
+</html>

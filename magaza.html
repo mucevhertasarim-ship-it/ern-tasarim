@@ -9,6 +9,9 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Google Model Viewer (360° Etkileşimli 3D Web) -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+
     <!-- Three.js ve Eklentileri (3D Önizleme İçin) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -81,6 +84,59 @@
             transform: translateY(-5px);
             border-color: rgba(212, 175, 55, 0.3);
             box-shadow: var(--gold-glow);
+        }
+
+        .item-is-360 {
+            border-color: rgba(212, 175, 55, 0.35) !important;
+            background: linear-gradient(180deg, rgba(17, 24, 39, 0.95) 0%, rgba(9, 13, 22, 0.98) 100%) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+            position: relative;
+        }
+
+        .item-is-360:hover {
+            border-color: var(--gold-primary) !important;
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.25) !important;
+            transform: translateY(-6px);
+        }
+
+        .section-tag-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: rgba(212,175,55,0.12);
+            border: 1px solid rgba(212,175,55,0.35);
+            padding: 0.45rem 1.25rem;
+            border-radius: 30px;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 4px 15px rgba(212,175,55,0.1);
+        }
+
+        .nav-jump-btn {
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #cbd5e1;
+            background: rgba(255,255,255,0.03);
+            padding: 0.55rem 1.25rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-premium);
+        }
+
+        .nav-jump-btn:hover {
+            border-color: var(--gold-primary);
+            color: var(--gold-primary);
+            background: rgba(212,175,55,0.08);
+            transform: translateY(-2px);
+        }
+
+        .nav-jump-btn.active-jump {
+            border-color: rgba(212,175,55,0.5);
+            color: #ffd700;
+            background: rgba(212,175,55,0.12);
         }
 
         .shop-item-media {
@@ -438,9 +494,11 @@
             </a>
             <nav class="nav-links">
                 <a href="index.html" class="nav-link">Ana Sayfa</a>
-                <a href="index.html#portfolio" class="nav-link">Portföyümüz</a>
+                <a href="portfoy.html" class="nav-link"><i class="fa-solid fa-film"></i> Yaptıklarımız</a>
+                <a href="3d_vitrin.html" class="nav-link" style="color: #d4af37;"><i class="fa-solid fa-cube"></i> 3D Vitrin</a>
                 <a href="magaza.html" class="nav-link active"><i class="fa-solid fa-cart-shopping"></i> STL Mağazası</a>
-                <a href="index.html#order-form" class="nav-link">Özel Sipariş</a>
+                <a href="siparis.html" class="nav-link"><i class="fa-solid fa-pen-nib"></i> Özel Sipariş</a>
+                <a href="iletisim.html" class="nav-link"><i class="fa-solid fa-phone"></i> İletişim</a>
                 <a href="kitap/index.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Kitap Köşesi</a>
             </nav>
             <div class="header-actions">
@@ -450,7 +508,7 @@
                     <span>Sepetim</span>
                     <span id="cart-badge" style="background: var(--gold-primary); color: #05070c; border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; position: absolute; top: -6px; right: -6px; box-shadow: 0 0 10px rgba(212,175,55,0.4);">0</span>
                 </button>
-                <a href="index.html#order-form" class="btn-gold">
+                <a href="siparis.html" class="btn-gold">
                     <i class="fa-solid fa-pen-nib"></i>
                     <span>Çizim Talep Et</span>
                 </a>
@@ -469,133 +527,37 @@
 
     <!-- Main Container -->
     <main class="container">
-        
-        <!-- Shop Filters -->
-        <div class="portfolio-filters" style="display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
-            <button class="filter-btn active" onclick="filterShop('all', this)">⭐ Tüm Modeller</button>
-            <button class="filter-btn" onclick="filterShop('yuzuk', this)">💎 Yüzükler</button>
-            <button class="filter-btn" onclick="filterShop('kolye', this)">🦁 Kolyeler</button>
-            <button class="filter-btn" onclick="filterShop('kilit', this)">🔒 Kilit ve Diğer</button>
-        </div>
 
-        <!-- Shop Grid -->
-        <div class="shop-grid" id="shop-grid">
-            
-            <!-- 1. Aslan Kolye STL -->
-            <div class="shop-item" data-category="kolye">
-                <div class="shop-item-media">
-                    <video src="media/aslan yzk.mp4" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
-                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
-                        <i class="fa-solid fa-cube"></i> STL Dosyası
-                    </div>
+        <!-- ================================================================= -->
+        <!-- 360° İNTERAKTİF CAD & STL ÇİZİMLERİ (VİTRİN & MAĞAZA)            -->
+        <!-- ================================================================= -->
+        <section id="section-360" style="margin-bottom: 4.5rem; margin-top: 1rem;">
+            <div style="text-align: center; margin-bottom: 2.2rem;">
+                <div class="section-tag-badge">
+                    <i class="fa-solid fa-arrows-rotate" style="color: var(--gold-primary);"></i>
+                    <span style="color: var(--gold-primary); font-weight: 800; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase;">360° Canlı İnteraktif Çizimler</span>
                 </div>
-                <div class="shop-item-info">
-                    <span class="shop-item-category">Kolye Modeli</span>
-                    <h3 class="shop-item-title">Aslan Motifli Kolye Ucu STL</h3>
-                    <p class="shop-item-desc">Detaylı yele işlemeli, 925 gümüş veya altın döküme uygun, 3D yazıcıyla üretilmeye hazır aslan kolye ucu model dosyası.</p>
-                    <div class="shop-item-footer">
-                        <div class="shop-item-price-actions">
-                            <span class="shop-item-price">$29</span>
-                            <div class="shop-actions-row">
-                                <button class="btn-outline" style="padding: 0.6rem 0.85rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; border-color: rgba(255,255,255,0.1); color: #fff;" onclick="open3dViewer('media/kolye56%20aslan.stl', 'Aslan Motifli Kolye Ucu')">
-                                    <i class="fa-solid fa-cube" style="color: var(--gold-primary);"></i> 3D İncele
-                                </button>
-                                <button class="btn-buy-stl" onclick="addToCart('item_1', 'Aslan Motifli Kolye Ucu STL', 29, 'ERN-STL101', 'media/aslan yzk.mp4')">
-                                    <i class="fa-solid fa-cart-plus"></i> Sepete Ekle
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <h2 style="font-family: var(--font-serif); font-size: 2.3rem; color: #ffffff; margin-bottom: 0.6rem;">
+                    3D CAD & STL Çizim Mağazası
+                </h2>
+                <p style="color: var(--text-muted); max-width: 680px; margin: 0 auto; font-size: 0.95rem; line-height: 1.6;">
+                    Aşağıdaki modelleri farenizle veya parmağınızla 360 derece canlı döndürerek döküm detaylarını inceleyebilir, metal ağırlıklarını hesaplatabilir ve döküme hazır CAD dosyalarını güvenle edinebilirsiniz.
+                </p>
             </div>
 
-            <!-- 2. AK-47 Kolye STL -->
-            <div class="shop-item" data-category="kolye">
-                <div class="shop-item-media">
-                    <video src="media/ak5.mp4" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
-                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
-                        <i class="fa-solid fa-cube"></i> STL Dosyası
-                    </div>
-                </div>
-                <div class="shop-item-info">
-                    <span class="shop-item-category">Kolye Modeli</span>
-                    <h3 class="shop-item-title">AK-47 Özel Tüfek Kolye Ucu STL</h3>
-                    <p class="shop-item-desc">Üzerinde hassas taş yuvaları (pırlanta mıhlama) bulunan, yüksek kaliteli tüfek kolye ucu model dosyası.</p>
-                    <div class="shop-item-footer">
-                        <div class="shop-item-price-actions">
-                            <span class="shop-item-price">$39</span>
-                            <div class="shop-actions-row">
-                                <button class="btn-outline" style="padding: 0.6rem 0.85rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; border-color: rgba(255,255,255,0.1); color: #fff;" onclick="open3dViewer('media/kolye33-1%20ak47.stl', 'AK-47 Özel Tüfek Kolye Ucu')">
-                                    <i class="fa-solid fa-cube" style="color: var(--gold-primary);"></i> 3D İncele
-                                </button>
-                                <button class="btn-buy-stl" onclick="addToCart('item_2', 'AK-47 Özel Tüfek Kolye Ucu STL', 39, 'ERN-STL102', 'media/ak5.mp4')">
-                                    <i class="fa-solid fa-cart-plus"></i> Sepete Ekle
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- Kategori Filtreleri -->
+            <div class="portfolio-filters" style="display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+                <button class="filter-btn active" onclick="filterShop('all', this)">⭐ Tüm 3D Modeller</button>
+                <button class="filter-btn" onclick="filterShop('yuzuk', this)">💎 Yüzükler</button>
+                <button class="filter-btn" onclick="filterShop('kolye', this)">🦁 Kolyeler</button>
+                <button class="filter-btn" onclick="filterShop('kilit', this)">🔒 Kilit ve Zincir</button>
             </div>
 
-            <!-- 3. Yıldız Kolye STL -->
-            <div class="shop-item" data-category="kolye">
-                <div class="shop-item-media">
-                    <video src="media/aybegunes.mp4" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
-                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
-                        <i class="fa-solid fa-cube"></i> STL Dosyası
-                    </div>
-                </div>
-                <div class="shop-item-info">
-                    <span class="shop-item-category">Kolye Modeli</span>
-                    <h3 class="shop-item-title">Taşlı Yıldız Kolye Ucu STL</h3>
-                    <p class="shop-item-desc">Işıltılı taş yuvaları içeren, döküme hazır ve 3D yazıcıyla kolayca basılabilen yıldız kolye ucu model dosyası.</p>
-                    <div class="shop-item-footer">
-                        <div class="shop-item-price-actions">
-                            <span class="shop-item-price">$25</span>
-                            <div class="shop-actions-row">
-                                <button class="btn-outline" style="padding: 0.6rem 0.85rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; border-color: rgba(255,255,255,0.1); color: #fff;" onclick="open3dViewer('media/yildiz%20tasli.stl', 'Taşlı Yıldız Kolye Ucu')">
-                                    <i class="fa-solid fa-cube" style="color: var(--gold-primary);"></i> 3D İncele
-                                </button>
-                                <button class="btn-buy-stl" onclick="addToCart('item_3', 'Taşlı Yıldız Kolye Ucu STL', 25, 'ERN-STL103', 'media/aybegunes.mp4')">
-                                    <i class="fa-solid fa-cart-plus"></i> Sepete Ekle
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- 360 Modeller Grid (JS Tarafından Doldurulur) -->
+            <div class="shop-grid" id="grid-360-models">
+                <!-- 360 Modeller buraya dinamik olarak eklenir -->
             </div>
-
-            <!-- 4. Ejderha Figürü STL -->
-            <div class="shop-item" data-category="kilit">
-                <div class="shop-item-media">
-                    <video src="media/ejdera.mp4" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>
-                    <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
-                        <i class="fa-solid fa-cube"></i> STL Dosyası
-                    </div>
-                </div>
-                <div class="shop-item-info">
-                    <span class="shop-item-category">Mitolojik Model</span>
-                    <h3 class="shop-item-title">Mitolojik Ejderha Figürü STL</h3>
-                    <p class="shop-item-desc">Detaylı ejderha başı, pullu kıvrımları ve heybetli yapısıyla döküme hazır mitolojik ejderha STL dosyası.</p>
-                    <div class="shop-item-footer">
-                        <div class="shop-item-price-actions">
-                            <span class="shop-item-price">$35</span>
-                            <div class="shop-actions-row">
-                                <button class="btn-outline" style="padding: 0.6rem 0.85rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; border-color: rgba(255,255,255,0.1); color: #fff;" onclick="open3dViewer('media/ejderha.stl', 'Mitolojik Ejderha Figürü')">
-                                    <i class="fa-solid fa-cube" style="color: var(--gold-primary);"></i> 3D İncele
-                                </button>
-                                <button class="btn-buy-stl" onclick="addToCart('item_4', 'Mitolojik Ejderha Figürü STL', 35, 'ERN-STL104', 'media/ejdera.mp4')">
-                                    <i class="fa-solid fa-cart-plus"></i> Sepete Ekle
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-
-
-        </div>
+        </section>
 
     </main>
 
@@ -674,11 +636,11 @@
                     
                     <div class="iban-row">
                         <span class="iban-label">Banka Adı:</span>
-                        <span class="iban-value">Garanti BBVA</span>
+                        <span class="iban-value" id="iban-bank-name">Garanti BBVA</span>
                     </div>
                     <div class="iban-row">
                         <span class="iban-label">Hesap Sahibi:</span>
-                        <span class="iban-value">[Hesap Sahibi Adı Soyadı]</span>
+                        <span class="iban-value" id="iban-bank-owner">ERN Tasarım Mücevherat</span>
                     </div>
                     <div class="iban-row">
                         <span class="iban-label">TL IBAN:</span>
@@ -820,7 +782,13 @@
     <!-- Footer -->
     <footer>
         <div class="footer-logo">ERN TASARIM</div>
-        <p class="footer-text">© 2026 Ern Tasarım. Tüm Hakları Saklıdır. "Siz hayal edin, biz yapalım."</p>
+        <p class="footer-text">
+            © 2026 Ern Tasarım. Tüm Hakları Saklıdır. "Siz hayal edin, biz yapalım."
+            <span style="margin: 0 8px; opacity: 0.3;">|</span>
+            <a href="yonetici.html" style="color: var(--gold-primary); text-decoration: none; font-size: 0.8rem; opacity: 0.8; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
+                <i class="fa-solid fa-shield-halved"></i> Yönetici Girişi
+            </a>
+        </p>
     </footer>
 
     <!-- JS Logic -->
@@ -841,157 +809,157 @@
         // 3D Önizleme Malzemeleri (Altın, Gümüş, Rose Altın - Canlılık için Ayarlandı)
         const materials = {
             gold: new THREE.MeshStandardMaterial({
-                color: 0xffd700,
-                metalness: 0.8,
-                roughness: 0.28,
+                color: 0xd4af37,
+                metalness: 0.85,
+                roughness: 0.20,
                 name: 'gold'
             }),
             silver: new THREE.MeshStandardMaterial({
-                color: 0xe6e6e6,
-                metalness: 0.8,
-                roughness: 0.28,
+                color: 0xf1f5f9,
+                metalness: 0.82,
+                roughness: 0.18,
                 name: 'silver'
             }),
             rose: new THREE.MeshStandardMaterial({
-                color: 0xe5a396,
-                metalness: 0.8,
-                roughness: 0.28,
+                color: 0xc46255,
+                metalness: 0.80,
+                roughness: 0.22,
                 name: 'rose'
             })
         };
 
-        // Ürün Kataloğu (Yeni STL modellerini kolayca buraya ekleyebilirsiniz)
-        const products = [
+        // Orijinal Kalibre Edilmiş 3D Modeller Kataloğu
+        const DEFAULT_PRODUCTS = [
             {
-                id: 'item_1',
-                title: 'Aslan Motifli Kolye Ucu STL',
-                category: 'kolye',
-                price: 29,
-                code: 'ERN-STL101',
-                media: 'media/aslan yzk.mp4',
-                stl: 'media/kolye56%20aslan.stl',
-                desc: 'Detaylı yele işlemeli, 925 gümüş veya altın döküme uygun, 3D yazıcıyla üretilmeye hazır aslan kolye ucu model dosyası.'
+                id: 'item_3d_kral',
+                title: 'Kraliyet Şövalye Yüzüğü 3D',
+                category: 'yuzuk',
+                price: 49,
+                code: 'ERN-3D100',
+                media: 'models/kral_yuzuk.glb',
+                image: 'models/kral_yuzuk.jpg',
+                stl: 'models/kral_yuzuk.glb',
+                desc: '3D CAD ile modellenmiş, döküme ve üretime hazır Kral Şövalye Yüzüğü. 14K Altında 12.00 gr, 925 Gümüşte 9.60 gr döküm gramajı.',
+                is360: true,
+                dims: { x: '28.3 mm', y: '13.3 mm', z: '28.5 mm' },
+                weights: { gold14: '12.00 gr', gold18: '14.30 gr', gold22: '16.15 gr', silver925: '9.60 gr' }
             },
             {
-                id: 'item_2',
-                title: 'AK-47 Özel Tüfek Kolye Ucu STL',
+                id: 'item_3d_bozkurt',
+                title: 'Bozkurt Hilal Kolye Ucu 3D',
                 category: 'kolye',
                 price: 39,
-                code: 'ERN-STL102',
-                media: 'media/ak5.mp4',
-                stl: 'media/kolye33-1%20ak47.stl',
-                desc: 'Üzerinde hassas taş yuvaları (pırlanta mıhlama) bulunan, yüksek kaliteli tüfek kolye ucu model dosyası.'
+                code: 'ERN-3D102',
+                media: 'models/bozkurt_yuzuk.glb',
+                image: 'models/bozkurt_yuzuk.jpg',
+                stl: 'models/bozkurt_yuzuk.glb',
+                desc: 'Kurt başı ve ay-yıldız hilal kabartmalı, 14K Altında 3.61 gr, 925 Gümüşte 2.89 gr döküm gramajlı, döküme hazır kolye ucu 3D CAD modeli.',
+                is360: true,
+                dims: { x: '22.5 mm', y: '23.2 mm', z: '3.1 mm' },
+                weights: { gold14: '3.61 gr', gold18: '4.30 gr', gold22: '4.86 gr', silver925: '2.89 gr' }
             },
             {
-                id: 'item_3',
-                title: 'Taşlı Yıldız Kolye Ucu STL',
+                id: 'item_3d_1euro',
+                title: '1 Euro Madalyon 3D & STL',
                 category: 'kolye',
-                price: 25,
-                code: 'ERN-STL103',
-                media: 'media/aybegunes.mp4',
-                stl: 'media/yildiz%20tasli.stl',
-                desc: 'Işıltılı taş yuvaları içeren, döküme hazır ve 3D yazıcıyla kolayca basılabilen yıldız kolye ucu model dosyası.'
-            },
-            {
-                id: 'item_4',
-                title: 'Mitolojik Ejderha Figürü STL',
-                category: 'yuzuk',
-                price: 35,
-                code: 'ERN-STL104',
-                media: 'media/ejdera.mp4',
-                stl: 'media/ejderha.stl',
-                desc: 'Detaylı ejderha başı, pullu kıvrımları ve heybetli yapısıyla döküme hazır mitolojik ejderha STL dosyası.'
-            },
-            {
-                id: 'item_5',
-                title: 'Bozkurt Motifli Tasarım STL',
-                category: 'yuzuk',
                 price: 29,
-                code: 'ERN-STL105',
-                media: '',
-                stl: 'media/bozkurt.stl',
-                desc: 'Bozkurt motifli, pürüzsüz hatlara sahip döküme ve üretime hazır özel erkek yüzük/kolye ucu STL dosyası.'
+                code: 'ERN-3D101',
+                media: 'models/1euro.glb',
+                image: 'models/1euro.jpg',
+                stl: 'models/1euro.glb',
+                desc: '14K Altında 10.54 gr, 925 Gümüşte 8.43 gr döküm gramajlı, hassas kabartmalı 1 Euro madalyon tasarımı.',
+                is360: true,
+                dims: { x: '28.6 mm', y: '58.8 mm', z: '6.9 mm' },
+                weights: { gold14: '10.54 gr', gold18: '12.57 gr', gold22: '14.19 gr', silver925: '8.43 gr' }
             },
             {
-                id: 'item_6',
-                title: 'Detaylı Akrep Figürü STL',
+                id: 'item_3d_kaplan',
+                title: 'Kaplan Başlı Kolye / Madalyon 3D',
                 category: 'kolye',
                 price: 35,
-                code: 'ERN-STL106',
-                media: '',
-                stl: 'media/akrep.stl',
-                desc: 'Gerçekçi gövde hatları ve kıvrımlı kuyruk detaylarıyla döküme hazır modern akrep kolye ucu çizimi.'
+                code: 'ERN-3D104',
+                media: 'models/kaplan1.glb',
+                image: 'models/kaplan1.jpg',
+                stl: 'models/kaplan1.glb',
+                desc: 'Detaylı kabartmalı, 14K Altında 3.32 gr, 925 Gümüşte 2.66 gr döküm gramajlı kaplan başlı takı 3D CAD modeli.',
+                is360: true,
+                dims: { x: '39.5 mm', y: '20.4 mm', z: '2.8 mm' },
+                weights: { gold14: '3.32 gr', gold18: '3.96 gr', gold22: '4.47 gr', silver925: '2.66 gr' }
             },
             {
-                id: 'item_7',
-                title: 'Asma Kilit Mekanizması STL',
+                id: 'item_3d_kemik',
+                title: 'Kemik Kilitli Lüks Zincir Bileklik 3D (18 cm)',
                 category: 'kilit',
-                price: 29,
-                code: 'ERN-STL107',
-                media: '',
-                stl: 'media/kolye53%20asma%20kilit.stl',
-                desc: 'İşlevsel görünümlü, modern kilit tasarımı içeren mücevher döküm ve yazıcı şablonu.'
-            },
-            {
-                id: 'item_8',
-                title: 'Kaplan Başlı Erkek Takı STL',
-                category: 'kolye',
-                price: 32,
-                code: 'ERN-STL108',
-                media: '',
-                stl: 'media/kaplan.stl',
-                desc: 'Güçlü hatlara sahip, kükreyen kaplan kafası figürlü döküme uygun kolye ucu dosyası.'
-            },
-            {
-                id: 'item_9',
-                title: 'Zarif Yunus Balığı STL',
-                category: 'kolye',
-                price: 24,
-                code: 'ERN-STL109',
-                media: '',
-                stl: 'media/yunus.stl',
-                desc: 'Yuvarlak hatlı, parlatılmış gümüş dökümüne son derece uygun yunus figürlü kolye ucu.'
-            },
-            {
-                id: 'item_10',
-                title: 'Mistik Boynuzlu Geyik STL',
-                category: 'kolye',
-                price: 28,
-                code: 'ERN-STL110',
-                media: '',
-                stl: 'media/geyik.stl',
-                desc: 'İnce boynuz detayları içeren, modern ve şık geyik motifli kolye ucu tasarım dosyası.'
-            },
-            {
-                id: 'item_11',
-                title: 'Meryem Ana Madalyon STL',
-                category: 'kolye',
-                price: 35,
-                code: 'ERN-STL111',
-                media: '',
-                stl: 'media/2cm%20meryem1.stl',
-                desc: '2cm çapında, ince kabartma işçilikli, etrafı taş yuvalı Meryem Ana madalyonu STL dosyası.'
-            },
-            {
-                id: 'item_12',
-                title: 'Kraliyet Şövalye Yüzüğü STL',
-                category: 'yuzuk',
-                price: 39,
-                code: 'ERN-STL112',
-                media: '',
-                stl: 'media/shovalye.stl',
-                desc: 'Ortaçağ şövalye zırhı ve miğferi motifli, gösterişli döküme hazır erkek yüzük şablonu.'
+                price: 55,
+                code: 'ERN-3D103',
+                media: 'models/deneme_kemik.glb',
+                image: 'models/deneme_kemik.jpg',
+                stl: 'models/deneme_kemik.glb',
+                desc: '18 cm boyunda, 14K Altında 14.90 gr, 925 Gümüşte 11.90 gr döküm gramajlı, döküme ve üretime hazır kemik kilitli zincir 3D CAD modeli.',
+                is360: true,
+                dims: { x: '181.2 mm', y: '5.3 mm', z: '9.7 mm' },
+                weights: { gold14: '14.90 gr', gold18: '17.75 gr', gold22: '20.05 gr', silver925: '11.90 gr' }
             }
         ];
 
+        // Yönetici Panelinden (localStorage) Ürünleri Okuma
+        function getCatalogProducts() {
+            try {
+                const saved = localStorage.getItem('ern_catalog_products');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch (e) {
+                console.error('Katalog okuma hatası:', e);
+            }
+            localStorage.setItem('ern_catalog_products', JSON.stringify(DEFAULT_PRODUCTS));
+            return DEFAULT_PRODUCTS;
+        }
+
+        function getSiteSettings() {
+            try {
+                const saved = localStorage.getItem('ern_site_settings');
+                if (saved) return JSON.parse(saved);
+            } catch (e) { }
+            return {
+                whatsapp: '905320000000',
+                bankName: 'Garanti BBVA',
+                bankOwner: 'ERN Tasarım Mücevherat',
+                iban: 'TR00 0000 0000 0000 0000 00',
+                rateMode: 'auto',
+                manualRate: 34.25
+            };
+        }
+
+        function applySiteSettings() {
+            const settings = getSiteSettings();
+            const bankNameEl = document.getElementById('iban-bank-name');
+            const bankOwnerEl = document.getElementById('iban-bank-owner');
+            const ibanTextEl = document.getElementById('iban-text');
+
+            if (bankNameEl && settings.bankName) bankNameEl.textContent = settings.bankName;
+            if (bankOwnerEl && settings.bankOwner) bankOwnerEl.textContent = settings.bankOwner;
+            if (ibanTextEl && settings.iban) ibanTextEl.textContent = settings.iban;
+        }
+
+        let products = getCatalogProducts();
+
         document.addEventListener('DOMContentLoaded', () => {
+            applySiteSettings();
             fetchExchangeRate();
             updateCartUI();
-            renderShopGrid('all');
+            render360Grid('all');
         });
 
         // Canlı Kur Çekme Fonksiyonu
         async function fetchExchangeRate() {
+            const settings = getSiteSettings();
+            if (settings && settings.rateMode === 'manual' && settings.manualRate) {
+                usdToTryRate = parseFloat(settings.manualRate);
+                console.log('Sabit kur devrede:', usdToTryRate);
+                return;
+            }
             try {
                 const response = await fetch('https://open.er-api.com/v6/latest/USD');
                 if (response.ok) {
@@ -1006,40 +974,59 @@
             }
         }
 
-        // Mağaza Grid'ini Çizdirme
-        function renderShopGrid(filterCategory = 'all') {
-            const grid = document.getElementById('shop-grid');
-            const filtered = products.filter(p => filterCategory === 'all' || p.category === filterCategory);
-            
-            grid.innerHTML = filtered.map(item => {
-                const hasVideo = item.media && item.media.endsWith('.mp4');
-                const mediaHTML = hasVideo
-                    ? `<video src="${item.media}" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video>`
-                    : `<div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); gap: 0.5rem; text-align: center; padding: 1rem;">
-                        <i class="fa-solid fa-cube" style="font-size: 3.5rem; color: rgba(212,175,55,0.25);"></i>
-                        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">3D Model Önizleme</span>
-                       </div>`;
+        // 360° Modeller Grid'ini Çizdirme (Kategori Filtreleme Destekli)
+        function render360Grid(filterCategory = 'all') {
+            const grid360 = document.getElementById('grid-360-models');
+            if (!grid360) return;
 
+            const items360 = products.filter(p => p.is360 && (filterCategory === 'all' || p.category === filterCategory));
+            
+            if (items360.length === 0) {
+                grid360.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
+                        <i class="fa-solid fa-cube" style="font-size: 2.5rem; color: rgba(212,175,55,0.2); margin-bottom: 1rem; display: block;"></i>
+                        Bu kategoride henüz 3D model bulunmuyor.
+                    </div>
+                `;
+                return;
+            }
+
+            grid360.innerHTML = items360.map(item => {
+                const posterUrl = item.image || item.media.replace('.glb', '.jpg');
                 return `
-                    <div class="shop-item">
-                        <div class="shop-item-media">
-                            ${mediaHTML}
-                            <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: #d4af37; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
-                                <i class="fa-solid fa-cube"></i> STL Dosyası
+                    <div class="shop-item item-is-360">
+                        <div class="shop-item-media" style="position: relative; overflow: hidden; height: 260px; background: #070a12;">
+                            <model-viewer src="${item.media}"
+                                          poster="${posterUrl}"
+                                          bounds="tight"
+                                          camera-controls
+                                          interaction-prompt="none"
+                                          shadow-intensity="1.5"
+                                          shadow-softness="0.8"
+                                          exposure="1.2"
+                                          environment-image="neutral"
+                                          loading="lazy"
+                                          style="width: 100%; height: 100%; background: radial-gradient(circle at center, #172033 0%, #070a12 100%);">
+                            </model-viewer>
+                            <div class="video-badge" style="position: absolute; top: 10px; right: 10px; background: rgba(212,175,55,0.95); color: #000; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 800; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+                                <i class="fa-solid fa-arrows-rotate"></i> 360° Çevir
+                            </div>
+                            <div style="position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; color: #ffd700; pointer-events: none; border: 1px solid rgba(212,175,55,0.3); white-space: nowrap;">
+                                <i class="fa-solid fa-hand-pointer"></i> Farenizle 360° döndürün
                             </div>
                         </div>
                         <div class="shop-item-info">
-                            <span class="shop-item-category">${item.category === 'yuzuk' ? 'Yüzük Modeli' : item.category === 'kolye' ? 'Kolye Modeli' : item.category === 'kilit' ? 'Kilit Modeli' : 'Mücevher Tasarımı'}</span>
+                            <span class="shop-item-category"><i class="fa-solid fa-arrows-rotate"></i> ${item.category === 'yuzuk' ? '360° Yüzük Modeli' : item.category === 'kolye' ? '360° Kolye Modeli' : item.category === 'kilit' ? '360° Kilit Modeli' : '360° CAD Tasarımı'}</span>
                             <h3 class="shop-item-title">${item.title}</h3>
                             <p class="shop-item-desc">${item.desc}</p>
                             <div class="shop-item-footer">
                                 <div class="shop-item-price-actions">
                                     <span class="shop-item-price">$${item.price}</span>
                                     <div class="shop-actions-row">
-                                        <button class="btn-outline" style="padding: 0.6rem 0.85rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; border-color: rgba(255,255,255,0.1); color: #fff;" onclick="open3dViewer('${item.stl}', '${item.title}')">
-                                            <i class="fa-solid fa-cube" style="color: var(--gold-primary);"></i> 3D İncele
+                                        <button class="btn-outline" style="padding: 0.6rem 0.85rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; border-color: rgba(212,175,55,0.4); color: #ffd700;" onclick="open3dViewer('${item.stl}', '${item.title}', '${item.media}')">
+                                            <i class="fa-solid fa-cube"></i> Ölçü & Ağırlık
                                         </button>
-                                        <button class="btn-buy-stl" onclick="addToCart('${item.id}', '${item.title}', ${item.price}, '${item.code}', '${item.media}')">
+                                        <button class="btn-buy-stl" onclick="addToCart('${item.id}', '${item.title}', ${item.price}, '${item.code}', '${item.media}', '${posterUrl}')">
                                             <i class="fa-solid fa-cart-plus"></i> Sepete Ekle
                                         </button>
                                     </div>
@@ -1051,12 +1038,12 @@
             }).join('');
         }
 
-        // Ürün Filtreleme
+        // Ürün Filtreleme (360 Vitrini için)
         function filterShop(category, btn) {
             const buttons = document.querySelectorAll('.filter-btn');
             buttons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderShopGrid(category);
+            if (btn) btn.classList.add('active');
+            render360Grid(category);
         }
 
         // Sepet Paneli Aç / Kapat
@@ -1075,7 +1062,7 @@
         }
 
         // Sepete Ürün Ekleme
-        function addToCart(id, title, price, code, media) {
+        function addToCart(id, title, price, code, media, image) {
             const exists = cart.some(item => item.id === id);
             if (exists) {
                 alert('Bu ürün zaten sepetinizde ekli!');
@@ -1083,7 +1070,7 @@
                 return;
             }
 
-            cart.push({ id, title, price, code, media });
+            cart.push({ id, title, price, code, media, image });
             localStorage.setItem('ern_stl_cart', JSON.stringify(cart));
             
             updateCartUI();
@@ -1130,17 +1117,16 @@
                 container.innerHTML = `
                     <div style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
                         <i class="fa-solid fa-shopping-basket" style="font-size: 3rem; color: rgba(255,255,255,0.05); margin-bottom: 1rem; display: block;"></i>
-                        Sepetiniz henüz boş.<br>STL modellerini inceleyerek sepete ekleyebilirsiniz.
+                        Sepetiniz henüz boş.<br>3D modelleri inceleyerek sepete ekleyebilirsiniz.
                     </div>
                 `;
                 return;
             }
 
             container.innerHTML = cart.map(item => {
-                const hasVideo = item.media && item.media.endsWith('.mp4');
-                const mediaTag = hasVideo
-                    ? `<video src="${item.media}" muted playsinline></video>`
-                    : `<div style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; background: #1e293b; border-radius: 6px; border: 1px solid var(--border-gold);"><i class="fa-solid fa-cube" style="color: var(--gold-primary); font-size: 1.2rem;"></i></div>`;
+                const mediaTag = item.image 
+                    ? `<img src="${item.image}" alt="${item.title}" style="width: 46px; height: 46px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;">`
+                    : `<div style="width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.1); border-radius: 8px; border: 1px solid rgba(212,175,55,0.3); flex-shrink: 0;"><i class="fa-solid fa-cube" style="color: var(--gold-primary); font-size: 1.2rem;"></i></div>`;
 
                 return `
                     <div class="cart-item-row">
@@ -1225,11 +1211,34 @@
             const email = document.getElementById('pay-email').value.trim();
             const senderName = document.getElementById('pay-sender-name').value.trim();
 
-            const whatsappNumber = '905320000000'; // Ern Tasarım telefon numarası buraya girilecek
+            const siteSettings = getSiteSettings();
+            const whatsappNumber = siteSettings.whatsapp || '905320000000';
 
             const totalPriceUsd = cart.reduce((sum, item) => sum + item.price, 0);
             const totalPriceTry = (totalPriceUsd * usdToTryRate).toFixed(2);
             const allCodes = cart.map(item => item.code).join(' + ');
+
+            // Yönetici Paneline Siparişi Kaydet
+            try {
+                const requests = JSON.parse(localStorage.getItem('ern_jewelry_requests')) || [];
+                requests.push({
+                    id: 'ord_' + Date.now(),
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    senderName: senderName,
+                    items: cart.map(item => `${item.title} (${item.code})`).join(', '),
+                    codes: allCodes,
+                    totalPriceUsd: totalPriceUsd,
+                    totalPriceTry: totalPriceTry,
+                    type: 'STL / 3D Satın Alma',
+                    date: new Date().toLocaleDateString('tr-TR'),
+                    status: 'Bekliyor'
+                });
+                localStorage.setItem('ern_jewelry_requests', JSON.stringify(requests));
+            } catch (err) {
+                console.error('Sipariş kaydetme hatası:', err);
+            }
 
             let message = `*ERN TASARIM - STL SATIN ALMA TALEBİ* 📥\n`;
             message += `--------------------------------------\n`;
@@ -1330,16 +1339,152 @@
         }
 
         // =====================================================================================
-        // THREE.JS 3D STL VIEWER LOGIC
+        // THREE.JS & MODEL-VIEWER 3D VIEWER LOGIC
         // =====================================================================================
 
-        function open3dViewer(stlUrl, title) {
-            document.getElementById('threejs-modal-title').textContent = `3D Önizleme - ${title}`;
+        const glbModelSpecs = {
+            'models/kral_yuzuk.glb': {
+                dims: { x: '28.3 mm', y: '13.3 mm', z: '28.5 mm' },
+                weights: [
+                    { name: '14K Altın', val: '12.00 gr', color: '#ffd700' },
+                    { name: '18K Altın', val: '14.30 gr', color: '#f59e0b' },
+                    { name: '22K Altın', val: '16.15 gr', color: '#b45309' },
+                    { name: '925 Gümüş', val: '9.60 gr', color: '#cbd5e1' }
+                ]
+            },
+            'models/bozkurt_yuzuk.glb': {
+                dims: { x: '22.5 mm', y: '23.2 mm', z: '3.1 mm' },
+                weights: [
+                    { name: '14K Altın', val: '3.61 gr', color: '#ffd700' },
+                    { name: '18K Altın', val: '4.30 gr', color: '#f59e0b' },
+                    { name: '22K Altın', val: '4.86 gr', color: '#b45309' },
+                    { name: '925 Gümüş', val: '2.89 gr', color: '#cbd5e1' }
+                ]
+            },
+            'models/1euro.glb': {
+                dims: { x: '28.6 mm', y: '58.8 mm', z: '6.9 mm' },
+                weights: [
+                    { name: '14K Altın', val: '10.54 gr', color: '#ffd700' },
+                    { name: '18K Altın', val: '12.57 gr', color: '#f59e0b' },
+                    { name: '22K Altın', val: '14.19 gr', color: '#b45309' },
+                    { name: '925 Gümüş', val: '8.43 gr', color: '#cbd5e1' }
+                ]
+            },
+            'models/kaplan1.glb': {
+                dims: { x: '39.5 mm', y: '20.4 mm', z: '2.8 mm' },
+                weights: [
+                    { name: '14K Altın', val: '3.32 gr', color: '#ffd700' },
+                    { name: '18K Altın', val: '3.96 gr', color: '#f59e0b' },
+                    { name: '22K Altın', val: '4.47 gr', color: '#b45309' },
+                    { name: '925 Gümüş', val: '2.66 gr', color: '#cbd5e1' }
+                ]
+            },
+            'models/deneme_kemik.glb': {
+                dims: { x: '181.2 mm', y: '5.3 mm', z: '9.7 mm' },
+                weights: [
+                    { name: '14K Altın', val: '14.90 gr', color: '#ffd700' },
+                    { name: '18K Altın', val: '17.75 gr', color: '#f59e0b' },
+                    { name: '22K Altın', val: '20.05 gr', color: '#b45309' },
+                    { name: '925 Gümüş', val: '11.90 gr', color: '#cbd5e1' }
+                ]
+            }
+        };
+
+        function open3dViewer(stlUrl, title, glbUrl) {
+            document.getElementById('threejs-modal-title').textContent = `3D İnceleme - ${title}`;
             document.getElementById('threejs-modal').style.display = 'flex';
+            
+            const container = document.getElementById('canvas-container');
+            
+            // Temizlik
+            const oldMv = container.querySelector('model-viewer');
+            if (oldMv) oldMv.remove();
+            const oldHint = container.querySelector('.mv-hint');
+            if (oldHint) oldHint.remove();
+            const oldCanvas = container.querySelector('canvas');
+            if (oldCanvas) oldCanvas.remove();
+            if (renderer) {
+                renderer.dispose();
+                renderer = null;
+            }
+
+            const targetGlb = (glbUrl && glbUrl.endsWith('.glb')) ? glbUrl : (stlUrl && stlUrl.endsWith('.glb')) ? stlUrl : null;
+            
+            if (targetGlb) {
+                document.getElementById('threejs-loading').style.display = 'none';
+                const posterUrl = targetGlb.replace('.glb', '.jpg');
+                
+                const mv = document.createElement('model-viewer');
+                mv.setAttribute('src', targetGlb);
+                mv.setAttribute('poster', posterUrl);
+                mv.setAttribute('bounds', 'tight');
+                mv.setAttribute('camera-controls', '');
+                mv.setAttribute('interaction-prompt', 'none');
+                mv.setAttribute('shadow-intensity', '1.5');
+                mv.setAttribute('shadow-softness', '0.8');
+                mv.setAttribute('exposure', '1.2');
+                mv.setAttribute('environment-image', 'neutral');
+                mv.style.width = '100%';
+                mv.style.height = '100%';
+                mv.style.background = 'radial-gradient(circle at center, #172033 0%, #020617 100%)';
+                
+                const hint = document.createElement('div');
+                hint.className = 'mv-hint';
+                hint.style.cssText = 'position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); background: rgba(10,15,26,0.85); border: 1px solid rgba(212,175,55,0.4); border-radius: 30px; padding: 6px 16px; font-size: 0.8rem; color: #d4af37; pointer-events: none; white-space: nowrap; z-index: 10;';
+                hint.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Farenizle sürükleyerek 360° çevirin';
+                
+                container.appendChild(mv);
+                container.appendChild(hint);
+                
+                // Analiz verilerini doldur (Yönetici panelinden düzenlenen dinamik gramajlar önceliklidir)
+                const currentProd = products.find(p => p.media === targetGlb || p.stl === targetGlb);
+                let activeWeights = null;
+                let activeDims = null;
+
+                if (currentProd && currentProd.weights && currentProd.weights.gold14 && currentProd.weights.gold14 !== '—') {
+                    activeWeights = [
+                        { name: '14K Altın', val: currentProd.weights.gold14, color: '#ffd700' },
+                        { name: '18K Altın', val: currentProd.weights.gold18 || '—', color: '#f59e0b' },
+                        { name: '22K Altın', val: currentProd.weights.gold22 || '—', color: '#b45309' },
+                        { name: '925 Gümüş', val: currentProd.weights.silver925 || '—', color: '#cbd5e1' }
+                    ];
+                    if (currentProd.dims) activeDims = currentProd.dims;
+                } else if (glbModelSpecs[targetGlb]) {
+                    activeWeights = glbModelSpecs[targetGlb].weights;
+                    activeDims = glbModelSpecs[targetGlb].dims;
+                }
+
+                if (activeDims) {
+                    document.getElementById('spec-dim-x').textContent = activeDims.x;
+                    document.getElementById('spec-dim-y').textContent = activeDims.y;
+                    document.getElementById('spec-dim-z').textContent = activeDims.z;
+                }
+
+                if (activeWeights) {
+                    const weightContainer = document.getElementById('weight-list');
+                    weightContainer.innerHTML = activeWeights.map(item => `
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; padding: 0.35rem 0.25rem; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <span style="color: ${item.color}; font-weight: 600;">${item.name}:</span>
+                            <strong style="color: #ffffff;">${item.val}</strong>
+                        </div>
+                    `).join('');
+                } else {
+                    mv.addEventListener('load', () => {
+                        try {
+                            const dims = mv.getDimensions();
+                            if (dims) {
+                                document.getElementById('spec-dim-x').textContent = (dims.x * 1000).toFixed(1) + ' mm';
+                                document.getElementById('spec-dim-y').textContent = (dims.y * 1000).toFixed(1) + ' mm';
+                                document.getElementById('spec-dim-z').textContent = (dims.z * 1000).toFixed(1) + ' mm';
+                            }
+                        } catch (e) { }
+                    });
+                }
+                return;
+            }
+
             document.getElementById('threejs-loading').style.display = 'flex';
             document.getElementById('threejs-loading-text').textContent = "3D Model Yükleniyor...";
-
-            const container = document.getElementById('canvas-container');
 
             // 1. Sahne Kurulumu
             scene = new THREE.Scene();
@@ -1354,10 +1499,6 @@
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.shadowMap.enabled = true;
-            
-            // Eğer önceden kalmış canvas varsa temizle
-            const oldCanvas = container.querySelector('canvas');
-            if (oldCanvas) oldCanvas.remove();
             
             container.appendChild(renderer.domElement);
 
@@ -1564,8 +1705,29 @@
 
     function change3dMaterial(matName) {
         activeMaterial = matName;
+        // 1. Three.js Mesh (STL)
         if (currentMesh && materials[matName]) {
             currentMesh.material = materials[matName];
+        }
+        // 2. Google model-viewer (GLB)
+        const mv = document.querySelector('#canvas-container model-viewer');
+        if (mv && mv.model) {
+            const mat = mv.model.materials[0];
+            if (mat && mat.pbrMetallicRoughness) {
+                if (matName === 'gold') {
+                    mat.pbrMetallicRoughness.setBaseColorFactor([0.898, 0.721, 0.258, 1.0]);
+                    mat.pbrMetallicRoughness.setMetallicFactor(0.85);
+                    mat.pbrMetallicRoughness.setRoughnessFactor(0.20);
+                } else if (matName === 'silver') {
+                    mat.pbrMetallicRoughness.setBaseColorFactor([0.94, 0.96, 0.98, 1.0]);
+                    mat.pbrMetallicRoughness.setMetallicFactor(0.82);
+                    mat.pbrMetallicRoughness.setRoughnessFactor(0.18);
+                } else if (matName === 'rose') {
+                    mat.pbrMetallicRoughness.setBaseColorFactor([0.77, 0.38, 0.33, 1.0]);
+                    mat.pbrMetallicRoughness.setMetallicFactor(0.80);
+                    mat.pbrMetallicRoughness.setRoughnessFactor(0.22);
+                }
+            }
         }
     }
 
@@ -1578,17 +1740,26 @@
     }
 
     function close3dViewer() {
-            document.getElementById('threejs-modal').style.display = 'none';
-            // Bellekten WebGL'i temizle
-            if (renderer) {
-                renderer.dispose();
-                renderer = null;
-            }
-            scene = null;
-            camera = null;
-            controls = null;
-            currentMesh = null;
+        document.getElementById('threejs-modal').style.display = 'none';
+        const container = document.getElementById('canvas-container');
+        if (container) {
+            const mv = container.querySelector('model-viewer');
+            if (mv) mv.remove();
+            const hint = container.querySelector('.mv-hint');
+            if (hint) hint.remove();
+            const oldCanvas = container.querySelector('canvas');
+            if (oldCanvas) oldCanvas.remove();
         }
+        // Bellekten WebGL'i temizle
+        if (renderer) {
+            renderer.dispose();
+            renderer = null;
+        }
+        scene = null;
+        camera = null;
+        controls = null;
+        currentMesh = null;
+    }
 
         // Pencere Boyut Değişim Desteği
         window.addEventListener('resize', () => {
@@ -1600,5 +1771,12 @@
             }
         });
     </script>
+
+    <!-- WhatsApp Sabit Buton -->
+    <a href="https://wa.me/905320000000?text=Merhaba,%203D%20STL%20mağazanızdaki%20modeller%20hakkında%20bilgi%20almak%20istiyorum." class="whatsapp-float" target="_blank" title="WhatsApp ile İletişime Geç">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script src="tracker.js"></script>
 </body>
 </html>

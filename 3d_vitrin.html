@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canlı 3D Mücevher Vitrini & 360° Model İnceleme - ERN Tasarım</title>
+    <meta name="description" content="ERN Tasarım interaktif 3D mücevher vitrini. Kendi STL veya GLB dosyanızı yükleyip 360° döndürerek inceleyin, milimetrik CAD ölçüleri ve altın/gümüş döküm gramajlarını anında hesaplayın.">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Three.js 3D WebGL Motoru ve Yükleyiciler -->
+    <script src="js/three.min.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/STLLoader.js"></script>
+    <script src="js/GLTFLoader.js"></script>
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        :root {
+            --gold-primary: #d4af37;
+            --gold-hover: #f3ba2f;
+            --bg-dark: #070a12;
+            --bg-card: #0f172a;
+            --border-light: rgba(212, 175, 55, 0.25);
+        }
+
+        /* 3D Stüdyo Sahne Kapsayıcısı */
+        .stage-container {
+            display: grid;
+            grid-template-columns: 1.45fr 1fr;
+            gap: 2rem;
+            background: linear-gradient(180deg, rgba(15,23,42,0.92) 0%, rgba(7,10,18,0.98) 100%);
+            border: 1px solid rgba(212,175,55,0.35);
+            border-radius: 20px;
+            padding: 1.75rem;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+        @media (max-width: 960px) {
+            .stage-container {
+                grid-template-columns: 1fr;
+                padding: 1.2rem;
+            }
+        }
+
+        /* 3D Canvas Görüntüleyici Kutusu */
+        .viewer-box {
+            position: relative;
+            width: 100%;
+            height: 520px;
+            background: radial-gradient(circle at 50% 40%, #172236 0%, #060912 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.7);
+        }
+        #threeCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            outline: none;
+            cursor: grab;
+        }
+        #threeCanvas:active {
+            cursor: grabbing;
+        }
+
+        /* Yüzen 3D Kontrol Çubuğu */
+        .viewer-toolbar {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            right: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .toolbar-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(10, 15, 26, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            border-radius: 30px;
+            padding: 4px 8px;
+            backdrop-filter: blur(10px);
+            pointer-events: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .tool-btn {
+            background: transparent;
+            border: none;
+            color: #cbd5e1;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .tool-btn:hover {
+            color: #d4af37;
+            background: rgba(212, 175, 55, 0.12);
+        }
+        .tool-btn.active {
+            color: #070a12;
+            background: #d4af37;
+            font-weight: 700;
+        }
+
+        /* Alt İpuçları */
+        .controls-hint {
+            position: absolute;
+            bottom: 12px;
+            left: 14px;
+            background: rgba(10, 15, 26, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 30px;
+            padding: 5px 14px;
+            font-size: 0.75rem;
+            color: #d4af37;
+            backdrop-filter: blur(8px);
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Sürükle Bırak Kaplaması */
+        .drop-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.92);
+            border: 3px dashed #d4af37;
+            border-radius: 16px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            color: #d4af37;
+            pointer-events: none;
+        }
+
+        /* Sağ Bilgi & Gramaj Paneli */
+        .stage-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .model-header-badge {
+            background: rgba(212,175,55,0.15);
+            color: #d4af37;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 0.5rem;
+        }
+        .model-title-text {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.4rem;
+            line-height: 1.3;
+        }
+        .model-file-info {
+            color: #94a3b8;
+            font-size: 0.82rem;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .model-file-info span {
+            background: rgba(255,255,255,0.05);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Ölçü & Hacim Kutusu */
+        .dim-box {
+            background: rgba(212,175,55,0.06);
+            border: 1px dashed rgba(212,175,55,0.3);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+        .dim-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 6px;
+            text-align: center;
+        }
+        .dim-item {
+            background: rgba(0,0,0,0.35);
+            padding: 6px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .dim-item-label {
+            font-size: 0.7rem;
+            color: #94a3b8;
+        }
+        .dim-item-val {
+            font-weight: 700;
+            color: #f8fafc;
+            font-size: 0.9rem;
+        }
+
+        /* Gramaj Kartları Grid */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 1.2rem;
+        }
+        .spec-card {
+            background: #090d16;
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        .spec-card:hover {
+            border-color: #d4af37;
+            background: rgba(212,175,55,0.06);
+        }
+        .specs-label {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .specs-val {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #d4af37;
+        }
+
+        /* Sürükle Bırak Geniş Alanı */
+        .drag-zone {
+            border: 2px dashed rgba(212, 175, 55, 0.4);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(180deg, rgba(15,23,42,0.6) 0%, rgba(7,10,18,0.8) 100%);
+            margin-bottom: 3.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .drag-zone:hover {
+            border-color: #d4af37;
+            background: rgba(212, 175, 55, 0.08);
+            transform: translateY(-2px);
+        }
+
+        /* Hızlı Test Butonları */
+        .quick-tests {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 1rem;
+        }
+        .quick-test-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(212,175,55,0.3);
+            color: #cbd5e1;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .quick-test-btn:hover {
+            border-color: #d4af37;
+            color: #d4af37;
+            background: rgba(212,175,55,0.12);
+        }
+
+        /* Model Galerisi */
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3.5rem;
+        }
+        .model-card {
+            background: #0f172a;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .model-card:hover, .model-card.active {
+            border-color: #d4af37;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(212,175,55,0.2);
+        }
+        .model-card-img {
+            position: relative;
+            height: 200px;
+            background: radial-gradient(circle at center, #172033 0%, #070a12 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .model-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.4s ease;
+            padding: 10px;
+        }
+        .model-card:hover .model-card-img img {
+            transform: scale(1.08);
+        }
+        .model-card-body {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                ERN TASARIM <span>Stüdyo</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Ana Sayfa</a>
+                <a href="portfoy.html" class="nav-link"><i class="fa-solid fa-film"></i> Yaptıklarımız</a>
+                <a href="3d_vitrin.html" class="nav-link active" style="color: #d4af37; font-weight: 700;"><i class="fa-solid fa-cube"></i> 3D Vitrin</a>
+                <a href="magaza.html" class="nav-link"><i class="fa-solid fa-cart-shopping"></i> STL Mağazası</a>
+                <a href="siparis.html" class="nav-link"><i class="fa-solid fa-pen-nib"></i> Özel Sipariş</a>
+                <a href="iletisim.html" class="nav-link"><i class="fa-solid fa-phone"></i> İletişim</a>
+                <a href="kitap/index.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Kitap Köşesi</a>
+            </nav>
+            <div class="header-actions">
+                <a href="siparis.html" class="btn-gold">
+                    <i class="fa-solid fa-pen-nib"></i>
+                    <span>Çizim Talep Et</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 3D Vitrin Hero / Header -->
+    <section class="container" style="margin-top: 2.5rem; margin-bottom: 2rem; text-align: center;">
+        <div style="color: #d4af37; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.5rem;">
+            <i class="fa-solid fa-cube"></i> SADECE 3D MODELLER & İNTERAKTİF ÇİZİMLER
+        </div>
+        <h1 style="font-size: 2.4rem; font-weight: 800; background: linear-gradient(135deg, #ffffff 0%, #d4af37 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+            Canlı 3D Mücevher Vitrini
+        </h1>
+        <p style="color: #94a3b8; max-width: 700px; margin: 0.75rem auto 0 auto; line-height: 1.6; font-size: 0.95rem;">
+            Aşağıdaki modeller stüdyo fotoğrafı gibi sabit durur. Farenizle tutup sürükleyerek her açısından inceleyebilir, altın & gümüş döküm gramajlarını ve milimetrik ölçülerini keşfedebilirsiniz.
+        </p>
+    </section>
+
+    <!-- ANA 3D 360° VİTRİN SAHNESİ -->
+    <div class="container">
+        <div class="stage-container" id="stageSection">
+            
+            <!-- Sol Kolon: Büyük Three.js 3D 360° Sahnesi -->
+            <div class="viewer-box" id="viewerBox">
+                
+                <!-- Sürükle Bırak Kaplaması -->
+                <div class="drop-overlay" id="canvasDropOverlay">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <div style="font-size: 1.3rem; font-weight: 800;">3D Dosyayı Buraya Bırakın</div>
+                    <div style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.3rem;">.STL veya .GLB dosyanız anında 360° sahneye aktarılacaktır</div>
+                </div>
+
+                <!-- Three.js Canvas -->
+                <canvas id="threeCanvas"></canvas>
+
+                <!-- Üst Araç Çubuğu -->
+                <div class="viewer-toolbar">
+                    <!-- Sol Grup: 360 Otomatik Döndürme & Eksen -->
+                    <div class="toolbar-group">
+                        <button class="tool-btn" id="btnAutoRotate" onclick="toggleAutoRotate()" title="360 Derece Otomatik Döndürme">
+                            <i class="fa-solid fa-arrows-rotate"></i> <span>360° Dönüş</span>
+                        </button>
+                        <button class="tool-btn" onclick="rotateAxisX()" title="Rhino / Matrix Z-Up Çizimini 90° Dik Çevir">
+                            <i class="fa-solid fa-repeat"></i> <span>Eksen Çevir</span>
+                        </button>
+                        <button class="tool-btn" onclick="resetCameraView()" title="Kamerayı Ortala">
+                            <i class="fa-solid fa-crosshairs"></i> <span>Ortala</span>
+                        </button>
+                    </div>
+
+                    <!-- Sağ Grup: Maden Seçici & Tel Kafes -->
+                    <div class="toolbar-group">
+                        <button class="tool-btn active" id="btnMatGold" onclick="changeMaterial('gold14k')" title="14K / 18K Sarı Altın Kaplama">
+                            🟡 <span>Sarı Altın</span>
+                        </button>
+                        <button class="tool-btn" id="btnMatSilver" onclick="changeMaterial('silver')" title="925 Gümüş / Beyaz Altın">
+                            ⚪ <span>Beyaz / Gümüş</span>
+                        </button>
+                        <button class="tool-btn" id="btnMatRose" onclick="changeMaterial('rose')" title="Rose Gold (Pembe Altın)">
+                            🟠 <span>Rose</span>
+                        </button>
+                        <button class="tool-btn" id="btnMatCad" onclick="changeMaterial('cadGreen')" title="CAD Matrix / Magics Yeşili">
+                            🟢 <span>CAD</span>
+                        </button>
+                        <button class="tool-btn" id="btnWireframe" onclick="toggleWireframe()" title="CAD Çizim Tel Kafes Modu">
+                            🔲
+                        </button>
+                        <button class="tool-btn" onclick="toggleFullscreen()" title="Tam Ekran">
+                            <i class="fa-solid fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Alt Kontrol İpucu -->
+                <div class="controls-hint">
+                    <i class="fa-solid fa-hand-pointer"></i> Sol tık: 360° Çevir | Tekerlek: Zoom | Sağ tık: Kaydır
+                </div>
+
+            </div>
+
+            <!-- Sağ Kolon: CAD Ölçüleri & Gramaj Hesaplama Paneli -->
+            <div class="stage-info">
+                <div>
+                    <span id="itemBadge" class="model-header-badge">
+                        <i class="fa-solid fa-circle-check" style="color: #25d366;"></i> CANLI 3D CAD MODELİ
+                    </span>
+                    <h2 id="itemTitle" class="model-title-text">
+                        Bozkurt Hilal Kolye Ucu 3D
+                    </h2>
+                    <div class="model-file-info">
+                        <span id="fileFormatBadge"><i class="fa-solid fa-cube"></i> .GLB Dosyası</span>
+                        <span id="polyCountBadge"><i class="fa-solid fa-draw-polygon"></i> 93.250 Poligon</span>
+                        <span id="volBadge"><i class="fa-solid fa-boxes-stacked"></i> Hacim: 277.6 mm³</span>
+                    </div>
+                    <p id="itemDesc" style="color: #94a3b8; font-size: 0.88rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Ay-yıldız hilal motifi ve asil kurt başı kabartmasıyla döküme hazır zarif kolye ucu 3D CAD modeli.
+                    </p>
+                </div>
+
+                <!-- Gerçek CAD Milimetrik Ölçüleri -->
+                <div class="dim-box">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fa-solid fa-ruler-combined" style="color: #d4af37;"></i> <strong>Gerçek CAD Ölçüleri:</strong></span>
+                        <span style="font-size: 0.75rem; color: #94a3b8;">1:1 Kuyumcu Mikron Standardı</span>
+                    </div>
+                    <div class="dim-grid">
+                        <div class="dim-item">
+                            <div class="dim-item-label">Genişlik (X)</div>
+                            <div class="dim-item-val" id="dimX">22.5 mm</div>
+                        </div>
+                        <div class="dim-item">
+                            <div class="dim-item-label">Derinlik (Y)</div>
+                            <div class="dim-item-val" id="dimY">23.2 mm</div>
+                        </div>
+                        <div class="dim-item">
+                            <div class="dim-item-label">Yükseklik (Z)</div>
+                            <div class="dim-item-val" id="dimZ">3.1 mm</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Otomatik Döküm Gramajları -->
+                <div>
+                    <div style="font-size: 0.78rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; margin-bottom: 0.4rem; letter-spacing: 0.5px;">
+                        <i class="fa-solid fa-scale-balanced" style="color: #d4af37;"></i> Hesaplanmış Döküm Gramajları
+                    </div>
+                    <div class="specs-grid">
+                        <div class="spec-card">
+                            <div class="specs-label">🟡 14 Ayar Altın</div>
+                            <div class="specs-val" id="spec14k">3.61 gr</div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="specs-label">🟡 18 Ayar Altın</div>
+                            <div class="specs-val" id="spec18k">4.30 gr</div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="specs-label">⚪ 925 Gümüş</div>
+                            <div class="specs-val" id="specSilver">2.89 gr</div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="specs-label">🔴 24K Has Altın</div>
+                            <div class="specs-val" id="spec24k">5.36 gr</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Eylemler -->
+                <div style="display: flex; flex-direction: column; gap: 0.7rem;">
+                    <a id="btnWa" href="#" target="_blank" class="btn-gold" style="text-align: center; padding: 0.85rem; font-size: 0.9rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 0.5rem; text-decoration: none;">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> WhatsApp'tan Fiyat & Üretim Teklifi Al
+                    </a>
+                    <button onclick="document.getElementById('fileInput').click()" class="btn-outline" style="padding: 0.75rem; font-size: 0.85rem; border-color: rgba(212,175,55,0.4); color: #d4af37; cursor: pointer;">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Başka Bir Çizim Dosyası Yükle (.STL / .GLB)
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- KULLANICI İÇİN SÜRÜKLE BIRAK & YÜKLEME ALANI -->
+        <div class="drag-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+            <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2.5rem; color: #d4af37; margin-bottom: 0.6rem; display: block;"></i>
+            <h3 style="font-size: 1.25rem; color: #fff; margin-bottom: 0.4rem;">
+                Kendi 3D .STL veya .GLB Çiziminizi Buraya Sürükleyin
+            </h3>
+            <p style="color: #94a3b8; font-size: 0.88rem; max-width: 600px; margin: 0 auto;">
+                Rhino, MatrixGold, ZBrush veya 3D CAD programlarından aldığınız <strong>.STL</strong> veya <strong>.GLB</strong> dosyasını seçin; yukarıdaki sahnede 360° canlı inceleyin, gramaj ve ölçülerini görün.
+            </p>
+            <input type="file" id="fileInput" accept=".stl,.glb,.gltf" style="display: none;">
+
+            <!-- Hızlı Deneme Butonları -->
+            <div class="quick-tests" onclick="event.stopPropagation()">
+                <span style="color: #94a3b8; font-size: 0.8rem; margin-right: 4px;">Hemen Test Et:</span>
+                <button class="quick-test-btn" onclick="loadSampleModel('models/bozkurt_yuzuk.glb', 'Bozkurt Hilal Kolye Ucu 3D', 'glb')">
+                    🐺 Bozkurt Kolye (3.61 gr)
+                </button>
+                <button class="quick-test-btn" onclick="loadSampleModel('models/1euro.glb', '1 Euro Madalyon Kolye Ucu 3D', 'glb')">
+                    🪙 1 Euro (10.54 gr)
+                </button>
+                <button class="quick-test-btn" onclick="loadSampleModel('models/deneme_kemik.glb', 'Kemik Kilitli Lüks Zincir Bileklik (18 cm)', 'glb')">
+                    ⛓️ Kemik Kilit (14.90 gr)
+                </button>
+                <button class="quick-test-btn" onclick="loadSampleModel('models/kral_yuzuk.glb', 'Kraliyet Şövalye Yüzüğü 3D', 'glb')">
+                    👑 Kral Yüzüğü (12.00 gr)
+                </button>
+            </div>
+        </div>
+
+        <!-- ERN TASARIM HAZIR 3D VİTRİN KOLEKSİYONU -->
+        <div style="margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(212,175,55,0.15); padding-bottom: 1rem;">
+                <div>
+                    <h3 style="font-size: 1.5rem; font-weight: 800; color: #fff;">
+                        ERN Tasarım Hazır 3D Vitrin Koleksiyonu
+                    </h3>
+                    <p style="color: #94a3b8; font-size: 0.88rem; margin-top: 0.2rem;">
+                        İncelemek istediğiniz modelin üzerine tıklayarak yukarıdaki canlı 360° sahnesine aktarabilirsiniz.
+                    </p>
+                </div>
+                <span style="color: #d4af37; font-size: 0.85rem; font-weight: 700;">
+                    <i class="fa-solid fa-gem"></i> 4 Adet Seçkin Model
+                </span>
+            </div>
+
+            <div class="models-grid">
+                
+                <!-- Model 1: Bozkurt Kolye Ucu -->
+                <div class="model-card active" onclick="loadSampleModel('models/bozkurt_yuzuk.glb', 'Bozkurt Hilal Kolye Ucu 3D', 'glb', this)">
+                    <div class="model-card-img">
+                        <img src="models/bozkurt_yuzuk.jpg" alt="Bozkurt Hilal Kolye Ucu">
+                    </div>
+                    <div class="model-card-body">
+                        <div>
+                            <div style="color: #d4af37; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Özel Kolye Ucu</div>
+                            <h4 style="font-size: 1rem; font-weight: 700; color: #fff; margin: 0.3rem 0;">Bozkurt Hilal Kolye Ucu</h4>
+                            <div style="color: #94a3b8; font-size: 0.8rem;">22.5 mm × 23.2 mm | 14K: 3.61 gr</div>
+                        </div>
+                        <button class="btn-outline" style="margin-top: 1rem; width: 100%; padding: 0.5rem; font-size: 0.8rem; border-color: rgba(212,175,55,0.3); color: #d4af37;">
+                            <i class="fa-solid fa-arrows-rotate"></i> 360° Sahneye Yükle
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Model 2: 1 Euro Madalyon -->
+                <div class="model-card" onclick="loadSampleModel('models/1euro.glb', '1 Euro Madalyon Kolye Ucu 3D', 'glb', this)">
+                    <div class="model-card-img">
+                        <img src="models/1euro.jpg" alt="1 Euro Madalyon Kolye Ucu">
+                    </div>
+                    <div class="model-card-body">
+                        <div>
+                            <div style="color: #d4af37; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Madalyon Kolye Ucu</div>
+                            <h4 style="font-size: 1rem; font-weight: 700; color: #fff; margin: 0.3rem 0;">1 Euro Madalyon</h4>
+                            <div style="color: #94a3b8; font-size: 0.8rem;">28.6 mm × 58.8 mm | 14K: 10.54 gr</div>
+                        </div>
+                        <button class="btn-outline" style="margin-top: 1rem; width: 100%; padding: 0.5rem; font-size: 0.8rem; border-color: rgba(212,175,55,0.3); color: #d4af37;">
+                            <i class="fa-solid fa-arrows-rotate"></i> 360° Sahneye Yükle
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Model 3: Kemik Kilitli Zincir -->
+                <div class="model-card" onclick="loadSampleModel('models/deneme_kemik.glb', 'Kemik Kilitli Lüks Zincir Bileklik (18 cm)', 'glb', this)">
+                    <div class="model-card-img">
+                        <img src="models/deneme_kemik.jpg" alt="Kemik Kilitli Zincir Bileklik">
+                    </div>
+                    <div class="model-card-body">
+                        <div>
+                            <div style="color: #d4af37; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Özel Kilit Mekanizması</div>
+                            <h4 style="font-size: 1rem; font-weight: 700; color: #fff; margin: 0.3rem 0;">Kemik Kilitli Zincir</h4>
+                            <div style="color: #94a3b8; font-size: 0.8rem;">181.2 mm × 9.7 mm | 14K: 14.90 gr</div>
+                        </div>
+                        <button class="btn-outline" style="margin-top: 1rem; width: 100%; padding: 0.5rem; font-size: 0.8rem; border-color: rgba(212,175,55,0.3); color: #d4af37;">
+                            <i class="fa-solid fa-arrows-rotate"></i> 360° Sahneye Yükle
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Model 4: Kraliyet Şövalye Yüzük -->
+                <div class="model-card" onclick="loadSampleModel('models/kral_yuzuk.glb', 'Kraliyet Şövalye Yüzüğü 3D', 'glb', this)">
+                    <div class="model-card-img">
+                        <img src="models/kral_yuzuk.jpg" alt="Kraliyet Şövalye Yüzüğü">
+                    </div>
+                    <div class="model-card-body">
+                        <div>
+                            <div style="color: #d4af37; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Mitolojik Konsept</div>
+                            <h4 style="font-size: 1rem; font-weight: 700; color: #fff; margin: 0.3rem 0;">Kraliyet Şövalye Yüzüğü</h4>
+                            <div style="color: #94a3b8; font-size: 0.8rem;">28.3 mm × 28.5 mm | 14K: 12.00 gr</div>
+                        </div>
+                        <button class="btn-outline" style="margin-top: 1rem; width: 100%; padding: 0.5rem; font-size: 0.8rem; border-color: rgba(212,175,55,0.3); color: #d4af37;">
+                            <i class="fa-solid fa-arrows-rotate"></i> 360° Sahneye Yükle
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">ERN TASARIM</div>
+        <p class="footer-text">
+            © 2026 Ern Tasarım. Tüm Hakları Saklıdır. "Siz hayal edin, biz yapalım."
+            <span style="margin: 0 8px; opacity: 0.3;">|</span>
+            <a href="yonetici.html" style="color: var(--gold-primary); text-decoration: none; font-size: 0.8rem; opacity: 0.8; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
+                <i class="fa-solid fa-shield-halved"></i> Yönetici Girişi
+            </a>
+        </p>
+    </footer>
+
+    <!-- WhatsApp Contact Float -->
+    <a href="https://wa.me/905320000000?text=Merhaba,%203D%20mücevher%20tasarımı%20hakkında%20bilgi%20almak%20istiyorum." class="whatsapp-float" target="_blank" title="WhatsApp ile İletişime Geç">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Three.js 3D 360° Studio Logic Script -->
+    <script>
+        // DOM Elemanları
+        const container = document.getElementById('viewerBox');
+        const canvas = document.getElementById('threeCanvas');
+        const canvasOverlay = document.getElementById('canvasDropOverlay');
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+
+        const itemTitle = document.getElementById('itemTitle');
+        const itemBadge = document.getElementById('itemBadge');
+        const itemDesc = document.getElementById('itemDesc');
+        const fileFormatBadge = document.getElementById('fileFormatBadge');
+        const polyCountBadge = document.getElementById('polyCountBadge');
+        const volBadge = document.getElementById('volBadge');
+
+        const dimX = document.getElementById('dimX');
+        const dimY = document.getElementById('dimY');
+        const dimZ = document.getElementById('dimZ');
+
+        const spec14k = document.getElementById('spec14k');
+        const spec18k = document.getElementById('spec18k');
+        const specSilver = document.getElementById('specSilver');
+        const spec24k = document.getElementById('spec24k');
+        const btnWa = document.getElementById('btnWa');
+        const btnAutoRotate = document.getElementById('btnAutoRotate');
+
+        // Three.js Değişkenleri
+        let scene, camera, renderer, controls;
+        let currentObject = null;
+        let currentMesh = null;
+        let currentGeometry = null;
+        let currentMaterialType = 'gold14k';
+        let isWireframe = false;
+        let isAutoRotate = false; // Çizim fırıldak gibi dönmesin, varsayılan olarak sabit kalsın!
+
+        // Mücevher Malzemeleri (PBR Standard - Canlı ve Doğru Kuyumcu Renkleri)
+        const materials = {
+            gold14k: new THREE.MeshStandardMaterial({
+                color: 0xd4af37,
+                metalness: 0.85,
+                roughness: 0.20,
+                name: '14K Sarı Altın'
+            }),
+            silver: new THREE.MeshStandardMaterial({
+                color: 0xf1f5f9,
+                metalness: 0.82,
+                roughness: 0.18,
+                name: '925 Gümüş / Beyaz Altın'
+            }),
+            rose: new THREE.MeshStandardMaterial({
+                color: 0xc46255,
+                metalness: 0.80,
+                roughness: 0.22,
+                name: 'Rose Gold / Bronz'
+            }),
+            cadGreen: new THREE.MeshStandardMaterial({
+                color: 0x22c55e,
+                metalness: 0.15,
+                roughness: 0.40,
+                name: 'Magics CAD Yeşili'
+            })
+        };
+
+        // Sahneyi Başlat
+        function initThree() {
+            scene = new THREE.Scene();
+
+            const width = container.clientWidth || 600;
+            const height = container.clientHeight || 520;
+
+            camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            camera.position.set(30, 25, 40);
+
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.25;
+
+            // Kontroller (OrbitControls)
+            controls = new THREE.OrbitControls(camera, canvas);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.autoRotate = false;
+            controls.autoRotateSpeed = 0.6; // Kullanıcı açarsa yavaş ve akıcı dönsün
+            controls.maxPolarAngle = Math.PI / 2 + 0.15;
+
+            // Aydınlatma (Stüdyo Kuyumcu Aydınlatması - Renkleri Soldurmayan Nötr Işıklar)
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+            scene.add(ambientLight);
+
+            const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.3);
+            dirLight1.position.set(40, 60, 40);
+            scene.add(dirLight1);
+
+            const dirLight2 = new THREE.DirectionalLight(0xd9e8ff, 0.8);
+            dirLight2.position.set(-40, 30, -30);
+            scene.add(dirLight2);
+
+            const rimLight = new THREE.DirectionalLight(0xffffff, 0.65);
+            rimLight.position.set(0, -30, 40);
+            scene.add(rimLight);
+
+            // Zemin Izgarası
+            const grid = new THREE.GridHelper(80, 24, 0xd4af37, 0x1e293b);
+            grid.position.y = -0.05;
+            scene.add(grid);
+
+            // Render Döngüsü
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // Pencere Boyut Değişimi
+            window.addEventListener('resize', onWindowResize);
+
+            // İlk Modeli Yükle (Bozkurt Yüzük GLB)
+            loadSampleModel('models/bozkurt_yuzuk.glb', 'Bozkurt Motifli Erkek Yüzüğü 3D', 'glb');
+        }
+
+        function onWindowResize() {
+            if (!container || !renderer || !camera) return;
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        }
+
+        // Modeli Sahneye Yerleştir ve Kamerayı Ayarla
+        function attachMeshToScene(mesh, geometry, name) {
+            if (currentObject) {
+                scene.remove(currentObject);
+            }
+
+            currentMesh = mesh;
+            currentObject = mesh;
+            currentGeometry = geometry;
+            scene.add(currentObject);
+
+            fitCameraToObject(currentObject);
+
+            if (geometry) {
+                const stats = calculateGeometryStats(geometry);
+                updateUIStats(name, stats, 'stl');
+            }
+        }
+
+        // Kamerayı her boyuttaki modele göre otomatik hizala
+        function fitCameraToObject(obj) {
+            const box = new THREE.Box3().setFromObject(obj);
+            const size = new THREE.Vector3();
+            box.getSize(size);
+            const center = new THREE.Vector3();
+            box.getCenter(center);
+
+            obj.position.x -= center.x;
+            obj.position.y -= box.min.y;
+            obj.position.z -= center.z;
+
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const fov = camera.fov * (Math.PI / 180);
+            let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2)) * 1.75;
+            cameraZ = Math.max(cameraZ, 22);
+
+            camera.position.set(cameraZ * 0.75, cameraZ * 0.55, cameraZ * 0.85);
+            camera.lookAt(0, size.y / 2, 0);
+            controls.target.set(0, size.y / 2, 0);
+            controls.update();
+        }
+
+        // Hazır 3D CAD Modellerinin Doğrulanmış Ölçü & Döküm Gramaj Veritabanı
+        const modelSpecsDB = {
+            'models/bozkurt_yuzuk.glb': {
+                name: 'Bozkurt Hilal Kolye Ucu 3D',
+                category: 'Özel Kolye Ucu',
+                badge: 'CANLI 3D CAD MODELİ',
+                desc: 'Ay-yıldız hilal motifi ve asil kurt başı kabartmasıyla döküme hazır zarif kolye ucu 3D CAD modeli.',
+                dims: { x: '22.5 mm', y: '23.2 mm', z: '3.1 mm' },
+                polyCount: '93.250 Poligon',
+                volume: '277.6 mm³',
+                weights: {
+                    w14k: '3.61 gr',
+                    w18k: '4.30 gr',
+                    wSilver: '2.89 gr',
+                    w24k: '5.36 gr'
+                }
+            },
+            'models/1euro.glb': {
+                name: '1 Euro Madalyon Kolye Ucu 3D',
+                category: 'Madalyon Kolye Ucu',
+                badge: 'CANLI 3D CAD MODELİ',
+                desc: '14K Altında 10.54 gr, 18K Altında 12.57 gr döküm gramajlı, hassas kabartmalı 1 Euro madalyon tasarımı.',
+                dims: { x: '28.6 mm', y: '58.8 mm', z: '6.9 mm' },
+                polyCount: '48.120 Poligon',
+                volume: '810.9 mm³',
+                weights: {
+                    w14k: '10.54 gr',
+                    w18k: '12.57 gr',
+                    wSilver: '8.43 gr',
+                    w24k: '15.65 gr'
+                }
+            },
+            'models/deneme_kemik.glb': {
+                name: 'Kemik Kilitli Lüks Zincir Bileklik (18 cm)',
+                category: 'Özel Kilit Mekanizması',
+                badge: 'CANLI 3D CAD MODELİ',
+                desc: '18 cm boyunda, 14K Altında 14.90 gr, 925 Gümüşte 11.90 gr döküm gramajlı, döküme ve üretime hazır kemik kilitli zincir 3D CAD modeli.',
+                dims: { x: '181.2 mm', y: '5.3 mm', z: '9.7 mm' },
+                polyCount: '62.400 Poligon',
+                volume: '1145.5 mm³',
+                weights: {
+                    w14k: '14.90 gr',
+                    w18k: '17.75 gr',
+                    wSilver: '11.90 gr',
+                    w24k: '22.10 gr'
+                }
+            },
+            'models/kral_yuzuk.glb': {
+                name: 'Kraliyet Şövalye Yüzüğü 3D',
+                category: 'Mitolojik Konsept',
+                badge: 'CANLI 3D CAD MODELİ',
+                desc: '3D CAD ile modellenmiş, döküme ve üretime hazır Kral Yüzüğü. 14K Altında 12.00 gr, 925 Gümüşte 9.60 gr döküm gramajı.',
+                dims: { x: '28.3 mm', y: '13.3 mm', z: '28.5 mm' },
+                polyCount: '84.600 Poligon',
+                volume: '922.0 mm³',
+                weights: {
+                    w14k: '12.00 gr',
+                    w18k: '14.30 gr',
+                    wSilver: '9.60 gr',
+                    w24k: '17.80 gr'
+                }
+            },
+            'media/bozkurt.stl': {
+                name: 'Bozkurt Hilal Kolye Ucu STL',
+                category: 'Özel Kolye Ucu',
+                badge: 'STL CAD ÇİZİMİ',
+                desc: 'Ay yıldız / hilal motifli kurt başı rölyefli kolye ucu döküm STL modeli.',
+                dims: { x: '22.5 mm', y: '23.2 mm', z: '3.1 mm' },
+                polyCount: '52.180 Poligon',
+                volume: '277.6 mm³',
+                weights: {
+                    w14k: '3.61 gr',
+                    w18k: '4.30 gr',
+                    wSilver: '2.89 gr',
+                    w24k: '5.36 gr'
+                }
+            }
+        };
+
+        function applySpecToUI(spec, format) {
+            itemTitle.textContent = spec.name;
+            itemDesc.textContent = spec.desc;
+            if (spec.badge) {
+                itemBadge.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #25d366;"></i> ${spec.badge}`;
+            }
+            fileFormatBadge.innerHTML = `<i class="fa-solid fa-cube"></i> .${format.toUpperCase()} Dosyası`;
+            polyCountBadge.innerHTML = `<i class="fa-solid fa-draw-polygon"></i> ${spec.polyCount}`;
+            volBadge.innerHTML = `<i class="fa-solid fa-boxes-stacked"></i> Hacim: ${spec.volume}`;
+
+            // Dinamik Yönetici Paneli Gramaj Kontrolü
+            let final14k = spec.weights.w14k;
+            let final18k = spec.weights.w18k;
+            let finalSilver = spec.weights.wSilver;
+            let final24k = spec.weights.w24k;
+
+            try {
+                const catalog = JSON.parse(localStorage.getItem('ern_catalog_products'));
+                if (catalog && Array.isArray(catalog)) {
+                    const match = catalog.find(p => p.media && p.media.includes(spec.name.toLowerCase().split(' ')[0]) || (spec.name && p.title && p.title.includes(spec.name.slice(0, 5))));
+                    if (match && match.weights && match.weights.gold14 && match.weights.gold14 !== '—') {
+                        final14k = match.weights.gold14;
+                        if (match.weights.gold18 && match.weights.gold18 !== '—') final18k = match.weights.gold18;
+                        if (match.weights.silver925 && match.weights.silver925 !== '—') finalSilver = match.weights.silver925;
+                    }
+                }
+            } catch(e) {}
+
+            dimX.textContent = spec.dims.x;
+            dimY.textContent = spec.dims.y;
+            dimZ.textContent = spec.dims.z;
+
+            spec14k.textContent = final14k;
+            spec18k.textContent = final18k;
+            specSilver.textContent = finalSilver;
+            spec24k.textContent = final24k;
+
+            let waNum = '905320000000';
+            try {
+                const s = JSON.parse(localStorage.getItem('ern_site_settings'));
+                if (s && s.whatsapp) waNum = s.whatsapp;
+            } catch(e) {}
+
+            const waMsg = `Merhaba, ERN Tasarım 3D Vitrininde incelediğim "${spec.name}" çizimim için fiyat & üretim teklifi almak istiyorum. Ölçüler: ${spec.dims.x} x ${spec.dims.y} x ${spec.dims.z}, 14K Döküm Gramajı: ${final14k}.`;
+            btnWa.href = `https://wa.me/${waNum}?text=${encodeURIComponent(waMsg)}`;
+        }
+
+        // STL Geometrisi Hacim ve Ölçü Formülü (Tetrahedron Yöntemi)
+        function calculateGeometryStats(geometry) {
+            if (!geometry || !geometry.attributes || !geometry.attributes.position) return null;
+            const pos = geometry.attributes.position;
+            let totalVolume = 0;
+            const p1 = new THREE.Vector3();
+            const p2 = new THREE.Vector3();
+            const p3 = new THREE.Vector3();
+
+            for (let i = 0; i < pos.count; i += 3) {
+                p1.fromBufferAttribute(pos, i);
+                p2.fromBufferAttribute(pos, i + 1);
+                p3.fromBufferAttribute(pos, i + 2);
+                totalVolume += p1.dot(p2.clone().cross(p3)) / 6.0;
+            }
+
+            totalVolume = Math.abs(totalVolume); // mm³
+            const volCm3 = totalVolume / 1000.0;
+
+            geometry.computeBoundingBox();
+            const b = geometry.boundingBox;
+            const dx = Math.abs(b.max.x - b.min.x);
+            const dy = Math.abs(b.max.y - b.min.y);
+            const dz = Math.abs(b.max.z - b.min.z);
+
+            return {
+                polyCount: pos.count / 3,
+                volume_mm3: totalVolume,
+                volume_cm3: volCm3,
+                dx: dx,
+                dy: dy,
+                dz: dz,
+                w14k: volCm3 * 13.0,
+                w18k: volCm3 * 15.5,
+                wSilver: volCm3 * 10.36,
+                w24k: volCm3 * 19.32
+            };
+        }
+
+        // Arayüzdeki Ölçü ve Gramajları Güncelle
+        function updateUIStats(name, stats, format) {
+            itemTitle.textContent = name;
+            fileFormatBadge.innerHTML = `<i class="fa-solid fa-cube"></i> .${format.toUpperCase()} Dosyası`;
+
+            if (stats) {
+                polyCountBadge.innerHTML = `<i class="fa-solid fa-draw-polygon"></i> ${stats.polyCount ? Math.round(stats.polyCount).toLocaleString('tr-TR') + ' Poligon' : 'CAD Mesh'}`;
+                volBadge.innerHTML = `<i class="fa-solid fa-boxes-stacked"></i> Hacim: ${stats.volume_mm3.toFixed(1)} mm³`;
+
+                dimX.textContent = stats.dx.toFixed(1) + ' mm';
+                dimY.textContent = stats.dy.toFixed(1) + ' mm';
+                dimZ.textContent = stats.dz.toFixed(1) + ' mm';
+
+                spec14k.textContent = stats.w14k.toFixed(2) + ' gr';
+                spec18k.textContent = stats.w18k.toFixed(2) + ' gr';
+                specSilver.textContent = stats.wSilver.toFixed(2) + ' gr';
+                spec24k.textContent = stats.w24k.toFixed(2) + ' gr';
+
+                const waMsg = `Merhaba, ERN Tasarım 3D Vitrininde incelediğim "${name}" çizimim için fiyat & üretim teklifi almak istiyorum. Ölçüler: ${stats.dx.toFixed(1)} x ${stats.dy.toFixed(1)} x ${stats.dz.toFixed(1)} mm, 14K Tahmini Gramaj: ${stats.w14k.toFixed(2)} gr.`;
+                btnWa.href = `https://wa.me/905320000000?text=${encodeURIComponent(waMsg)}`;
+            }
+        }
+
+        // Örnek Model Yükleme
+        function loadSampleModel(url, name, type, cardEl) {
+            const spec = modelSpecsDB[url];
+            const displayName = (spec && spec.name) ? spec.name : name;
+
+            if (type === 'stl') {
+                const loader = new THREE.STLLoader();
+                loader.load(url, function (geometry) {
+                    geometry.center();
+                    geometry.rotateX(-Math.PI / 2); // CAD Z-up eşlemesi
+                    const mat = materials[currentMaterialType].clone();
+                    mat.wireframe = isWireframe;
+                    const mesh = new THREE.Mesh(geometry, mat);
+                    
+                    if (currentObject) scene.remove(currentObject);
+                    currentMesh = mesh;
+                    currentObject = mesh;
+                    currentGeometry = geometry;
+                    scene.add(currentObject);
+                    fitCameraToObject(currentObject);
+                    applyCurrentMaterialToObject();
+
+                    if (spec) {
+                        applySpecToUI(spec, 'stl');
+                    } else {
+                        const stats = calculateGeometryStats(geometry);
+                        updateUIStats(displayName, stats, 'stl');
+                    }
+                });
+            } else if (type === 'glb') {
+                const loader = new THREE.GLTFLoader();
+                loader.load(url, function (gltf) {
+                    if (currentObject) scene.remove(currentObject);
+                    currentObject = gltf.scene;
+                    currentMesh = null;
+                    currentGeometry = null;
+                    scene.add(currentObject);
+                    fitCameraToObject(currentObject);
+
+                    // Seçili maden/kaplama rengini anında yeni yüklenen modele giydir
+                    applyCurrentMaterialToObject();
+
+                    if (spec) {
+                        applySpecToUI(spec, 'glb');
+                    } else {
+                        const box = new THREE.Box3().setFromObject(currentObject);
+                        const size = new THREE.Vector3();
+                        box.getSize(size);
+                        const vol_est = size.x * size.y * size.z * 0.45;
+                        const volCm3 = vol_est / 1000.0;
+                        const stats = {
+                            polyCount: 45000,
+                            volume_mm3: vol_est,
+                            dx: size.x,
+                            dy: size.y,
+                            dz: size.z,
+                            w14k: volCm3 * 13.0,
+                            w18k: volCm3 * 15.5,
+                            wSilver: volCm3 * 10.36,
+                            w24k: volCm3 * 19.32
+                        };
+                        updateUIStats(displayName, stats, 'glb');
+                    }
+                });
+            }
+
+            // Aktif kart vurgusu
+            document.querySelectorAll('.model-card').forEach(c => c.classList.remove('active'));
+            if (cardEl) cardEl.classList.add('active');
+
+            document.getElementById('stageSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Yerel Dosya Yükleme (Kullanıcının Kendi STL veya GLB Dosyası)
+        function handleUserFile(file) {
+            const fileName = file.name;
+            const ext = fileName.split('.').pop().toLowerCase();
+            const cleanName = fileName.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ').toUpperCase();
+
+            itemBadge.innerHTML = `<i class="fa-solid fa-sparkles" style="color: #d4af37;"></i> ÖZEL YÜKLENEN 3D ÇİZİMİNİZ`;
+            itemDesc.textContent = `Bilgisayarınızdan yüklenen "${fileName}" dosyası (${(file.size / 1024).toFixed(1)} KB) tarayıcınızda 360° olarak başarıyla modellendi.`;
+
+            const reader = new FileReader();
+
+            if (ext === 'stl') {
+                reader.onload = function (e) {
+                    try {
+                        const loader = new THREE.STLLoader();
+                        const geometry = loader.parse(e.target.result);
+                        geometry.center();
+                        geometry.rotateX(-Math.PI / 2); // CAD Z-Up
+                        const mat = materials[currentMaterialType].clone();
+                        mat.wireframe = isWireframe;
+                        const mesh = new THREE.Mesh(geometry, mat);
+                        attachMeshToScene(mesh, geometry, cleanName);
+                        applyCurrentMaterialToObject();
+                    } catch (err) {
+                        alert('STL dosyası çözümlenemedi: ' + err.message);
+                    }
+                };
+                reader.readAsArrayBuffer(file);
+            } else if (ext === 'glb' || ext === 'gltf') {
+                reader.onload = function (e) {
+                    try {
+                        const loader = new THREE.GLTFLoader();
+                        loader.parse(e.target.result, '', function (gltf) {
+                            if (currentObject) scene.remove(currentObject);
+                            currentObject = gltf.scene;
+                            currentMesh = null;
+                            currentGeometry = null;
+                            scene.add(currentObject);
+                            fitCameraToObject(currentObject);
+                            applyCurrentMaterialToObject();
+
+                            const box = new THREE.Box3().setFromObject(currentObject);
+                            const size = new THREE.Vector3();
+                            box.getSize(size);
+                            const vol_est = size.x * size.y * size.z * 0.45;
+                            const volCm3 = vol_est / 1000.0;
+
+                            const stats = {
+                                polyCount: 50000,
+                                volume_mm3: vol_est,
+                                dx: size.x,
+                                dy: size.y,
+                                dz: size.z,
+                                w14k: volCm3 * 13.0,
+                                w18k: volCm3 * 15.5,
+                                wSilver: volCm3 * 10.36,
+                                w24k: volCm3 * 19.3
+                            };
+                            updateUIStats(cleanName, stats, ext);
+                        });
+                    } catch (err) {
+                        alert('GLB dosyası yüklenemedi: ' + err.message);
+                    }
+                };
+                reader.readAsArrayBuffer(file);
+            } else {
+                alert('Lütfen geçerli bir .STL veya .GLB 3D dosyası yükleyin.');
+            }
+
+            document.getElementById('stageSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Malzeme Değiştirme
+        function changeMaterial(type) {
+            currentMaterialType = type;
+
+            const btns = {
+                gold14k: 'btnMatGold',
+                silver: 'btnMatSilver',
+                rose: 'btnMatRose',
+                cadGreen: 'btnMatCad'
+            };
+            Object.keys(btns).forEach(k => {
+                const el = document.getElementById(btns[k]);
+                if (el) el.classList.toggle('active', k === type);
+            });
+
+            applyCurrentMaterialToObject();
+        }
+
+        // Seçili Maden / Renk Malzemesini Sahnedeki Tüm Modellere Uygula
+        function applyCurrentMaterialToObject() {
+            const activeMat = materials[currentMaterialType];
+            if (!activeMat || !currentObject) return;
+
+            currentObject.traverse(child => {
+                if (child.isMesh) {
+                    child.material = activeMat.clone();
+                    child.material.wireframe = isWireframe;
+                    child.material.needsUpdate = true;
+                }
+            });
+        }
+
+        // Tel Kafes (Wireframe) Modu
+        function toggleWireframe() {
+            isWireframe = !isWireframe;
+            const btn = document.getElementById('btnWireframe');
+            if (btn) btn.classList.toggle('active', isWireframe);
+
+            if (currentObject) {
+                currentObject.traverse(child => {
+                    if (child.isMesh && child.material) {
+                        child.material.wireframe = isWireframe;
+                        child.material.needsUpdate = true;
+                    }
+                });
+            }
+        }
+
+        // 360° Otomatik Dönüş Aç/Kapat
+        function toggleAutoRotate() {
+            isAutoRotate = !isAutoRotate;
+            controls.autoRotate = isAutoRotate;
+            btnAutoRotate.classList.toggle('active', isAutoRotate);
+        }
+
+        // Eksen Çevir (Rhino / Matrix Z-Up Düzeltme)
+        function rotateAxisX() {
+            if (!currentObject) return;
+            currentObject.rotateX(Math.PI / 2);
+            fitCameraToObject(currentObject);
+        }
+
+        // Kamerayı Sıfırla
+        function resetCameraView() {
+            if (!currentObject) return;
+            fitCameraToObject(currentObject);
+        }
+
+        // Tam Ekran
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                container.requestFullscreen().catch(err => {});
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Sürükle & Bırak Dinleyicileri
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) handleUserFile(e.target.files[0]);
+        });
+
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = '#d4af37'; });
+        dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = 'rgba(212, 175, 55, 0.4)'; });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = 'rgba(212, 175, 55, 0.4)';
+            if (e.dataTransfer.files.length > 0) handleUserFile(e.dataTransfer.files[0]);
+        });
+
+        container.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            canvasOverlay.style.display = 'flex';
+        });
+        container.addEventListener('dragleave', (e) => {
+            if (e.target === canvasOverlay) canvasOverlay.style.display = 'none';
+        });
+        container.addEventListener('drop', (e) => {
+            e.preventDefault();
+            canvasOverlay.style.display = 'none';
+            if (e.dataTransfer.files.length > 0) handleUserFile(e.dataTransfer.files[0]);
+        });
+
+        // Sayfa Yüklenince Başlat
+        document.addEventListener('DOMContentLoaded', initThree);
+    </script>
+    <script src="tracker.js"></script>
+</body>
+</html>
