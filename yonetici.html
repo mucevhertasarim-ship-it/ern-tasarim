@@ -1486,24 +1486,71 @@
                     </div>
                 </div>
 
-                <div class="content-card">
-                    <h3 class="content-card-title" style="margin-bottom: 1.5rem;">
-                        <i class="fa-solid fa-building-columns" style="color: var(--admin-gold);"></i> Banka & IBAN Bilgileri (Mağaza Havale Ödemeleri)
-                    </h3>
+                <!-- SOSYAL MEDYA HESAPLARI YÖNETİMİ -->
+                <div class="content-card" style="border: 1px solid rgba(225, 48, 108, 0.25); background: linear-gradient(180deg, rgba(225, 48, 108, 0.03) 0%, rgba(14, 20, 34, 0.95) 100%);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
+                        <h3 class="content-card-title" style="margin: 0;">
+                            <i class="fa-solid fa-share-nodes" style="color: #f04e84;"></i> Sosyal Medya Hesapları Yönetimi
+                        </h3>
+                        <span style="display: inline-flex; align-items: center; gap: 6px; background: rgba(225, 48, 108, 0.12); color: #f04e84; border: 1px solid rgba(225, 48, 108, 0.3); padding: 4px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 700;">
+                            <i class="fa-solid fa-globe"></i> Sitede Canlı
+                        </span>
+                    </div>
+                    <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 1.5rem; line-height: 1.5;">
+                        Sitenizin İletişim sayfasındaki ve alt bilgi (footer) alanlarındaki Instagram, Facebook, TikTok ve YouTube bağlantılarınızı buradan dilediğiniz gibi güncelleyin.
+                    </p>
+
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label" for="setting-bank-name">Banka Adı</label>
-                            <input type="text" id="setting-bank-name" class="form-control" placeholder="Garanti BBVA">
+                            <label class="form-label" for="setting-instagram">
+                                <i class="fa-brands fa-instagram" style="color: #f04e84;"></i> Instagram Profil Linki
+                            </label>
+                            <input type="text" id="setting-instagram" class="form-control" placeholder="Örn: https://instagram.com/eren_tasarim">
+                            <small style="color: #94a3b8; font-size: 0.75rem;">Kendi Instagram adresiniz. Boş bırakırsanız sitede yabancı hesap açılmaz, müşteriler doğrudan WhatsApp hattınıza yönlendirilir.</small>
                         </div>
+
                         <div class="form-group">
-                            <label class="form-label" for="setting-bank-owner">Hesap Sahibi (Ad Soyad / Şirket)</label>
-                            <input type="text" id="setting-bank-owner" class="form-control" placeholder="ERN Tasarım Mücevherat">
+                            <label class="form-label" for="setting-facebook">
+                                <i class="fa-brands fa-facebook" style="color: #4293f5;"></i> Facebook Sayfa Linki
+                            </label>
+                            <input type="text" id="setting-facebook" class="form-control" placeholder="Örn: https://facebook.com/sayfaniz">
+                            <small style="color: #94a3b8; font-size: 0.75rem;">Kendi Facebook sayfanızın adresi.</small>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label" for="setting-iban">TL IBAN Numarası</label>
-                        <input type="text" id="setting-iban" class="form-control" placeholder="TR00 0000 0000 0000 0000 0000 00">
-                        <small style="color: #64748b; font-size: 0.75rem;">Mağaza sepetinden IBAN ödemesi seçildiğinde müşteriye bu IBAN kopyalatılır.</small>
+
+                    <div class="form-row" style="margin-top: 0.75rem;">
+                        <div class="form-group">
+                            <label class="form-label" for="setting-tiktok">
+                                <i class="fa-brands fa-tiktok" style="color: #ffffff;"></i> TikTok Profil Linki (İsteğe Bağlı)
+                            </label>
+                            <input type="text" id="setting-tiktok" class="form-control" placeholder="Örn: https://tiktok.com/@hesabiniz">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="setting-youtube">
+                                <i class="fa-brands fa-youtube" style="color: #ef4444;"></i> YouTube Kanal Linki (İsteğe Bağlı)
+                            </label>
+                            <input type="text" id="setting-youtube" class="form-control" placeholder="Örn: https://youtube.com/@kanaliniz">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <h3 class="content-card-title" style="margin-bottom: 0;">
+                            <i class="fa-solid fa-cart-shopping" style="color: var(--admin-gold);"></i> Çizim Satın Alma & Sipariş Sistemi
+                        </h3>
+                        <span style="background: rgba(37, 211, 102, 0.15); color: #25d366; border: 1px solid rgba(37,211,102,0.3); padding: 0.35rem 0.85rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fa-brands fa-whatsapp"></i> 100% WhatsApp Sipariş Sistemi Aktif
+                        </span>
+                    </div>
+                    <div style="background: rgba(37, 211, 102, 0.08); border: 1px solid rgba(37, 211, 102, 0.25); border-radius: 12px; padding: 1.25rem; font-size: 0.9rem; color: #e2e8f0; line-height: 1.6;">
+                        <div style="font-weight: 800; color: #25d366; font-size: 1rem; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-circle-check" style="font-size: 1.15rem;"></i> Sitede IBAN Kaldırıldı
+                        </div>
+                        <p style="margin: 0; color: #94a3b8; font-size: 0.85rem;">
+                            Mağaza sepetindeki ve 3D önizlemedeki satın alma butonları doğrudan sizin WhatsApp hattınıza yönlendirir. Müşterinin sepetindeki ürünler, kodlar ve fiyatlar WhatsApp mesajı olarak otomatik hazırlanır. Satın alma, ödeme ve dosya teslimatını müşterinizle birebir WhatsApp üzerinden güvenle tamamlarsınız.
+                        </p>
                     </div>
                 </div>
 
@@ -1753,7 +1800,7 @@
                                 <strong style="color: #fff; font-size: 0.92rem;">Yönetici Giriş Kilidi</strong>
                             </div>
                             <p style="color: #94a3b8; font-size: 0.8rem; margin: 0; line-height: 1.4;">
-                                Panele art arda 5 hatalı şifre denemesi yapıldığında sistem 3 dakika boyunca kilitlenir ve saldırı loglara yazılır.
+                                Panele art arda 3 hatalı şifre denemesi yapıldığında sistem 5 dakika boyunca kilitlenir ve saldırı loglara yazılır.
                             </p>
                         </div>
 
@@ -2504,6 +2551,10 @@
             whatsappHide: true,
             phone: '0532 000 00 00',
             email: 'info@erntasarim.com',
+            instagram: '',
+            facebook: '',
+            tiktok: '',
+            youtube: '',
             bankName: 'Garanti BBVA',
             bankOwner: 'ERN Tasarım & Mücevherat',
             iban: 'TR00 0000 0000 0000 0000 0000 00',
@@ -2534,7 +2585,7 @@
             }
         }
 
-        // AUTHENTICATION & BRUTE-FORCE PROTECTION
+        // AUTHENTICATION & BRUTE-FORCE PROTECTION (3 Hatalı Giriş -> 5 Dakika Kilit)
         let lockoutTimerInterval = null;
 
         function checkLockoutStatus() {
@@ -2542,21 +2593,30 @@
             const now = Date.now();
             const submitBtn = document.querySelector('#admin-login-form button[type="submit"]');
             const alertBox = document.getElementById('login-alert');
+            const userInput = document.getElementById('login-user');
+            const passInput = document.getElementById('login-pass');
 
             if (lockoutUntil > now) {
                 const remainingSec = Math.ceil((lockoutUntil - now) / 1000);
+                const min = Math.floor(remainingSec / 60);
+                const sec = (remainingSec % 60).toString().padStart(2, '0');
+                const timeStr = min > 0 ? `${min} dk ${sec} sn` : `${sec} sn`;
+
                 if (submitBtn) {
                     submitBtn.disabled = true;
                     submitBtn.style.opacity = '0.5';
                     submitBtn.style.cursor = 'not-allowed';
-                    submitBtn.innerHTML = `<i class="fa-solid fa-lock"></i> Kilitlendi (${remainingSec} sn)`;
+                    submitBtn.innerHTML = `<i class="fa-solid fa-lock"></i> Kilitlendi (${timeStr})`;
                 }
+                if (userInput) userInput.disabled = true;
+                if (passInput) passInput.disabled = true;
+
                 if (alertBox) {
                     alertBox.style.display = 'block';
                     alertBox.style.background = 'rgba(239, 68, 68, 0.2)';
                     alertBox.style.borderColor = '#ef4444';
                     alertBox.style.color = '#fca5a5';
-                    alertBox.innerHTML = `<i class="fa-solid fa-shield-halved"></i> <strong>Kötü Amaçlı Giriş Koruması Aktif:</strong> 5 kez hatalı şifre girildiği için sistem geçici olarak kilitlendi. Lütfen <strong>${remainingSec}</strong> saniye bekleyin.`;
+                    alertBox.innerHTML = `<i class="fa-solid fa-shield-halved"></i> <strong>Güvenlik Kilidi Aktif:</strong><br>Art arda 3 kez hatalı giriş yapıldığı için sistem 5 dakika süreyle kilitlendi.<br>Kalan bekleme süresi: <strong style="color: #fff; font-size: 1.05rem;">${timeStr}</strong>`;
                 }
                 return true;
             } else {
@@ -2565,6 +2625,8 @@
                     submitBtn.style.opacity = '1';
                     submitBtn.style.cursor = 'pointer';
                     submitBtn.innerHTML = `<i class="fa-solid fa-key"></i> Panele Giriş Yap`;
+                    if (userInput) userInput.disabled = false;
+                    if (passInput) passInput.disabled = false;
                     if (alertBox) alertBox.style.display = 'none';
                     localStorage.removeItem('ern_admin_lockout_until');
                     localStorage.removeItem('ern_admin_failed_attempts');
@@ -2640,22 +2702,26 @@
                         timestamp: new Date().toLocaleString('tr-TR'),
                         action: 'Hatalı Yönetici Girişi (Güvenlik Uyarısı)',
                         page: 'yonetici.html',
-                        extra: `Denenen Kullanıcı: "${user}" (Deneme #${fails})`,
+                        extra: `Denenen Kullanıcı: "${user}" (Deneme #${fails}/3)`,
                         device: window.innerWidth < 768 ? 'Mobil 📱' : 'Masaüstü 💻'
                     });
                     if (events.length > 100) events = events.slice(-100);
                     localStorage.setItem('ern_analytics_events', JSON.stringify(events));
                 } catch(err) {}
 
-                if (fails >= 5) {
-                    const lockoutTime = Date.now() + 180000; // 3 dakika kilit
+                if (fails >= 3) {
+                    const lockoutDurationMs = 5 * 60 * 1000; // Tam 5 dakika (300 saniye) kilit
+                    const lockoutTime = Date.now() + lockoutDurationMs;
                     localStorage.setItem('ern_admin_lockout_until', lockoutTime.toString());
                     startLockoutCountdown();
                 } else {
-                    const remaining = 5 - fails;
+                    const remaining = 3 - fails;
                     const alertBox = document.getElementById('login-alert');
                     alertBox.style.display = 'block';
-                    alertBox.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> Hatalı kullanıcı adı veya şifre! Kalan deneme hakkınız: <strong>${remaining}</strong>`;
+                    alertBox.style.background = 'rgba(239, 68, 68, 0.15)';
+                    alertBox.style.borderColor = '#ef4444';
+                    alertBox.style.color = '#fca5a5';
+                    alertBox.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> Hatalı kullanıcı adı veya şifre!<br>Kalan deneme hakkınız: <strong>${remaining}</strong> (3 kez hatalı girilirse 5 dakika kilitlenir)`;
                 }
             }
         }
@@ -4158,9 +4224,17 @@
 
             document.getElementById('setting-phone').value = settings.phone || '0532 000 00 00';
             document.getElementById('setting-email').value = settings.email || 'info@erntasarim.com';
-            document.getElementById('setting-bank-name').value = settings.bankName || 'Garanti BBVA';
-            document.getElementById('setting-bank-owner').value = settings.bankOwner || 'ERN Tasarım & Mücevherat';
-            document.getElementById('setting-iban').value = settings.iban || 'TR00 0000 0000 0000 0000 0000 00';
+            const igEl = document.getElementById('setting-instagram');
+            if (igEl) igEl.value = settings.instagram || '';
+            const fbEl = document.getElementById('setting-facebook');
+            if (fbEl) fbEl.value = settings.facebook || '';
+            const ttEl = document.getElementById('setting-tiktok');
+            if (ttEl) ttEl.value = settings.tiktok || '';
+            const ytEl = document.getElementById('setting-youtube');
+            if (ytEl) ytEl.value = settings.youtube || '';
+            if (document.getElementById('setting-bank-name')) document.getElementById('setting-bank-name').value = settings.bankName || '';
+            if (document.getElementById('setting-bank-owner')) document.getElementById('setting-bank-owner').value = settings.bankOwner || '';
+            if (document.getElementById('setting-iban')) document.getElementById('setting-iban').value = settings.iban || '';
             document.getElementById('setting-rate-mode').value = settings.rateMode || 'auto';
             document.getElementById('setting-manual-rate').value = settings.manualRate || 34.25;
             document.getElementById('setting-admin-pass').value = settings.adminPass || 'admin';
@@ -4208,9 +4282,13 @@
                 whatsappHide: hideVal,
                 phone: document.getElementById('setting-phone').value.trim() || '0532 000 00 00',
                 email: document.getElementById('setting-email').value.trim() || 'info@erntasarim.com',
-                bankName: document.getElementById('setting-bank-name').value.trim() || 'Garanti BBVA',
-                bankOwner: document.getElementById('setting-bank-owner').value.trim() || 'ERN Tasarım & Mücevherat',
-                iban: document.getElementById('setting-iban').value.trim() || 'TR00 0000 0000 0000 0000 0000 00',
+                instagram: document.getElementById('setting-instagram') ? document.getElementById('setting-instagram').value.trim() : (current.instagram || ''),
+                facebook: document.getElementById('setting-facebook') ? document.getElementById('setting-facebook').value.trim() : (current.facebook || ''),
+                tiktok: document.getElementById('setting-tiktok') ? document.getElementById('setting-tiktok').value.trim() : (current.tiktok || ''),
+                youtube: document.getElementById('setting-youtube') ? document.getElementById('setting-youtube').value.trim() : (current.youtube || ''),
+                bankName: document.getElementById('setting-bank-name') ? document.getElementById('setting-bank-name').value.trim() : (current.bankName || ''),
+                bankOwner: document.getElementById('setting-bank-owner') ? document.getElementById('setting-bank-owner').value.trim() : (current.bankOwner || ''),
+                iban: document.getElementById('setting-iban') ? document.getElementById('setting-iban').value.trim() : (current.iban || ''),
                 rateMode: document.getElementById('setting-rate-mode').value,
                 manualRate: parseFloat(document.getElementById('setting-manual-rate').value) || 34.25,
                 adminPass: newPass,
