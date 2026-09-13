@@ -3979,30 +3979,17 @@
         });
 
         function initStorageDefaults() {
-                                    if (!localStorage.getItem('ern_catalog_products')) {
+            const CATALOG_VERSION = '2026.09.13.v3';
+            const savedVer = localStorage.getItem('ern_catalog_version');
+            const saved = localStorage.getItem('ern_catalog_products');
+
+            if (savedVer !== CATALOG_VERSION || !saved) {
+                localStorage.setItem('ern_catalog_version', CATALOG_VERSION);
                 localStorage.setItem('ern_catalog_products', JSON.stringify(DEFAULT_CATALOG));
             } else {
                 try {
-                    const parsed = JSON.parse(localStorage.getItem('ern_catalog_products') || '[]');
-                    if (Array.isArray(parsed)) {
-                        const existingMedia = new Set(parsed.map(p => p.media));
-                        let merged = [...parsed];
-                        let updated = false;
-                        DEFAULT_CATALOG.forEach(p => {
-                            if (!existingMedia.has(p.media)) {
-                                merged.push(p);
-                                updated = true;
-                            }
-                        });
-                        if (updated) {
-                            localStorage.setItem('ern_catalog_products', JSON.stringify(merged));
-                        }
-                    }
-                } catch(e) {}
-            } else {
-                try {
-                    const parsed = JSON.parse(localStorage.getItem('ern_catalog_products') || '[]');
-                    if (Array.isArray(parsed)) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length < DEFAULT_CATALOG.length) {
                         const existingMedia = new Set(parsed.map(p => p.media));
                         let merged = [...parsed];
                         let updated = false;
