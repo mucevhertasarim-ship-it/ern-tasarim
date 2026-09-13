@@ -435,12 +435,12 @@
                     <p>En yeni MatrixGold tasarımlarımızı, döküm videolarımızı ve reels paylaşımlarımızı takip edin.</p>
                 </div>
                 <div>
-                    <div style="font-size: 1.05rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">@erntasarim</div>
+                    <div id="contact-social-handle" style="font-size: 1.05rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">@e.r.n.tasarim</div>
                     <div style="display: flex; gap: 1rem;">
-                        <a href="https://instagram.com/erntasarim" target="_blank" class="contact-link" style="color: #f04e84;">
+                        <a id="contact-link-ig" href="https://www.instagram.com/e.r.n.tasarim/" target="_blank" onclick="handleSocialClick('instagram')" class="contact-link" style="color: #f04e84; cursor: pointer;">
                             <i class="fa-brands fa-instagram"></i> Instagram
                         </a>
-                        <a href="https://facebook.com/erntasarim" target="_blank" class="contact-link" style="color: #4293f5;">
+                        <a id="contact-link-fb" href="javascript:void(0)" onclick="handleSocialClick('facebook')" class="contact-link" style="color: #4293f5; cursor: pointer;">
                             <i class="fa-brands fa-facebook"></i> Facebook
                         </a>
                     </div>
@@ -615,17 +615,17 @@
             </p>
 
             <div class="social-buttons-flex">
-                <a href="https://wa.me/905320000000?text=Merhaba%20ERN%20Tasarım,%20iletişime%20geçmek%20istiyorum." target="_blank" class="social-pill-btn pill-wa">
-                    <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> WhatsApp (+90 532 000 00 00)
+                <a id="pill-wa-link" href="https://wa.me/905320000000?text=Merhaba%20ERN%20Tasarım,%20iletişime%20geçmek%20istiyorum." target="_blank" class="social-pill-btn pill-wa">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> WhatsApp <span id="pill-wa-display">(+90 532 000 00 00)</span>
                 </a>
-                <a href="https://instagram.com/erntasarim" target="_blank" class="social-pill-btn pill-ig">
-                    <i class="fa-brands fa-instagram" style="font-size: 1.2rem;"></i> Instagram (@erntasarim)
+                <a id="pill-ig-link" href="https://www.instagram.com/e.r.n.tasarim/" target="_blank" onclick="handleSocialClick('instagram')" class="social-pill-btn pill-ig" style="cursor: pointer;">
+                    <i class="fa-brands fa-instagram" style="font-size: 1.2rem;"></i> Instagram <span id="pill-ig-label">(@e.r.n.tasarim)</span>
                 </a>
-                <a href="https://facebook.com/erntasarim" target="_blank" class="social-pill-btn pill-fb">
-                    <i class="fa-brands fa-facebook" style="font-size: 1.2rem;"></i> Facebook (ERN Tasarım)
+                <a id="pill-fb-link" href="javascript:void(0)" onclick="handleSocialClick('facebook')" class="social-pill-btn pill-fb" style="cursor: pointer;">
+                    <i class="fa-brands fa-facebook" style="font-size: 1.2rem;"></i> Facebook <span id="pill-fb-label"></span>
                 </a>
-                <a href="mailto:info@erntasarim.com" class="social-pill-btn pill-mail">
-                    <i class="fa-solid fa-envelope" style="font-size: 1.1rem;"></i> info@erntasarim.com
+                <a id="pill-mail-link" href="mailto:info@erntasarim.com" class="social-pill-btn pill-mail">
+                    <i class="fa-solid fa-envelope" style="font-size: 1.1rem;"></i> <span id="pill-mail-text">info@erntasarim.com</span>
                 </a>
             </div>
         </div>
@@ -638,7 +638,7 @@
         <p class="footer-text">
             © 2026 Ern Tasarım. Tüm Hakları Saklıdır. "Siz hayal edin, biz yapalım."
             <span style="margin: 0 8px; opacity: 0.3;">|</span>
-            <a href="yonetici.html" style="color: var(--gold-primary); text-decoration: none; font-size: 0.8rem; opacity: 0.8; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
+            <a href="yonetici.html?v=2" style="color: var(--gold-primary); text-decoration: none; font-size: 0.8rem; opacity: 0.8; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
                 <i class="fa-solid fa-shield-halved"></i> Yönetici Girişi
             </a>
         </p>
@@ -651,7 +651,105 @@
 
     <!-- İletişim JS -->
     <script>
-        function sendContactViaWhatsApp() {
+        function getSiteSettings() {
+            try {
+                const s = JSON.parse(localStorage.getItem('ern_site_settings') || '{}');
+                // Eski hatalı çanta hesabı 'erntasarim' kalmışsa derhal Eren'in gerçek hesabına çevir:
+                if (!s.instagram || s.instagram.includes('/erntasarim') || s.instagram === 'erntasarim' || s.instagram === '@erntasarim') {
+                    s.instagram = 'https://www.instagram.com/e.r.n.tasarim/';
+                    try { localStorage.setItem('ern_site_settings', JSON.stringify(s)); } catch(e) {}
+                }
+                return s;
+            } catch(e) {
+                return { instagram: 'https://www.instagram.com/e.r.n.tasarim/' };
+            }
+        }
+
+        function handleSocialClick(platform) {
+            const settings = getSiteSettings();
+            let url = (settings[platform] || '').trim();
+            if (platform === 'instagram') {
+                if (!url || url.includes('/erntasarim') || url === 'erntasarim' || url === '@erntasarim') {
+                    url = 'https://www.instagram.com/e.r.n.tasarim/';
+                }
+            }
+            if (url) {
+                if (platform === 'instagram' && !url.includes('instagram.com')) {
+                    url = 'https://www.instagram.com/' + url.replace(/^@/, '');
+                } else if (platform === 'facebook' && !url.includes('facebook.com')) {
+                    url = 'https://facebook.com/' + url.replace(/^@/, '');
+                } else if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'https://' + url;
+                }
+                window.open(url, '_blank');
+                return;
+            }
+            // Yabancı bir hesaba gitmemesi için güvenlik kontrolü:
+            let whatsappNumber = '905320000000';
+            if (settings.whatsapp) whatsappNumber = settings.whatsapp.replace(/[^0-9]/g, '');
+            const platformTitle = platform === 'instagram' ? 'Instagram' : 'Facebook';
+            const goWa = confirm(`${platformTitle} hesabımız hazırlanmaktadır.
+
+Eren Bey ile doğrudan WhatsApp üzerinden iletişime geçmek ister misiniz?`);
+            if (goWa) {
+                const msg = encodeURIComponent(`Merhaba Eren Bey, web sitenizi inceledim. ${platformTitle} sayfanız ve mücevher tasarımlarınız hakkında bilgi almak istiyorum.`);
+                window.open(`https://wa.me/${whatsappNumber}?text=${msg}`, '_blank');
+            }
+        }
+
+        function applyDynamicSettings() {
+            const settings = getSiteSettings();
+
+            // WhatsApp & Telefon
+            const waRaw = (settings.whatsapp || '905320000000').replace(/[^0-9]/g, '');
+            const waDisp = settings.whatsappDisplay || '+90 532 000 00 00';
+            document.querySelectorAll('.wa-display-number').forEach(el => el.textContent = waDisp);
+            const pillWaDisp = document.getElementById('pill-wa-display');
+            if (pillWaDisp) pillWaDisp.textContent = `(${waDisp})`;
+
+            const waLinks = document.querySelectorAll('a[href*="wa.me"], a[href*="whatsapp.com"]');
+            waLinks.forEach(link => {
+                let defaultText = 'Merhaba ERN Tasarım, bilgi almak istiyorum.';
+                if (link.href.includes('text=')) {
+                    try {
+                        const parts = link.href.split('text=');
+                        if (parts[1]) defaultText = decodeURIComponent(parts[1]);
+                    } catch(e) {}
+                }
+                link.href = `https://wa.me/${waRaw}?text=${encodeURIComponent(defaultText)}`;
+            });
+
+            // Instagram
+            let igUrl = (settings.instagram && settings.instagram.trim() !== '') ? settings.instagram.trim() : 'https://www.instagram.com/e.r.n.tasarim/';
+            let cleanHandle = igUrl.replace(/https?:\/\/(www\.)?instagram\.com\//i, '').replace(/\/.*$/, '');
+            if (cleanHandle) {
+                if (!cleanHandle.startsWith('@')) cleanHandle = '@' + cleanHandle;
+                const handleEl = document.getElementById('contact-social-handle');
+                if (handleEl) handleEl.textContent = cleanHandle;
+                const pillIg = document.getElementById('pill-ig-label');
+                if (pillIg) pillIg.textContent = `(${cleanHandle})`;
+                const igLinks = document.querySelectorAll('#contact-link-ig, #pill-ig-link');
+                igLinks.forEach(el => el.href = igUrl);
+            }
+
+            // Facebook
+            if (settings.facebook && settings.facebook.trim() !== '') {
+                let fb = settings.facebook.trim();
+                let cleanFb = fb.replace(/https?:\/\/(www\.)?facebook\.com\//i, '').replace(/\/.*$/, '');
+                const pillFb = document.getElementById('pill-fb-label');
+                if (pillFb && cleanFb) pillFb.textContent = `(${cleanFb})`;
+            }
+
+            // E-Posta
+            const email = settings.email || 'info@erntasarim.com';
+            const mailText = document.getElementById('pill-mail-text');
+            if (mailText) mailText.textContent = email;
+            const mailLink = document.getElementById('pill-mail-link');
+            if (mailLink) mailLink.href = `mailto:${email}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', applyDynamicSettings);
+
         function sanitizeText(str) {
             return (str || '').replace(/<[^>]*>?/gm, '').trim();
         }

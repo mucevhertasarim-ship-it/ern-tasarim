@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ern Tasarım - STL Çizim Mağazası</title>
-    <meta name="description" content="3D yazıcılara uygun, döküme hazır profesyonel mücevher STL çizim dosyaları. IBAN transferi ile hızlı ve güvenli satın alım.">
+    <meta name="description" content="3D yazıcılara uygun, döküme hazır profesyonel mücevher STL çizim dosyaları. WhatsApp üzerinden anında sipariş ve güvenli teslimat.">
     
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -296,8 +296,8 @@
             transform: scale(1.1);
         }
 
-        /* IBAN Modal Stilleri */
-        .iban-modal-overlay {
+        /* 3D Önizleme Modal Stilleri */
+        .ern-modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
@@ -310,7 +310,7 @@
             overflow-y: auto;
         }
 
-        .iban-modal-content {
+        .ern-modal-content {
             background: #0f172a;
             border: 1px solid rgba(212, 175, 55, 0.3);
             border-radius: 20px;
@@ -322,7 +322,7 @@
             margin: auto;
         }
 
-        .iban-modal-header {
+        .ern-modal-header {
             padding: 1.5rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
@@ -330,7 +330,7 @@
             align-items: center;
         }
 
-        .iban-modal-header h3 {
+        .ern-modal-header h3 {
             font-family: var(--font-serif);
             font-size: 1.3rem;
             color: #ffffff;
@@ -358,7 +358,7 @@
             border-color: rgba(239, 68, 68, 0.4);
         }
 
-        .iban-modal-body {
+        .ern-modal-body {
             padding: 1.5rem;
             max-height: 75vh;
             overflow-y: auto;
@@ -583,8 +583,8 @@
                 <span>Toplam Tutar:</span>
                 <span style="color: var(--gold-primary); font-size: 1.3rem; font-weight: 800;">$<span id="cart-total-price">0</span></span>
             </div>
-            <button id="btn-checkout" onclick="openCheckoutWithCart()" class="btn-gold" style="width: 100%; justify-content: center; padding: 0.8rem; font-size: 0.95rem; font-weight: 800; border-radius: 10px; cursor: pointer;">
-                <i class="fa-solid fa-credit-card"></i> IBAN Ödemesine Geç
+            <button id="btn-checkout" onclick="checkoutDirectToWhatsapp()" class="btn-gold" style="width: 100%; justify-content: center; padding: 0.95rem; font-size: 1.05rem; font-weight: 800; border-radius: 12px; cursor: pointer; background: #25d366; color: #05070c; border: none; box-shadow: 0 4px 18px rgba(37, 211, 102, 0.45); display: flex; align-items: center; gap: 8px;">
+                <i class="fa-brands fa-whatsapp" style="font-size: 1.35rem;"></i> WhatsApp ile Satın Al / Sipariş Ver
             </button>
         </div>
     </div>
@@ -592,117 +592,14 @@
     <!-- Cart Overlay Backdrop -->
     <div id="cart-overlay" onclick="toggleCart()" style="display: none; position: fixed; inset: 0; background: rgba(5, 7, 12, 0.6); z-index: 9998; backdrop-filter: blur(4px); transition: all 0.3s;"></div>
 
-    <!-- IBAN Payment Modal -->
-    <div class="iban-modal-overlay" id="iban-modal">
-        <div class="iban-modal-content">
-            
-            <div class="iban-modal-header">
-                <h3>Banka Havalesi / EFT ile Satın Al</h3>
-                <button class="btn-modal-close" onclick="closeIbanModal()"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            
-            <div class="iban-modal-body">
-                
-                <!-- Product Overview -->
-                <div style="margin-bottom: 1.25rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 1.25rem;">
-                    <div style="font-size: 0.8rem; color: var(--gold-primary); font-weight: 700; text-transform: uppercase;">Satın Alınacak Ürünler:</div>
-                    <div id="modal-products-list" style="margin-top: 0.5rem; max-height: 120px; overflow-y: auto; background: rgba(255,255,255,0.02); padding: 0.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
-                        <!-- Items list with codes -->
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.75rem; font-size: 0.95rem; font-weight: 700;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="color: var(--text-muted); font-size: 0.85rem;">Sepet Toplamı (USD):</span>
-                            <span style="color: #ffffff;">$<span id="modal-product-price">0</span></span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="color: var(--text-muted); font-size: 0.85rem;">Canlı Döviz Kuru (1 USD):</span>
-                            <span style="color: var(--gold-primary);" id="modal-live-rate">0.00 TL</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.5rem; margin-top: 0.25rem;">
-                            <span style="color: #ffffff; font-size: 1rem;">Ödenecek TL Tutarı:</span>
-                            <span style="color: #25d366; font-size: 1.25rem; font-weight: 800;" id="modal-product-price-try">0.00 TL</span>
-                        </div>
-                        <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 400; margin-top: 0.25rem;">
-                            Ödeme Açıklama Kodları: <strong id="modal-product-codes" style="color: #fff;">ERN-STL101</strong>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- IBAN Information -->
-                <div class="iban-box">
-                    <div style="font-size: 0.8rem; color: var(--gold-primary); font-weight: 700; margin-bottom: 0.5rem; text-transform: uppercase;">
-                        <i class="fa-solid fa-building-columns"></i> Alıcı Banka Bilgileri (TL Hesabı)
-                    </div>
-                    
-                    <div class="iban-row">
-                        <span class="iban-label">Banka Adı:</span>
-                        <span class="iban-value" id="iban-bank-name">Garanti BBVA</span>
-                    </div>
-                    <div class="iban-row">
-                        <span class="iban-label">Hesap Sahibi:</span>
-                        <span class="iban-value" id="iban-bank-owner">ERN Tasarım Mücevherat</span>
-                    </div>
-                    <div class="iban-row">
-                        <span class="iban-label">TL IBAN:</span>
-                        <span class="iban-value">
-                            <span id="iban-text">TR00 0000 0000 0000 0000 0000 00</span>
-                            <button class="copy-btn" onclick="copyIban()"><i class="fa-solid fa-copy"></i> Kopyala</button>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Instruction Box -->
-                <div class="form-notice" style="margin-bottom: 1.25rem;">
-                    <i class="fa-solid fa-circle-info" style="color: var(--gold-primary); font-size: 0.95rem;"></i> 
-                    <strong>Önemli Adım:</strong> Banka uygulamanızdan TL havalesi yaparken açıklama kısmına mutlaka sadece şu kodları yazınız: 
-                    <strong id="modal-desc-code" style="color: var(--gold-primary); font-size: 0.9rem; word-break: break-all;">ERN-STL101</strong> ve tam olarak <strong id="modal-desc-price-try" style="color: #25d366;">0.00 TL</strong> gönderdiğinizden emin olunuz.
-                </div>
-
-                <!-- Payment Form -->
-                <form class="payment-form" id="iban-payment-form" onsubmit="sendIbanOrderNotification(event)">
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-                        <div class="form-group">
-                            <label class="form-label" for="pay-name">Adınız Soyadınız:</label>
-                            <input type="text" id="pay-name" class="form-input" placeholder="Ahmet Yılmaz" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="pay-phone">Telefon Numaranız:</label>
-                            <input type="tel" id="pay-phone" class="form-input" placeholder="05XX XXX XX XX" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="pay-email">E-Posta Adresiniz (Hassas):</label>
-                        <input type="email" id="pay-email" class="form-input" placeholder="tasarimci@ornek.com" required>
-                        <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: -0.2rem;">* STL indirme linkleri onaylandıktan sonra bu mail adresine gönderilecektir.</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="pay-sender-name">Ödeme Yapan Hesap Sahibi Adı (Doğrulama için):</label>
-                        <input type="text" id="pay-sender-name" class="form-input" placeholder="Transferi yapan kişinin ad soyadı" required>
-                    </div>
-
-                    <button type="submit" class="btn-submit-payment">
-                        <i class="fa-brands fa-whatsapp"></i> Ödemeyi Yaptım, WhatsApp'tan Bildir
-                    </button>
-                </form>
-
-            </div>
-            
-        </div>
-    </div>
-
-
-
     <!-- 3D Preview Modal -->
-    <div class="iban-modal-overlay" id="threejs-modal" style="z-index: 10005;">
-        <div class="iban-modal-content" style="max-width: 900px; width: 95%;">
-            <div class="iban-modal-header">
+    <div class="ern-modal-overlay" id="threejs-modal" style="z-index: 10005;">
+        <div class="ern-modal-content" style="max-width: 900px; width: 95%;">
+            <div class="ern-modal-header">
                 <h3 id="threejs-modal-title">3D Tasarım Önizleme</h3>
                 <button class="btn-modal-close" onclick="close3dViewer()"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="iban-modal-body" style="padding: 0; display: flex; flex-direction: row; flex-wrap: wrap;">
+            <div class="ern-modal-body" style="padding: 0; display: flex; flex-direction: row; flex-wrap: wrap;">
                 
                 <!-- 3D Canvas Container (Left / Top) -->
                 <div id="canvas-container" style="flex: 1; min-width: 300px; height: 480px; background: #020617; position: relative; overflow: hidden;">
@@ -758,7 +655,10 @@
                     </div>
 
                     <!-- Material selection & Info Footer -->
-                    <div style="background: #090d16; padding: 1rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 0.6rem;">
+                    <div style="background: #090d16; padding: 1rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 0.75rem;">
+                        <button id="btn-modal-3d-whatsapp" onclick="buyCurrent3dModelViaWhatsapp()" class="btn-gold" style="width: 100%; justify-content: center; padding: 0.75rem; font-size: 0.95rem; font-weight: 800; border-radius: 10px; cursor: pointer; background: #25d366; color: #05070c; border: none; box-shadow: 0 4px 14px rgba(37,211,102,0.35); display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> Bu Modeli WhatsApp ile Satın Al
+                        </button>
                         <!-- Material selectors -->
                         <div>
                             <div style="font-size: 0.75rem; color: #cbd5e1; font-weight: 600; margin-bottom: 0.35rem;">Kaplama:</div>
@@ -785,7 +685,7 @@
         <p class="footer-text">
             © 2026 Ern Tasarım. Tüm Hakları Saklıdır. "Siz hayal edin, biz yapalım."
             <span style="margin: 0 8px; opacity: 0.3;">|</span>
-            <a href="yonetici.html" style="color: var(--gold-primary); text-decoration: none; font-size: 0.8rem; opacity: 0.8; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
+            <a href="yonetici.html?v=2" style="color: var(--gold-primary); text-decoration: none; font-size: 0.8rem; opacity: 0.8; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
                 <i class="fa-solid fa-shield-halved"></i> Yönetici Girişi
             </a>
         </p>
@@ -934,13 +834,7 @@
 
         function applySiteSettings() {
             const settings = getSiteSettings();
-            const bankNameEl = document.getElementById('iban-bank-name');
-            const bankOwnerEl = document.getElementById('iban-bank-owner');
-            const ibanTextEl = document.getElementById('iban-text');
 
-            if (bankNameEl && settings.bankName) bankNameEl.textContent = settings.bankName;
-            if (bankOwnerEl && settings.bankOwner) bankOwnerEl.textContent = settings.bankOwner;
-            if (ibanTextEl && settings.iban) ibanTextEl.textContent = settings.iban;
         }
 
         let products = getCatalogProducts();
@@ -1146,153 +1040,110 @@
             }).join('');
         }
 
-        // Sepetten IBAN Ödemesine Geçiş (Canlı Kur Hesaplamalı)
-        function openCheckoutWithCart() {
-            if (cart.length === 0) return;
+        // Doğrudan WhatsApp ile Satın Alma / Sipariş Sistemi (Sitede IBAN Yok)
+        let currentViewingProductTitle = '3D CAD Modeli';
+        let currentViewingProductCode = 'ERN-STL';
+        let currentViewingProductPrice = 100;
 
-            toggleCart();
-
-            const totalPriceUsd = cart.reduce((sum, item) => sum + item.price, 0);
-            const totalPriceTry = (totalPriceUsd * usdToTryRate).toFixed(2);
-            const allCodes = cart.map(item => item.code).join(' + ');
-
-            const listContainer = document.getElementById('modal-products-list');
-            listContainer.innerHTML = cart.map(item => `
-                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.25rem 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-                    <span style="color: #fff;">• ${item.title}</span>
-                    <span style="color: var(--gold-primary); font-weight: 700;">$${item.price}</span>
-                </div>
-            `).join('');
-
-            // Fiyatları ve Canlı Kur Bilgisini Aktarma
-            document.getElementById('modal-product-price').textContent = totalPriceUsd;
-            document.getElementById('modal-live-rate').textContent = `${usdToTryRate.toFixed(2)} TL`;
-            document.getElementById('modal-product-price-try').textContent = `${totalPriceTry} TL`;
-            document.getElementById('modal-desc-price-try').textContent = `${totalPriceTry} TL`;
-            
-            document.getElementById('modal-product-codes').textContent = allCodes;
-            document.getElementById('modal-desc-code').textContent = allCodes;
-
-            const modal = document.getElementById('iban-modal');
-            modal.style.display = 'flex';
-        }
-
-        function closeIbanModal() {
-            const modal = document.getElementById('iban-modal');
-            modal.style.display = 'none';
-            document.getElementById('iban-payment-form').reset();
-        }
-
-        function copyIban() {
-            const ibanText = document.getElementById('iban-text').textContent;
-            navigator.clipboard.writeText(ibanText.replace(/\s+/g, '')).then(() => {
-                const btn = document.querySelector('.copy-btn');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Kopyalandı!';
-                btn.style.background = '#25d366';
-                btn.style.color = '#ffffff';
-                
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.style.background = 'rgba(212, 175, 55, 0.15)';
-                    btn.style.color = 'var(--gold-primary)';
-                }, 2000);
-            }).catch(err => {
-                alert('IBAN kopyalanamadı, lütfen elle seçip kopyalayın.');
-            });
-        }
-
-        // WhatsApp Bildirimi
-        function sendIbanOrderNotification(e) {
-            e.preventDefault();
-
-            const name = document.getElementById('pay-name').value.trim();
-            const phone = document.getElementById('pay-phone').value.trim();
-            const email = document.getElementById('pay-email').value.trim();
-            const senderName = document.getElementById('pay-sender-name').value.trim();
+        function checkoutDirectToWhatsapp() {
+            if (!cart || cart.length === 0) {
+                alert('Sepetinizde ürün bulunmuyor. Lütfen önce satın almak istediğiniz 3D modeli sepete ekleyin.');
+                return;
+            }
 
             const siteSettings = getSiteSettings();
-            const whatsappNumber = siteSettings.whatsapp || '905320000000';
+            let whatsappNumber = '905320000000';
+            if (siteSettings.whatsapp) {
+                whatsappNumber = siteSettings.whatsapp.replace(/[^0-9]/g, '');
+            }
 
             const totalPriceUsd = cart.reduce((sum, item) => sum + item.price, 0);
-            const totalPriceTry = (totalPriceUsd * usdToTryRate).toFixed(2);
-            const allCodes = cart.map(item => item.code).join(' + ');
+            const totalPriceTry = (totalPriceUsd * usdToTryRate).toFixed(0);
+            const allCodes = cart.map(item => item.code).join(', ');
 
-            // Yönetici Paneline Siparişi Kaydet
+            // 1. Yönetici Paneline Siparişi Otomatik Kaydet
             try {
                 const requests = JSON.parse(localStorage.getItem('ern_jewelry_requests')) || [];
-                requests.push({
+                const newOrder = {
                     id: 'ord_' + Date.now(),
-                    name: name,
-                    phone: phone,
-                    email: email,
-                    senderName: senderName,
-                    items: cart.map(item => `${item.title} (${item.code})`).join(', '),
+                    name: 'WhatsApp Müşterisi (Web Sepet)',
+                    phone: 'WhatsApp üzerinden bildirildi',
+                    email: '-',
+                    senderName: '-',
+                    items: cart.map(item => `${item.title} (${item.code}) - $${item.price}`).join(' | '),
                     codes: allCodes,
                     totalPriceUsd: totalPriceUsd,
-                    totalPriceTry: totalPriceTry,
-                    type: 'STL / 3D Satın Alma',
-                    date: new Date().toLocaleDateString('tr-TR'),
+                    totalPriceTry: totalPriceTry + ' TL',
+                    type: '3D STL Satın Alma (WhatsApp)',
+                    date: new Date().toLocaleDateString('tr-TR') + ' ' + new Date().toLocaleTimeString('tr-TR', {hour: '2-digit', minute: '2-digit'}),
                     status: 'Bekliyor'
-                });
+                };
+                requests.unshift(newOrder);
                 localStorage.setItem('ern_jewelry_requests', JSON.stringify(requests));
             } catch (err) {
-                console.error('Sipariş kaydetme hatası:', err);
+                console.error('Sipariş panel kaydı hatası:', err);
             }
 
-            let message = `*ERN TASARIM - STL SATIN ALMA TALEBİ* 📥\n`;
-            message += `--------------------------------------\n`;
-            message += `📦 *Sepetteki Ürünler:*\n`;
+            // 2. WhatsApp Mesajını Hazırla
+            let msg = `💎 *ERN TASARIM - 3D ÇİZİM SATIN ALMA TALEBİ* 📦
+`;
+            msg += `Merhaba Eren Bey, web sitenizden sepetime eklediğim 3D modelleri satın almak istiyorum:
+
+`;
             cart.forEach((item, index) => {
-                message += `${index + 1}. ${item.title} (${item.code}) - $${item.price}\n`;
+                const itemTry = (item.price * usdToTryRate).toFixed(0);
+                msg += `${index + 1}. *${item.title}*
+`;
+                msg += `   🔖 Kod: ${item.code}
+`;
+                msg += `   💵 Fiyat: $${item.price} (Yaklaşık ${itemTry} TL)
+
+`;
             });
-            message += `--------------------------------------\n`;
-            message += `📈 *Canlı Döviz Kuru:* 1 USD = ${usdToTryRate.toFixed(2)} TL\n`;
-            message += `💰 *Toplam Dolar Tutarı:* $${totalPriceUsd}\n`;
-            message += `💵 *Ödenecek TL Tutarı:* ${totalPriceTry} TL\n`;
-            message += `--------------------------------------\n`;
-            message += `🔑 *Açıklama Kodları:* ${allCodes}\n`;
-            message += `👤 *Müşteri Adı:* ${name}\n`;
-            message += `📞 *Telefon:* ${phone}\n`;
-            message += `📧 *E-Posta:* ${email}\n`;
-            message += `🏦 *Ödeme Yapan Hesap (TL):* ${senderName}\n\n`;
-            message += `_Not: Havale/EFT işlemi canlı kur hesabı üzerinden TL olarak gerçekleştirildi. Kontrol sonrasında STL dosyalarının linklerini mail adresime bekliyorum._`;
+            msg += `💰 *Toplam Tutar:* $${totalPriceUsd} (Yaklaşık ${totalPriceTry} TL)
+`;
+            msg += `--------------------------------------
+`;
+            msg += `Ödeme ve 3D STL dosyalarının teslimatını WhatsApp üzerinden tamamlayabilir miyiz?`;
 
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-
-            // Google E-Tabloya Gönder (Eğer link tanımlanmışsa)
-            if (googleWebAppUrl && googleWebAppUrl !== 'BURAYA_GOOGLE_WEB_APP_LINKINI_YAZIN') {
-                const orderData = {
-                    name: name,
-                    phone: phone,
-                    email: email,
-                    senderName: senderName,
-                    items: cart.map(item => `${item.title} (${item.code})`).join(', '),
-                    codes: allCodes,
-                    totalPriceUsd: totalPriceUsd,
-                    totalPriceTry: totalPriceTry
-                };
-                
-                fetch(googleWebAppUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(orderData)
-                }).catch(err => console.error('E-Tablo kayıt hatası:', err));
-            }
-
-            alert(`Ödeme bildiriminiz oluşturuldu. Onay almak için şimdi WhatsApp'a yönlendiriliyorsunuz. Lütfen WhatsApp penceresinde 'Gönder' butonuna basınız. Ödemeniz onaylandıktan sonra dosyalarınız teslim edilecektir.`);
-            
-            // Sepeti Temizle
+            // 3. Sepeti Kapat ve Temizle
+            toggleCart();
             cart = [];
             localStorage.setItem('ern_stl_cart', JSON.stringify(cart));
             updateCartUI();
+            renderCartItems();
 
-            closeIbanModal();
-            window.open(whatsappUrl, '_blank');
+            // 4. WhatsApp'a Yönlendir
+            const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`;
+            window.open(waUrl, '_blank');
+        }
+
+        function buyCurrent3dModelViaWhatsapp() {
+            const siteSettings = getSiteSettings();
+            let whatsappNumber = '905320000000';
+            if (siteSettings.whatsapp) {
+                whatsappNumber = siteSettings.whatsapp.replace(/[^0-9]/g, '');
+            }
+
+            const tryVal = (currentViewingProductPrice * usdToTryRate).toFixed(0);
+            let msg = `💎 *ERN TASARIM - 3D MODEL SATIN ALMA TALEBİ* 📦
+
+`;
+            msg += `Merhaba Eren Bey, 3D İnceleme alanında görüntülediğim şu modeli satın almak istiyorum:
+
+`;
+            msg += `📌 *Ürün Adı:* ${currentViewingProductTitle}
+`;
+            msg += `🔖 *Ürün Kodu:* ${currentViewingProductCode}
+`;
+            msg += `💵 *Fiyatı:* $${currentViewingProductPrice} (Yaklaşık ${tryVal} TL)
+
+`;
+            msg += `Satın alma ve STL teslimatını WhatsApp üzerinden tamamlayabilir miyiz?`;
+
+            close3dViewer();
+            const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`;
+            window.open(waUrl, '_blank');
         }
 
         // Sepete Eklendi Tost Bildirimi
@@ -1391,6 +1242,12 @@
         };
 
         function open3dViewer(stlUrl, title, glbUrl) {
+            currentViewingProductTitle = title || '3D CAD Modeli';
+            const matchedProd = products.find(p => p.title === title || p.media === glbUrl || p.stl === stlUrl);
+            if (matchedProd) {
+                currentViewingProductCode = matchedProd.code || 'ERN-STL';
+                currentViewingProductPrice = matchedProd.price || 100;
+            }
             document.getElementById('threejs-modal-title').textContent = `3D İnceleme - ${title}`;
             document.getElementById('threejs-modal').style.display = 'flex';
             
