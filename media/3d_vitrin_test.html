@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERN 3D Vitrin & Mücevher Görüntüleyici (61 Model)</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Model Viewer Script -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #070a12;
+            --card-bg: rgba(15, 23, 42, 0.85);
+            --gold: #d4af37;
+            --gold-light: #fef08a;
+            --gold-hover: #f3ba2f;
+            --border: rgba(212, 175, 55, 0.25);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem 1rem 3rem 1rem;
+            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #070a12 75%);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 1.25rem;
+            max-width: 800px;
+        }
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 30%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.3rem;
+        }
+        .header p {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        /* Model Arama ve Seçim Çubuğu */
+        .controls-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+            max-width: 860px;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+        .search-input {
+            flex: 1;
+            min-width: 220px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: #fff;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-input:focus {
+            border-color: var(--gold);
+        }
+        .model-dropdown {
+            flex: 2;
+            min-width: 260px;
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--gold-light);
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+        }
+        .model-dropdown option {
+            background: #0f172a;
+            color: #fff;
+        }
+        .btn-custom-glb {
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .btn-custom-glb:hover {
+            background: var(--gold);
+            color: #000;
+        }
+
+        /* Ana Kart ve Model Viewer */
+        .main-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            width: 100%;
+            max-width: 860px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .viewer-container {
+            position: relative;
+            width: 100%;
+            height: 520px;
+            background: radial-gradient(circle at center, #1a253a 0%, #070a12 100%);
+            transition: background 0.3s;
+        }
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            --poster-color: transparent;
+        }
+
+        /* Kamera ve Araçlar */
+        .viewer-tools {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            gap: 6px;
+            z-index: 10;
+        }
+        .tool-btn {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid var(--border);
+            color: var(--gold);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(6px);
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+        .tool-btn:hover {
+            background: var(--gold);
+            color: #070a12;
+            transform: scale(1.08);
+        }
+        .camera-presets {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: flex;
+            gap: 6px;
+            z-index: 10;
+        }
+        .cam-btn {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #cbd5e1;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            backdrop-filter: blur(6px);
+            transition: all 0.2s;
+        }
+        .cam-btn:hover {
+            background: var(--gold);
+            color: #070a12;
+            font-weight: 700;
+        }
+        .controls-hint {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            pointer-events: none;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Kart Gövdesi ve Canlı Özellikler */
+        .card-body {
+            padding: 1.5rem;
+        }
+        .badge-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .badge {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--gold);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 0.6rem;
+        }
+
+        /* Maden Gramaj & Ölçü Grid */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 12px;
+            margin: 1rem 0;
+        }
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .spec-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .spec-val {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .spec-val.gold {
+            color: var(--gold-light);
+        }
+
+        /* Sürükle Bırak Bölgesi */
+        .drag-zone {
+            border: 2px dashed rgba(212, 175, 55, 0.35);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(212, 175, 55, 0.03);
+            margin-bottom: 1rem;
+        }
+        .drag-zone:hover {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.08);
+        }
+
+        /* Eylem Butonları */
+        .action-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .btn-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+            transition: all 0.2s;
+        }
+        .btn-copy {
+            background: #1e293b;
+            color: var(--gold);
+            border: 1px solid var(--border);
+        }
+        .btn-copy:hover {
+            background: var(--gold);
+            color: #000;
+        }
+        .btn-whatsapp {
+            background: #25d366;
+            color: #ffffff;
+        }
+        .btn-whatsapp:hover {
+            background: #20ba5a;
+            transform: translateY(-1px);
+        }
+
+        /* Thumbnail Strip */
+        .thumbnail-strip {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 2px 14px 2px;
+            width: 100%;
+            max-width: 860px;
+            margin-top: 1rem;
+        }
+        .thumb-card {
+            flex: 0 0 100px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .thumb-card:hover, .thumb-card.active {
+            border-color: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.25);
+        }
+        .thumb-card img {
+            width: 100%;
+            height: 70px;
+            object-fit: contain;
+            border-radius: 6px;
+            background: #0b0f19;
+            margin-bottom: 4px;
+        }
+        .thumb-card .thumb-title {
+            font-size: 0.72rem;
+            color: #cbd5e1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Sürükleme Tam Ekran Kaplama */
+        .drag-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(7, 10, 18, 0.92);
+            border: 4px dashed var(--gold);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 9999;
+            color: var(--gold);
+            font-size: 1.5rem;
+            font-weight: bold;
+            gap: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="drag-overlay" id="fullDragOverlay">
+        <i class="fa-solid fa-gem fa-spin" style="font-size: 4rem;"></i>
+        <span>.GLB Modelini Buraya Bırakın</span>
+    </div>
+
+    <div class="header">
+        <h1>💎 ERN TASARIM - 3D MÜCEVHER VİTRİNİ</h1>
+        <p>Tüm koleksiyonu (61 Model) 360° döndürün, canlı gramaj ve ölçülerini inceleyin</p>
+    </div>
+
+    <!-- Üst Kontrol & Model Seçici Barı -->
+    <div class="controls-bar">
+        <input type="text" id="searchBox" class="search-input" placeholder="🔍 Model Ara (örn: bozkurt, haç, kaplan, meryem)...">
+        
+        <select id="modelSelect" class="model-dropdown">
+            <!-- Dinamik doldurulacak -->
+        </select>
+
+        <button class="btn-custom-glb" onclick="document.getElementById('fileInput').click()">
+            <i class="fa-solid fa-folder-open"></i> Kendi GLB'ni Seç
+        </button>
+    </div>
+
+    <!-- Ana Vitrin Kartı -->
+    <div class="main-card">
+        <div class="viewer-container" id="viewerContainer">
+            <div class="camera-presets">
+                <button class="cam-btn" onclick="setCamera('0deg 90deg 2.4m')">✨ Ön Yüz</button>
+                <button class="cam-btn" onclick="setCamera('45deg 60deg 2.4m')">💍 Vitrin 45°</button>
+                <button class="cam-btn" onclick="setCamera('0deg 0deg 2.4m')">Üst</button>
+                <button class="cam-btn" onclick="setCamera('90deg 90deg 2.4m')">Yan</button>
+            </div>
+
+            <div class="viewer-tools">
+                <button class="tool-btn" id="btnToggleRotate" title="Dönüşü Başlat / Durdur" onclick="toggleAutoRotate()">
+                    <i class="fa-solid fa-pause"></i>
+                </button>
+                <button class="tool-btn" title="Arka Plan Rengini Değiştir" onclick="cycleBackground()">
+                    <i class="fa-solid fa-palette"></i>
+                </button>
+                <button class="tool-btn" title="HD Görsel İndir" onclick="takeScreenshot()">
+                    <i class="fa-solid fa-camera"></i>
+                </button>
+            </div>
+
+            <model-viewer id="mainViewer"
+                          src="models/2cm_meryem1.glb"
+                          alt="Mücevher 3D Modeli"
+                          auto-rotate
+                          rotation-per-second="25deg"
+                          camera-controls
+                          shadow-intensity="1.5"
+                          shadow-softness="0.8"
+                          exposure="1.15"
+                          environment-image="neutral"
+                          ar>
+            </model-viewer>
+
+            <div class="controls-hint">
+                <i class="fa-solid fa-hand-pointer"></i> Farenizle 360° çevirin | Tekerlekle yakınlaşın
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="badge-row">
+                <span class="badge" id="itemBadge">Tek Parçalı</span>
+                <span class="badge" id="itemId" style="background: rgba(255,255,255,0.06); color: #94a3b8; border-color: rgba(255,255,255,0.15);">ERN-1002</span>
+            </div>
+
+            <h2 class="title" id="itemTitle">2cm Meryem Ana Kolye Ucu</h2>
+
+            <!-- Canlı Kuyumcu Ölçü & Gramaj Tablosu -->
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <span class="spec-label">📐 Ölçüler (X×Y×Z)</span>
+                    <span class="spec-val" id="specDims">27.3 × 22.6 × 1.6 mm</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">🟡 14K Altın</span>
+                    <span class="spec-val gold" id="spec14k">4.25 gr</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">🟠 18K Altın</span>
+                    <span class="spec-val" id="spec18k">5.07 gr</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">⚪ 925 Gümüş</span>
+                    <span class="spec-val" id="specSilver">3.39 gr</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">📦 Hacim</span>
+                    <span class="spec-val" id="specVol">0.327 cm³</span>
+                </div>
+            </div>
+
+            <div class="drag-zone" id="dropZone">
+                <i class="fa-solid fa-cloud-arrow-up" style="font-size: 1.6rem; color: var(--gold); margin-bottom: 0.3rem; display: block;"></i>
+                <strong>Yeni Bir .GLB Çizimini Buraya Sürükleyin</strong><br>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">veya dosya seçmek için bu kutucuğa tıklayın</span>
+                <input type="file" id="fileInput" accept=".glb" style="display: none;">
+            </div>
+
+            <div class="action-row">
+                <button class="btn-action btn-copy" onclick="copyWebCode()">
+                    <i class="fa-solid fa-code"></i> Web Vitrin Kodunu Kopyala
+                </button>
+                <a id="btnWhatsApp" href="#" class="btn-action btn-whatsapp" target="_blank">
+                    <i class="fa-brands fa-whatsapp"></i> WhatsApp'tan Fiyat Al
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hızlı Seçim Thumbnail Şeridi -->
+    <div class="thumbnail-strip" id="thumbStrip">
+        <!-- JS ile dolacak -->
+    </div>
+
+    <script>
+        const CATALOG = [{"id": "ERN-1001", "title": "1 Euro Madalyon Kolye Ucu", "type": "Tek Parçalı", "files": ["1euro.stl"], "glb": "models/1euro.glb", "image": "models/1euro.jpg", "dimensions": {"x_mm": 28.6, "y_mm": 58.8, "z_mm": 6.9}, "volume_cm3": 0.81, "weight_14k": 10.53, "weight_18k": 12.56, "weight_silver": 8.39}, {"id": "ERN-1002", "title": "2cm Meryem Ana Kolye Ucu", "type": "Tek Parçalı", "files": ["2cm meryem1.stl"], "glb": "models/2cm_meryem1.glb", "image": "models/2cm_meryem1.jpg", "dimensions": {"x_mm": 27.3, "y_mm": 22.6, "z_mm": 1.6}, "volume_cm3": 0.327, "weight_14k": 4.25, "weight_18k": 5.07, "weight_silver": 3.39}, {"id": "ERN-1003", "title": "7cm Pırlanta Taşlı Haç Kolye", "type": "Tek Parçalı", "files": ["7cm hc.stl"], "glb": "models/7cm_hc.glb", "image": "models/7cm_hc.jpg", "dimensions": {"x_mm": 43.7, "y_mm": 61.6, "z_mm": 5.1}, "volume_cm3": 1.357, "weight_14k": 17.64, "weight_18k": 21.03, "weight_silver": 14.06}, {"id": "ERN-1004", "title": "Alkan-5 Özel Tasarım Kolye", "type": "Tek Parçalı", "files": ["ALKAN-5.STL"], "glb": "models/alkan-5.glb", "image": "models/alkan-5.jpg", "dimensions": {"x_mm": 19.2, "y_mm": 31.2, "z_mm": 3.4}, "volume_cm3": 0.161, "weight_14k": 2.09, "weight_18k": 2.5, "weight_silver": 1.67}, {"id": "ERN-1005", "title": "Kenetlenen Dua Eden Eller Kolye", "type": "Tek Parçalı", "files": ["ELLER.STL"], "glb": "models/eller.glb", "image": "models/eller.jpg", "dimensions": {"x_mm": 22.9, "y_mm": 32.1, "z_mm": 6.6}, "volume_cm3": 0.715, "weight_14k": 9.29, "weight_18k": 11.08, "weight_silver": 7.41}, {"id": "ERN-1006", "title": "Kovboy Şapkası & Figürü Kolye", "type": "Tek Parçalı", "files": ["KOWBOY.stl"], "glb": "models/kowboy.glb", "image": "models/kowboy.jpg", "dimensions": {"x_mm": 36.1, "y_mm": 33.2, "z_mm": 3.0}, "volume_cm3": 0.731, "weight_14k": 9.5, "weight_18k": 11.33, "weight_silver": 7.57}, {"id": "ERN-1007", "title": "Balerin & Figür Kolye (58-A)", "type": "Tek Parçalı", "files": ["Kolyeler2-58 a.stl"], "glb": "models/kolyeler2-58_a.glb", "image": "models/kolyeler2-58_a.jpg", "dimensions": {"x_mm": 23.5, "y_mm": 34.4, "z_mm": 5.9}, "volume_cm3": 0.604, "weight_14k": 7.85, "weight_18k": 9.36, "weight_silver": 6.26}, {"id": "ERN-1008", "title": "Lüks Kolye Ucu (No. 57)", "type": "Tek Parçalı", "files": ["Kolyeler2_57.stl"], "glb": "models/kolyeler2_57.glb", "image": "models/kolyeler2_57.jpg", "dimensions": {"x_mm": 42.4, "y_mm": 20.2, "z_mm": 14.7}, "volume_cm3": 1.188, "weight_14k": 15.44, "weight_18k": 18.41, "weight_silver": 12.31}, {"id": "ERN-1009", "title": "Serenay Özel Tasarım Kolye", "type": "Tek Parçalı", "files": ["SERENAY.STL"], "glb": "models/serenay.glb", "image": "models/serenay.jpg", "dimensions": {"x_mm": 94.9, "y_mm": 24.6, "z_mm": 4.4}, "volume_cm3": 1.202, "weight_14k": 15.63, "weight_18k": 18.63, "weight_silver": 12.45}, {"id": "ERN-1010", "title": "Akrep Kolye Ucu (3D Rölyef)", "type": "Tek Parçalı", "files": ["akrep kolye.stl"], "glb": "models/akrep_kolye.glb", "image": "models/akrep_kolye.jpg", "dimensions": {"x_mm": 35.3, "y_mm": 47.1, "z_mm": 22.0}, "volume_cm3": 1.845, "weight_14k": 23.98, "weight_18k": 28.6, "weight_silver": 19.11}, {"id": "ERN-1011", "title": "Büyük Akrep Heykelcik Kolye", "type": "Tek Parçalı", "files": ["akrep.stl"], "glb": "models/akrep.glb", "image": "models/akrep.jpg", "dimensions": {"x_mm": 55.5, "y_mm": 80.3, "z_mm": 10.5}, "volume_cm3": 3.183, "weight_14k": 41.38, "weight_18k": 49.34, "weight_silver": 32.98}, {"id": "ERN-1012", "title": "Pırlantalı Çengelli İğne Kolye Ucu", "type": "Tek Parçalı", "files": ["bil cengelli igne.stl"], "glb": "models/bil_cengelli_igne.glb", "image": "models/bil_cengelli_igne.jpg", "dimensions": {"x_mm": 32.8, "y_mm": 12.4, "z_mm": 2.9}, "volume_cm3": 0.127, "weight_14k": 1.65, "weight_18k": 1.97, "weight_silver": 1.32}, {"id": "ERN-1013", "title": "Bozkurt Hilal Kolye Ucu", "type": "Tek Parçalı", "files": ["bozkurt.stl"], "glb": "models/bozkurt.glb", "image": "models/bozkurt.jpg", "dimensions": {"x_mm": 22.5, "y_mm": 23.2, "z_mm": 3.1}, "volume_cm3": 0.278, "weight_14k": 3.61, "weight_18k": 4.31, "weight_silver": 2.88}, {"id": "ERN-1014", "title": "100 Dolar Plaka Kolye Ucu", "type": "Tek Parçalı", "files": ["dolar.stl"], "glb": "models/dolar.glb", "image": "models/dolar.jpg", "dimensions": {"x_mm": 23.8, "y_mm": 12.9, "z_mm": 1.7}, "volume_cm3": 0.186, "weight_14k": 2.42, "weight_18k": 2.88, "weight_silver": 1.93}, {"id": "ERN-1015", "title": "Ejderha Kolye Ucu", "type": "Tek Parçalı", "files": ["ejderha.stl"], "glb": "models/ejderha.glb", "image": "models/ejderha.jpg", "dimensions": {"x_mm": 14.6, "y_mm": 30.1, "z_mm": 3.8}, "volume_cm3": 0.336, "weight_14k": 4.37, "weight_18k": 5.21, "weight_silver": 3.48}, {"id": "ERN-1016", "title": "Boynuzlu Geyik Başı Kolye", "type": "Tek Parçalı", "files": ["geyik.stl"], "glb": "models/geyik.glb", "image": "models/geyik.jpg", "dimensions": {"x_mm": 29.0, "y_mm": 44.3, "z_mm": 17.5}, "volume_cm3": 2.265, "weight_14k": 29.45, "weight_18k": 35.11, "weight_silver": 23.47}, {"id": "ERN-1017", "title": "Kükreyen Kaplan Başı Kolye", "type": "Tek Parçalı", "files": ["kaplan.stl"], "glb": "models/kaplan.glb", "image": "models/kaplan.jpg", "dimensions": {"x_mm": 27.0, "y_mm": 38.5, "z_mm": 8.7}, "volume_cm3": 0.852, "weight_14k": 11.08, "weight_18k": 13.21, "weight_silver": 8.83}, {"id": "ERN-1018", "title": "Kaplan 8mm Kolye / Yüzük", "type": "Tek Parçalı", "files": ["kaplan1 8mm.stl"], "glb": "models/kaplan1_8mm.glb", "image": "models/kaplan1_8mm.jpg", "dimensions": {"x_mm": 46.1, "y_mm": 21.3, "z_mm": 18.2}, "volume_cm3": 1.452, "weight_14k": 18.88, "weight_18k": 22.51, "weight_silver": 15.04}, {"id": "ERN-1019", "title": "Kaplan Kolye Ucu (Sade)", "type": "Tek Parçalı", "files": ["kaplan1.stl"], "glb": "models/kaplan1.glb", "image": "models/kaplan1.jpg", "dimensions": {"x_mm": 39.5, "y_mm": 20.4, "z_mm": 2.8}, "volume_cm3": 0.256, "weight_14k": 3.33, "weight_18k": 3.97, "weight_silver": 2.65}, {"id": "ERN-1020", "title": "Keleş (AK-47) Kolye Ucu (Sade)", "type": "Tek Parçalı", "files": ["keles sade.stl"], "glb": "models/keles_sade.glb", "image": "models/keles_sade.jpg", "dimensions": {"x_mm": 70.5, "y_mm": 22.1, "z_mm": 2.4}, "volume_cm3": 0.9, "weight_14k": 11.7, "weight_18k": 13.95, "weight_silver": 9.32}, {"id": "ERN-1021", "title": "Kimber Tabanca Kolye Ucu", "type": "Tek Parçalı", "files": ["kimber.stl"], "glb": "models/kimber.glb", "image": "models/kimber.jpg", "dimensions": {"x_mm": 70.7, "y_mm": 20.7, "z_mm": 1.5}, "volume_cm3": 0.604, "weight_14k": 7.85, "weight_18k": 9.36, "weight_silver": 6.26}, {"id": "ERN-1022", "title": "Meryem Ana Oval Kolye Ucu (2-17)", "type": "Tek Parçalı", "files": ["kolye2-17 meryem.stl"], "glb": "models/kolye2-17_meryem.glb", "image": "models/kolye2-17_meryem.jpg", "dimensions": {"x_mm": 14.0, "y_mm": 17.8, "z_mm": 2.3}, "volume_cm3": 0.071, "weight_14k": 0.92, "weight_18k": 1.1, "weight_silver": 0.74}, {"id": "ERN-1023", "title": "Haç Gövdesi Kolye Parçası", "type": "Tek Parçalı", "files": ["kolye2-20 isa.stl"], "glb": "models/kolye2-20_isa.glb", "image": "models/kolye2-20_isa.jpg", "dimensions": {"x_mm": 14.5, "y_mm": 32.5, "z_mm": 2.1}, "volume_cm3": 0.139, "weight_14k": 1.81, "weight_18k": 2.15, "weight_silver": 1.44}, {"id": "ERN-1024", "title": "İsa Figürü Kolye Parçası", "type": "Tek Parçalı", "files": ["kolye2-20 isa1.stl"], "glb": "models/kolye2-20_isa1.glb", "image": "models/kolye2-20_isa1.jpg", "dimensions": {"x_mm": 13.2, "y_mm": 16.6, "z_mm": 7.2}, "volume_cm3": 0.109, "weight_14k": 1.42, "weight_18k": 1.69, "weight_silver": 1.13}, {"id": "ERN-1025", "title": "AK-47 Keleş Kolye Ucu (33-1)", "type": "Tek Parçalı", "files": ["kolye33-1 ak47.stl"], "glb": "models/kolye33-1_ak47.glb", "image": "models/kolye33-1_ak47.jpg", "dimensions": {"x_mm": 70.5, "y_mm": 22.1, "z_mm": 2.2}, "volume_cm3": 0.649, "weight_14k": 8.44, "weight_18k": 10.06, "weight_silver": 6.72}, {"id": "ERN-1026", "title": "Özel Tasarım Kolye Ucu (34-2)", "type": "Tek Parçalı", "files": ["kolye34-2.stl"], "glb": "models/kolye34-2.glb", "image": "models/kolye34-2.jpg", "dimensions": {"x_mm": 21.7, "y_mm": 42.6, "z_mm": 3.6}, "volume_cm3": 0.275, "weight_14k": 3.58, "weight_18k": 4.26, "weight_silver": 2.85}, {"id": "ERN-1027", "title": "Lüks Taş Yuvalı Kolye Ucu (44)", "type": "Tek Parçalı", "files": ["kolye44.stl"], "glb": "models/kolye44.glb", "image": "models/kolye44.jpg", "dimensions": {"x_mm": 20.4, "y_mm": 24.5, "z_mm": 3.8}, "volume_cm3": 0.231, "weight_14k": 3.0, "weight_18k": 3.58, "weight_silver": 2.39}, {"id": "ERN-1028", "title": "N Harfi Pırlantalı Kolye Ucu", "type": "Tek Parçalı", "files": ["kolye49 Nharf ALT.stl"], "glb": "models/kolye49_nharf_alt.glb", "image": "models/kolye49_nharf_alt.jpg", "dimensions": {"x_mm": 33.1, "y_mm": 38.2, "z_mm": 4.7}, "volume_cm3": 1.503, "weight_14k": 19.54, "weight_18k": 23.3, "weight_silver": 15.57}, {"id": "ERN-1029", "title": "Asma Kilit Kolye Ucu", "type": "Tek Parçalı", "files": ["kolye53 asma kilit.stl"], "glb": "models/kolye53_asma_kilit.glb", "image": "models/kolye53_asma_kilit.jpg", "dimensions": {"x_mm": 8.4, "y_mm": 18.1, "z_mm": 3.6}, "volume_cm3": 0.123, "weight_14k": 1.6, "weight_18k": 1.91, "weight_silver": 1.27}, {"id": "ERN-1030", "title": "Kral Aslan Başı Kolye Ucu", "type": "Tek Parçalı", "files": ["kolye56 aslan.stl"], "glb": "models/kolye56_aslan.glb", "image": "models/kolye56_aslan.jpg", "dimensions": {"x_mm": 33.9, "y_mm": 23.9, "z_mm": 7.3}, "volume_cm3": 0.537, "weight_14k": 6.98, "weight_18k": 8.32, "weight_silver": 5.56}, {"id": "ERN-1031", "title": "Özel Madalyon Kolye Ucu (56)", "type": "Tek Parçalı", "files": ["kolye56.stl"], "glb": "models/kolye56.glb", "image": "models/kolye56.jpg", "dimensions": {"x_mm": 23.9, "y_mm": 28.9, "z_mm": 5.9}, "volume_cm3": 0.454, "weight_14k": 5.9, "weight_18k": 7.04, "weight_silver": 4.7}, {"id": "ERN-1032", "title": "Zarif Balerin Kolye Ucu (19-3)", "type": "Tek Parçalı", "files": ["kolyeler2-19 balerin3.stl"], "glb": "models/kolyeler2-19_balerin3.glb", "image": "models/kolyeler2-19_balerin3.jpg", "dimensions": {"x_mm": 36.8, "y_mm": 40.8, "z_mm": 6.3}, "volume_cm3": 0.485, "weight_14k": 6.3, "weight_18k": 7.52, "weight_silver": 5.02}, {"id": "ERN-1033", "title": "Balerin Kolye Ucu (2-2)", "type": "Tek Parçalı", "files": ["kolyeler2-2 balerin.stl"], "glb": "models/kolyeler2-2_balerin.glb", "image": "models/kolyeler2-2_balerin.jpg", "dimensions": {"x_mm": 35.6, "y_mm": 50.5, "z_mm": 9.9}, "volume_cm3": 0.777, "weight_14k": 10.1, "weight_18k": 12.04, "weight_silver": 8.05}, {"id": "ERN-1034", "title": "Dans Eden Balerin Kolye (20-4)", "type": "Tek Parçalı", "files": ["kolyeler2-20 balerin4.stl"], "glb": "models/kolyeler2-20_balerin4.glb", "image": "models/kolyeler2-20_balerin4.jpg", "dimensions": {"x_mm": 33.4, "y_mm": 39.7, "z_mm": 7.5}, "volume_cm3": 0.651, "weight_14k": 8.46, "weight_18k": 10.09, "weight_silver": 6.74}, {"id": "ERN-1035", "title": "Balerin Kolye Ucu (2-3)", "type": "Tek Parçalı", "files": ["kolyeler2-3 balerin2.stl"], "glb": "models/kolyeler2-3_balerin2.glb", "image": "models/kolyeler2-3_balerin2.jpg", "dimensions": {"x_mm": 30.8, "y_mm": 48.9, "z_mm": 8.3}, "volume_cm3": 0.679, "weight_14k": 8.83, "weight_18k": 10.52, "weight_silver": 7.03}, {"id": "ERN-1036", "title": "2.6cm Yuvarlak Madalyon (45)", "type": "Tek Parçalı", "files": ["kolyeler2-45 2.6cm .stl"], "glb": "models/kolyeler2-45_2_6cm.glb", "image": "models/kolyeler2-45_2_6cm.jpg", "dimensions": {"x_mm": 25.6, "y_mm": 33.9, "z_mm": 3.8}, "volume_cm3": 0.286, "weight_14k": 3.72, "weight_18k": 4.43, "weight_silver": 2.96}, {"id": "ERN-1037", "title": "Özel Kolye Ucu (49)", "type": "Tek Parçalı", "files": ["kolyeler2-49.stl"], "glb": "models/kolyeler2-49.glb", "image": "models/kolyeler2-49.jpg", "dimensions": {"x_mm": 21.0, "y_mm": 24.3, "z_mm": 3.8}, "volume_cm3": 0.258, "weight_14k": 3.35, "weight_18k": 4.0, "weight_silver": 2.67}, {"id": "ERN-1038", "title": "Lüks Uzun Kolye Ucu (2-6)", "type": "Tek Parçalı", "files": ["kolyeler2-6.stl"], "glb": "models/kolyeler2-6.glb", "image": "models/kolyeler2-6.jpg", "dimensions": {"x_mm": 29.2, "y_mm": 74.3, "z_mm": 6.2}, "volume_cm3": 1.156, "weight_14k": 15.03, "weight_18k": 17.92, "weight_silver": 11.98}, {"id": "ERN-1039", "title": "Kraliyet Haçı Kolye Ucu", "type": "Tek Parçalı", "files": ["kral hac.stl"], "glb": "models/kral_hac.glb", "image": "models/kral_hac.jpg", "dimensions": {"x_mm": 35.0, "y_mm": 65.8, "z_mm": 5.7}, "volume_cm3": 1.161, "weight_14k": 15.09, "weight_18k": 18.0, "weight_silver": 12.03}, {"id": "ERN-1040", "title": "Kabartma Rölyef Madalyon (No. 2)", "type": "Tek Parçalı", "files": ["madalyon2.stl"], "glb": "models/madalyon2.glb", "image": "models/madalyon2.jpg", "dimensions": {"x_mm": 18.3, "y_mm": 29.6, "z_mm": 2.8}, "volume_cm3": 0.407, "weight_14k": 5.29, "weight_18k": 6.31, "weight_silver": 4.22}, {"id": "ERN-1041", "title": "Üç Hilal Kolye Ucu", "type": "Tek Parçalı", "files": ["mhp.stl"], "glb": "models/mhp.glb", "image": "models/mhp.jpg", "dimensions": {"x_mm": 16.6, "y_mm": 20.0, "z_mm": 3.4}, "volume_cm3": 0.111, "weight_14k": 1.44, "weight_18k": 1.72, "weight_silver": 1.15}, {"id": "ERN-1042", "title": "Antik Mısır Kolye Ucu", "type": "Tek Parçalı", "files": ["mısır kolye.stl"], "glb": "models/misir_kolye.glb", "image": "models/misir_kolye.jpg", "dimensions": {"x_mm": 29.9, "y_mm": 22.6, "z_mm": 2.3}, "volume_cm3": 0.352, "weight_14k": 4.58, "weight_18k": 5.46, "weight_silver": 3.65}, {"id": "ERN-1043", "title": "Özkan Özel Tasarım Kolye (11-1)", "type": "Tek Parçalı", "files": ["ozkan-11-1.stl"], "glb": "models/ozkan-11-1.glb", "image": "models/ozkan-11-1.jpg", "dimensions": {"x_mm": 11.0, "y_mm": 22.7, "z_mm": 2.0}, "volume_cm3": 0.098, "weight_14k": 1.27, "weight_18k": 1.52, "weight_silver": 1.02}, {"id": "ERN-1044", "title": "Özkan Özel Tasarım Kolye (12)", "type": "Tek Parçalı", "files": ["ozkan-12.stl"], "glb": "models/ozkan-12.glb", "image": "models/ozkan-12.jpg", "dimensions": {"x_mm": 27.8, "y_mm": 47.2, "z_mm": 4.0}, "volume_cm3": 0.397, "weight_14k": 5.16, "weight_18k": 6.15, "weight_silver": 4.11}, {"id": "ERN-1045", "title": "Özkan Tasarım Kolye / Yüzük (14)", "type": "Tek Parçalı", "files": ["ozkan-14.stl"], "glb": "models/ozkan-14.glb", "image": "models/ozkan-14.jpg", "dimensions": {"x_mm": 11.2, "y_mm": 24.6, "z_mm": 30.3}, "volume_cm3": 0.612, "weight_14k": 7.96, "weight_18k": 9.49, "weight_silver": 6.34}, {"id": "ERN-1046", "title": "3D Sevimli Domuz Figür Kolye", "type": "Tek Parçalı", "files": ["pig.stl"], "glb": "models/pig.glb", "image": "models/pig.jpg", "dimensions": {"x_mm": 27.3, "y_mm": 33.7, "z_mm": 34.1}, "volume_cm3": 2.582, "weight_14k": 33.57, "weight_18k": 40.02, "weight_silver": 26.75}, {"id": "ERN-1047", "title": "Firavun Ramses Kolye Ucu", "type": "Tek Parçalı", "files": ["ramses.stl"], "glb": "models/ramses.glb", "image": "models/ramses.jpg", "dimensions": {"x_mm": 24.5, "y_mm": 29.6, "z_mm": 5.9}, "volume_cm3": 1.034, "weight_14k": 13.44, "weight_18k": 16.03, "weight_silver": 10.71}, {"id": "ERN-1048", "title": "Serdar Özel Kolye Ucu", "type": "Tek Parçalı", "files": ["serdar abi.stl"], "glb": "models/serdar_abi.glb", "image": "models/serdar_abi.jpg", "dimensions": {"x_mm": 15.7, "y_mm": 17.2, "z_mm": 2.4}, "volume_cm3": 0.113, "weight_14k": 1.47, "weight_18k": 1.75, "weight_silver": 1.17}, {"id": "ERN-1049", "title": "Hafifletilmiş Kolye Ön Parça", "type": "Tek Parçalı", "files": ["shell_01_of_hollow_of_KOLYE.stl"], "glb": "models/shell_01_of_hollow_of_kolye.glb", "image": "models/shell_01_of_hollow_of_kolye.jpg", "dimensions": {"x_mm": 18.4, "y_mm": 33.2, "z_mm": 4.6}, "volume_cm3": 0.315, "weight_14k": 4.09, "weight_18k": 4.88, "weight_silver": 3.26}, {"id": "ERN-1050", "title": "Hollow Tasarım Parça A", "type": "Tek Parçalı", "files": ["shell_01_of_hollow_of_bool.stl"], "glb": "models/shell_01_of_hollow_of_bool.glb", "image": "models/shell_01_of_hollow_of_bool.jpg", "dimensions": {"x_mm": 15.5, "y_mm": 17.3, "z_mm": 2.6}, "volume_cm3": 0.078, "weight_14k": 1.01, "weight_18k": 1.21, "weight_silver": 0.81}, {"id": "ERN-1051", "title": "Meryem Kolye İçi Boş Ön Parça", "type": "Tek Parçalı", "files": ["shell_01_of_hollow_of_meryem1.stl"], "glb": "models/shell_01_of_hollow_of_meryem1.glb", "image": "models/shell_01_of_hollow_of_meryem1.jpg", "dimensions": {"x_mm": 20.6, "y_mm": 17.5, "z_mm": 1.6}, "volume_cm3": 0.186, "weight_14k": 2.42, "weight_18k": 2.88, "weight_silver": 1.93}, {"id": "ERN-1052", "title": "Hollow Tasarım Parça B", "type": "Tek Parçalı", "files": ["shell_02_of_hollow_of_bool.stl"], "glb": "models/shell_02_of_hollow_of_bool.glb", "image": "models/shell_02_of_hollow_of_bool.jpg", "dimensions": {"x_mm": 15.5, "y_mm": 14.2, "z_mm": 2.5}, "volume_cm3": 0.057, "weight_14k": 0.74, "weight_18k": 0.88, "weight_silver": 0.59}, {"id": "ERN-1053", "title": "Meryem Kolye İçi Boş Arka Kapak", "type": "Tek Parçalı", "files": ["shell_02_of_hollow_of_meryem1.stl"], "glb": "models/shell_02_of_hollow_of_meryem1.glb", "image": "models/shell_02_of_hollow_of_meryem1.jpg", "dimensions": {"x_mm": 15.3, "y_mm": 12.3, "z_mm": 1.6}, "volume_cm3": 0.095, "weight_14k": 1.24, "weight_18k": 1.47, "weight_silver": 0.98}, {"id": "ERN-1054", "title": "Hollow Tasarım Parça C", "type": "Tek Parçalı", "files": ["shell_03_of_hollow_of_bool.stl"], "glb": "models/shell_03_of_hollow_of_bool.glb", "image": "models/shell_03_of_hollow_of_bool.jpg", "dimensions": {"x_mm": 9.7, "y_mm": 13.6, "z_mm": 3.7}, "volume_cm3": 0.045, "weight_14k": 0.58, "weight_18k": 0.7, "weight_silver": 0.47}, {"id": "ERN-1055", "title": "Şövalye Kalkan Kolye Ucu", "type": "Tek Parçalı", "files": ["shovalye.stl"], "glb": "models/shovalye.glb", "image": "models/shovalye.jpg", "dimensions": {"x_mm": 32.1, "y_mm": 38.6, "z_mm": 5.9}, "volume_cm3": 0.905, "weight_14k": 11.77, "weight_18k": 14.03, "weight_silver": 9.38}, {"id": "ERN-1056", "title": "Taşlı Kimber Tabanca Kolye Ucu", "type": "Tek Parçalı", "files": ["tasli kimber.stl"], "glb": "models/tasli_kimber.glb", "image": "models/tasli_kimber.jpg", "dimensions": {"x_mm": 71.4, "y_mm": 20.9, "z_mm": 1.3}, "volume_cm3": 0.63, "weight_14k": 8.19, "weight_18k": 9.77, "weight_silver": 6.53}, {"id": "ERN-1057", "title": "Taşlı Kutup Yıldızı Kolye Ucu", "type": "Tek Parçalı", "files": ["yildiz tasli.stl"], "glb": "models/yildiz_tasli.glb", "image": "models/yildiz_tasli.jpg", "dimensions": {"x_mm": 16.7, "y_mm": 24.7, "z_mm": 3.7}, "volume_cm3": 0.153, "weight_14k": 1.99, "weight_18k": 2.37, "weight_silver": 1.59}, {"id": "ERN-1058", "title": "Boksör Yumruğu Kolye Ucu", "type": "Tek Parçalı", "files": ["yumruk01.stl"], "glb": "models/yumruk01.glb", "image": "models/yumruk01.jpg", "dimensions": {"x_mm": 13.4, "y_mm": 17.4, "z_mm": 12.5}, "volume_cm3": 0.845, "weight_14k": 10.98, "weight_18k": 13.1, "weight_silver": 8.75}, {"id": "ERN-1059", "title": "Sıçrayan Yunus Kolye Ucu", "type": "Tek Parçalı", "files": ["yunus.stl"], "glb": "models/yunus.glb", "image": "models/yunus.jpg", "dimensions": {"x_mm": 38.1, "y_mm": 53.4, "z_mm": 5.2}, "volume_cm3": 0.688, "weight_14k": 8.94, "weight_18k": 10.66, "weight_silver": 7.13}, {"id": "ERN-1060", "title": "Şeyma Özel İsimli Kolye Ucu", "type": "Tek Parçalı", "files": ["şeyma.stl"], "glb": "models/seyma.glb", "image": "models/seyma.jpg", "dimensions": {"x_mm": 17.3, "y_mm": 13.8, "z_mm": 7.1}, "volume_cm3": 0.106, "weight_14k": 1.38, "weight_18k": 1.64, "weight_silver": 1.1}, {"id": "ERN-1061", "title": "İsa Çarmıh Haç Kolye (2 Parça Lüks Çift Renk Montaj)", "type": "2 Parçalı Montaj", "files": ["kolye2-20 isa.stl", "kolye2-20 isa1.stl"], "glb": "models/isa_carmikh_montaj.glb", "image": "models/isa_carmikh_montaj.jpg", "dimensions": {"x_mm": 14.5, "y_mm": 32.5, "z_mm": 7.2}, "volume_cm3": 0.248, "weight_14k": 3.22, "weight_18k": 3.84, "weight_silver": 2.57}];
+
+        const viewer = document.getElementById('mainViewer');
+        const itemTitle = document.getElementById('itemTitle');
+        const itemBadge = document.getElementById('itemBadge');
+        const itemId = document.getElementById('itemId');
+        const specDims = document.getElementById('specDims');
+        const spec14k = document.getElementById('spec14k');
+        const spec18k = document.getElementById('spec18k');
+        const specSilver = document.getElementById('specSilver');
+        const specVol = document.getElementById('specVol');
+        const btnWhatsApp = document.getElementById('btnWhatsApp');
+        const modelSelect = document.getElementById('modelSelect');
+        const searchBox = document.getElementById('searchBox');
+        const thumbStrip = document.getElementById('thumbStrip');
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const viewerContainer = document.getElementById('viewerContainer');
+        const fullDragOverlay = document.getElementById('fullDragOverlay');
+        const btnToggleRotate = document.getElementById('btnToggleRotate');
+
+        let activeItem = CATALOG[1] || CATALOG[0];
+
+        // Dropdown ve Thumbnail'leri doldur
+        function populateUI(filterText = '') {
+            modelSelect.innerHTML = '';
+            thumbStrip.innerHTML = '';
+            const q = filterText.toLowerCase().trim();
+
+            CATALOG.forEach((item, idx) => {
+                if (q && !item.title.toLowerCase().includes(q) && !item.id.toLowerCase().includes(q)) {
+                    return;
+                }
+
+                // Option ekle
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.textContent = `${item.id} - ${item.title} (14K: ${item.weight_14k}g)`;
+                if (item.glb === activeItem.glb) opt.selected = true;
+                modelSelect.appendChild(opt);
+
+                // Thumbnail card ekle
+                const card = document.createElement('div');
+                card.className = 'thumb-card' + (item.glb === activeItem.glb ? ' active' : '');
+                card.onclick = () => selectItem(item);
+                card.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}" onerror="this.src='https://placehold.co/100x70/1e293b/d4af37?text=ERN+3D'">
+                    <div class="thumb-title">${item.title}</div>
+                `;
+                thumbStrip.appendChild(card);
+            });
+        }
+
+        function selectItem(item) {
+            activeItem = item;
+            viewer.src = item.glb;
+            itemTitle.textContent = item.title;
+            itemId.textContent = item.id;
+            itemBadge.textContent = item.type || 'Tek Parçalı';
+
+            if (item.dimensions) {
+                specDims.textContent = `${item.dimensions.x_mm} × ${item.dimensions.y_mm} × ${item.dimensions.z_mm} mm`;
+            } else {
+                specDims.textContent = '-';
+            }
+            spec14k.textContent = item.weight_14k ? `${item.weight_14k} gr` : '-';
+            spec18k.textContent = item.weight_18k ? `${item.weight_18k} gr` : '-';
+            specSilver.textContent = item.weight_silver ? `${item.weight_silver} gr` : '-';
+            specVol.textContent = item.volume_cm3 ? `${item.volume_cm3} cm³` : '-';
+
+            // WhatsApp linkini hazırla
+            const waMsg = encodeURIComponent(`Merhaba, ERN Tasarım sitenizdeki "${item.title}" (${item.id}) ürünü hakkında bilgi ve fiyat almak istiyorum.`);
+            btnWhatsApp.href = `https://wa.me/905320000000?text=${waMsg}`;
+
+            // Thumbnail aktifliğini güncelle
+            document.querySelectorAll('.thumb-card').forEach(c => c.classList.remove('active'));
+            // Dropdown seç
+            const opts = Array.from(modelSelect.options);
+            const foundOpt = opts.find(o => CATALOG[parseInt(o.value)]?.glb === item.glb);
+            if (foundOpt) modelSelect.value = foundOpt.value;
+        }
+
+        modelSelect.addEventListener('change', (e) => {
+            const idx = parseInt(e.target.value);
+            if (CATALOG[idx]) selectItem(CATALOG[idx]);
+        });
+
+        searchBox.addEventListener('input', (e) => {
+            populateUI(e.target.value);
+        });
+
+        // Sürükle Bırak İşlemleri
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) loadGlbFile(e.target.files[0]);
+        });
+
+        window.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fullDragOverlay.style.display = 'flex';
+        });
+        fullDragOverlay.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            fullDragOverlay.style.display = 'none';
+        });
+        fullDragOverlay.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fullDragOverlay.style.display = 'none';
+            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                loadGlbFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        function loadGlbFile(file) {
+            if (!file.name.toLowerCase().endsWith('.glb')) {
+                alert('Lütfen geçerli bir .GLB web 3D model dosyası seçin!');
+                return;
+            }
+            const url = URL.createObjectURL(file);
+            viewer.src = url;
+            const name = file.name.replace(/\.[^/.]+$/, '').replace(/_/g, ' ').toUpperCase();
+            itemTitle.textContent = name;
+            itemId.textContent = 'ÖZEL MODEL';
+            itemBadge.textContent = 'Kullanıcı Dosyası';
+            specDims.textContent = 'Canlı Yüklendi';
+            spec14k.textContent = '-';
+            spec18k.textContent = '-';
+            specSilver.textContent = '-';
+            specVol.textContent = `${(file.size / 1024).toFixed(1)} KB`;
+        }
+
+        function toggleAutoRotate() {
+            if (viewer.autoRotate) {
+                viewer.autoRotate = false;
+                btnToggleRotate.innerHTML = '<i class="fa-solid fa-play"></i>';
+            } else {
+                viewer.autoRotate = true;
+                btnToggleRotate.innerHTML = '<i class="fa-solid fa-pause"></i>';
+            }
+        }
+
+        function setCamera(orbit) {
+            viewer.cameraOrbit = orbit;
+        }
+
+        const bgPresets = [
+            'radial-gradient(circle at center, #1a253a 0%, #070a12 100%)',
+            'radial-gradient(circle at center, #2e2619 0%, #0c0803 100%)',
+            'radial-gradient(circle at center, #2d3748 0%, #1a202c 100%)',
+            '#070a12',
+            '#ffffff'
+        ];
+        let bgIdx = 0;
+        function cycleBackground() {
+            bgIdx = (bgIdx + 1) % bgPresets.length;
+            viewerContainer.style.background = bgPresets[bgIdx];
+        }
+
+        async function takeScreenshot() {
+            const blob = await viewer.toBlob({ idealAspect: true });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (itemTitle.textContent.toLowerCase().replace(/ /g, '_') || 'model') + '_3d.png';
+            a.click();
+        }
+
+        function copyWebCode() {
+            const glb = activeItem.glb || 'models/model.glb';
+            const code = `<model-viewer src="${glb}"
+  alt="${itemTitle.textContent}"
+  auto-rotate
+  camera-controls
+  shadow-intensity="1.5"
+  exposure="1.15"
+  style="width: 100%; height: 500px; background-color: #070a12;">
+</model-viewer>`;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('✨ Bu 3D modelin web sitenize gömülecek HTML kodu panoya kopyalandı!');
+            });
+        }
+
+        // Sayfa Yüklendiğinde
+        document.addEventListener('DOMContentLoaded', () => {
+            populateUI();
+            if (activeItem) selectItem(activeItem);
+        });
+    </script>
+</body>
+</html>
