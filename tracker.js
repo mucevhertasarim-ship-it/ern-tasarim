@@ -256,7 +256,7 @@
         }
     }
 
-    // 5. GİZLİ YÖNETİCİ GİRİŞİ: LOGOYA 5 SANİYE BASILI TUTMA (TAMAMEN GİZLİ & SESSİZ)
+    // 5. GİZLİ YÖNETİCİ GİRİŞİ: TAMAMEN İZSİZ - SADECE LOGOYA 5 SANİYE KESİNTİSİZ BASILI TUTUNCA GİRER
     function initAdminSecretHoldTrigger() {
         const targets = document.querySelectorAll('.logo, .footer-logo, header a[href="index.html"]');
         if (!targets || targets.length === 0) return;
@@ -264,8 +264,9 @@
         let holdTimer = null;
         let triggered = false;
 
-        function startHold() {
+        function startHold(e) {
             triggered = false;
+            clearTimeout(holdTimer);
             holdTimer = setTimeout(() => {
                 triggered = true;
                 if (navigator.vibrate) {
@@ -283,6 +284,18 @@
         }
 
         targets.forEach(target => {
+            // Hiçbir seçim kutusu, mavi vurgu veya menü çıkmasın (Tamamen sessiz)
+            target.style.userSelect = 'none';
+            target.style.webkitUserSelect = 'none';
+            target.style.webkitTouchCallout = 'none';
+            target.style.webkitTapHighlightColor = 'transparent';
+            target.setAttribute('draggable', 'false');
+
+            // Sağ tık ve uzun basma menüsünü engelle
+            target.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+            });
+
             target.addEventListener('mousedown', startHold);
             target.addEventListener('mouseup', cancelHold);
             target.addEventListener('mouseleave', cancelHold);
@@ -291,6 +304,7 @@
             target.addEventListener('touchend', cancelHold);
             target.addEventListener('touchcancel', cancelHold);
 
+            // 5 saniye basılı tutulup tetiklendiyse normal link tıklamasını engelle
             target.addEventListener('click', (e) => {
                 if (triggered) {
                     e.preventDefault();

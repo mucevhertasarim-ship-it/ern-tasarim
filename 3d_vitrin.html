@@ -556,16 +556,16 @@
             <!-- Hızlı Deneme Butonları -->
             <div class="quick-tests" onclick="event.stopPropagation()">
                 <span style="color: #94a3b8; font-size: 0.8rem; margin-right: 4px;">Hemen Test Et:</span>
-                <button class="quick-test-btn" onclick="loadSampleModel('models/bozkurt_yuzuk.glb', 'Bozkurt Hilal Kolye Ucu 3D', 'glb')">
+                <button class="quick-test-btn" onclick="loadSampleModel('models/bozkurt.glb', 'Bozkurt Hilal Kolye Ucu 3D', 'glb')">
                     🐺 Bozkurt Kolye (3.61 gr)
                 </button>
                 <button class="quick-test-btn" onclick="loadSampleModel('models/1euro.glb', '1 Euro Madalyon Kolye Ucu 3D', 'glb')">
                     🪙 1 Euro (10.54 gr)
                 </button>
-                <button class="quick-test-btn" onclick="loadSampleModel('models/deneme_kemik.glb', 'Kemik Kilitli Lüks Zincir Bileklik (18 cm)', 'glb')">
-                    ⛓️ Kemik Kilit (14.90 gr)
+                <button class="quick-test-btn" onclick="loadSampleModel('models/bil_cengelli_igne.glb', 'Lüks Çengelli İğne Kilit (3D)', 'glb')">
+                    ⛓️ Çengelli Kilit (3.28 gr)
                 </button>
-                <button class="quick-test-btn" onclick="loadSampleModel('models/kral_yuzuk.glb', 'Kraliyet Şövalye Yüzüğü 3D', 'glb')">
+                <button class="quick-test-btn" onclick="loadSampleModel('models/shovalye.glb', 'Kraliyet Şövalye Yüzüğü 3D', 'glb')">
                     👑 Kral Yüzüğü (12.00 gr)
                 </button>
             </div>
@@ -590,9 +590,9 @@
             <div class="models-grid">
                 
                 <!-- Model 1: Bozkurt Kolye Ucu -->
-                <div class="model-card active" onclick="loadSampleModel('models/bozkurt_yuzuk.glb', 'Bozkurt Hilal Kolye Ucu 3D', 'glb', this)">
+                <div class="model-card active" onclick="loadSampleModel('models/bozkurt.glb', 'Bozkurt Hilal Kolye Ucu 3D', 'glb', this)">
                     <div class="model-card-img">
-                        <img src="models/bozkurt_yuzuk.jpg" alt="Bozkurt Hilal Kolye Ucu">
+                        <img src="models/bozkurt.jpg" alt="Bozkurt Hilal Kolye Ucu">
                     </div>
                     <div class="model-card-body">
                         <div>
@@ -623,15 +623,15 @@
                     </div>
                 </div>
 
-                <!-- Model 3: Kemik Kilitli Zincir -->
-                <div class="model-card" onclick="loadSampleModel('models/deneme_kemik.glb', 'Kemik Kilitli Lüks Zincir Bileklik (18 cm)', 'glb', this)">
+                <!-- Model 3: Çengelli İğne Kilit -->
+                <div class="model-card" onclick="loadSampleModel('models/bil_cengelli_igne.glb', 'Lüks Çengelli İğne Kilit (3D)', 'glb', this)">
                     <div class="model-card-img">
-                        <img src="models/deneme_kemik.jpg" alt="Kemik Kilitli Zincir Bileklik">
+                        <img src="models/bil_cengelli_igne.jpg" alt="Çengelli İğne Kilit Bileklik">
                     </div>
                     <div class="model-card-body">
                         <div>
                             <div style="color: #d4af37; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Özel Kilit Mekanizması</div>
-                            <h4 style="font-size: 1rem; font-weight: 700; color: #fff; margin: 0.3rem 0;">Kemik Kilitli Zincir</h4>
+                            <h4 style="font-size: 1rem; font-weight: 700; color: #fff; margin: 0.3rem 0;">Çengelli İğne Kilit</h4>
                             <div style="color: #94a3b8; font-size: 0.8rem;">181.2 mm × 9.7 mm | 14K: 14.90 gr</div>
                         </div>
                         <button class="btn-outline" style="margin-top: 1rem; width: 100%; padding: 0.5rem; font-size: 0.8rem; border-color: rgba(212,175,55,0.3); color: #d4af37;">
@@ -641,9 +641,9 @@
                 </div>
 
                 <!-- Model 4: Kraliyet Şövalye Yüzük -->
-                <div class="model-card" onclick="loadSampleModel('models/kral_yuzuk.glb', 'Kraliyet Şövalye Yüzüğü 3D', 'glb', this)">
+                <div class="model-card" onclick="loadSampleModel('models/shovalye.glb', 'Kraliyet Şövalye Yüzüğü 3D', 'glb', this)">
                     <div class="model-card-img">
-                        <img src="models/kral_yuzuk.jpg" alt="Kraliyet Şövalye Yüzüğü">
+                        <img src="models/shovalye.jpg" alt="Kraliyet Şövalye Yüzüğü">
                     </div>
                     <div class="model-card-body">
                         <div>
@@ -667,10 +667,6 @@
         <div class="footer-logo">ERN TASARIM</div>
         <p class="footer-text">
             © 2026 Ern Tasarım. Tüm Hakları Saklıdır. "Siz hayal edin, biz yapalım."
-            <span style="margin: 0 8px; opacity: 0.3;">|</span>
-            <a href="yonetici.html" style="color: var(--gold-primary); text-decoration: none; font-size: 0.8rem; opacity: 0.8; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
-                <i class="fa-solid fa-shield-halved"></i> Yönetici Girişi
-            </a>
         </p>
     </footer>
 
@@ -800,7 +796,7 @@
             window.addEventListener('resize', onWindowResize);
 
             // İlk Modeli Yükle (Bozkurt Yüzük GLB)
-            loadSampleModel('models/bozkurt_yuzuk.glb', 'Bozkurt Motifli Erkek Yüzüğü 3D', 'glb');
+            loadSampleModel('models/bozkurt.glb', 'Bozkurt Motifli Erkek Yüzüğü 3D', 'glb');
         }
 
         function onWindowResize() {
@@ -856,7 +852,7 @@
 
         // Hazır 3D CAD Modellerinin Doğrulanmış Ölçü & Döküm Gramaj Veritabanı
         const modelSpecsDB = {
-            'models/bozkurt_yuzuk.glb': {
+            'models/bozkurt.glb': {
                 name: 'Bozkurt Hilal Kolye Ucu 3D',
                 category: 'Özel Kolye Ucu',
                 badge: 'CANLI 3D CAD MODELİ',
@@ -886,8 +882,8 @@
                     w24k: '15.65 gr'
                 }
             },
-            'models/deneme_kemik.glb': {
-                name: 'Kemik Kilitli Lüks Zincir Bileklik (18 cm)',
+            'models/bil_cengelli_igne.glb': {
+                name: 'Lüks Çengelli İğne Kilit (3D)',
                 category: 'Özel Kilit Mekanizması',
                 badge: 'CANLI 3D CAD MODELİ',
                 desc: '18 cm boyunda, 14K Altında 14.90 gr, 925 Gümüşte 11.90 gr döküm gramajlı, döküme ve üretime hazır kemik kilitli zincir 3D CAD modeli.',
@@ -901,7 +897,7 @@
                     w24k: '22.10 gr'
                 }
             },
-            'models/kral_yuzuk.glb': {
+            'models/shovalye.glb': {
                 name: 'Kraliyet Şövalye Yüzüğü 3D',
                 category: 'Mitolojik Konsept',
                 badge: 'CANLI 3D CAD MODELİ',
@@ -1290,8 +1286,73 @@
             if (e.dataTransfer.files.length > 0) handleUserFile(e.dataTransfer.files[0]);
         });
 
+        // Toplu Katalog Dinamik Yükleme (61 Model)
+        async function loadAllCatalogModels() {
+            try {
+                const res = await fetch('models/katalog_toplu.json');
+                if (!res.ok) return;
+                const items = await res.json();
+                if (!Array.isArray(items) || items.length === 0) return;
+
+                const grid = document.querySelector('.models-grid');
+                if (!grid) return;
+
+                const countBadge = document.querySelector('span i.fa-gem')?.parentElement;
+                if (countBadge) countBadge.innerHTML = `<i class="fa-solid fa-gem"></i> ${items.length} Adet Seçkin Model`;
+
+                items.forEach(item => {
+                    modelSpecsDB[item.glb] = {
+                        name: item.title,
+                        category: item.type || '3D Kolye Ucu',
+                        badge: 'CANLI 3D CAD MODELİ',
+                        desc: `${item.title}. 14K Altında ${item.weight_14k} gr, 18K Altında ${item.weight_18k} gr, 925 Gümüşte ${item.weight_silver} gr döküm gramajlı, döküme ve üretime hazır 3D CAD modeli.`,
+                        dims: { 
+                            x: (item.dimensions?.x_mm || 0) + ' mm', 
+                            y: (item.dimensions?.y_mm || 0) + ' mm', 
+                            z: (item.dimensions?.z_mm || 0) + ' mm' 
+                        },
+                        polyCount: 'Optimize Web 3D',
+                        volume: ((item.volume_cm3 || 0) * 1000).toFixed(1) + ' mm³',
+                        weights: {
+                            w14k: (item.weight_14k || 0) + ' gr',
+                            w18k: (item.weight_18k || 0) + ' gr',
+                            wSilver: (item.weight_silver || 0) + ' gr',
+                            w24k: (((item.volume_cm3 || 0) * 19.3)).toFixed(2) + ' gr'
+                        }
+                    };
+                });
+
+                grid.innerHTML = items.map((item, idx) => `
+                    <div class="model-card ${idx === 0 ? 'active' : ''}" onclick="loadSampleModel('${item.glb}', '${item.title.replace(/'/g, "\\'")}', 'glb', this)">
+                        <div class="model-card-img">
+                            <img src="${item.image}" alt="${item.title}" onerror="this.src='models/bozkurt.jpg'">
+                        </div>
+                        <div class="model-card-body">
+                            <div>
+                                <div style="color: #d4af37; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">${item.type || '3D Kolye Ucu'}</div>
+                                <h4 style="font-size: 1rem; font-weight: 700; color: #fff; margin: 0.3rem 0;">${item.title}</h4>
+                                <div style="color: #94a3b8; font-size: 0.8rem;">${item.dimensions ? `${item.dimensions.x_mm} mm × ${item.dimensions.y_mm} mm` : ''} | 14K: ${item.weight_14k} gr</div>
+                            </div>
+                            <button class="btn-outline" style="margin-top: 1rem; width: 100%; padding: 0.5rem; font-size: 0.8rem; border-color: rgba(212,175,55,0.3); color: #d4af37;">
+                                <i class="fa-solid fa-arrows-rotate"></i> 360° Sahneye Yükle
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+
+                if (items.length > 0) {
+                    loadSampleModel(items[0].glb, items[0].title, 'glb');
+                }
+            } catch (e) {
+                console.warn('Toplu katalog okunamadı, varsayılan modeller kullanılıyor:', e);
+            }
+        }
+
         // Sayfa Yüklenince Başlat
-        document.addEventListener('DOMContentLoaded', initThree);
+        document.addEventListener('DOMContentLoaded', () => {
+            initThree();
+            loadAllCatalogModels();
+        });
     </script>
     <script src="tracker.js"></script>
 </body>

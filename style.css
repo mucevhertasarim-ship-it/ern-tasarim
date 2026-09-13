@@ -527,3 +527,23 @@ footer {
         display: inline-block;
     }
 }
+
+/* Gizli Giriş Stilleri (Sıfır iz, mavi kutu veya seçim menüsü çıkmaz) */
+.logo, .footer-logo {
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    -webkit-touch-callout: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Vercel Toolbar Gizleme */
+vercel-live-feedback,
+#vercel-live-feedback,
+[data-vercel-toolbar],
+div[class*="vercel-toolbar"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
