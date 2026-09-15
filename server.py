@@ -22,6 +22,9 @@ except Exception:
         pass
 
 CONFIG_FILE = os.path.join(DATA_DIR, 'mail_settings.json')
+CATALOG_FILE = os.path.join(DATA_DIR, 'catalog.json')
+SETTINGS_FILE = os.path.join(DATA_DIR, 'settings.json')
+REQUESTS_FILE = os.path.join(DATA_DIR, 'requests.json')
 
 DEFAULT_MAIL_CONFIG = {
     "imap_host": os.environ.get("IMAP_HOST", ""),
@@ -81,6 +84,74 @@ def decode_mime_words(s):
         return str(s)
 
 app = Flask(__name__, static_folder='.', static_url_path='')
+
+@app.after_request
+def add_cache_control_headers(response):
+    if request.path.startswith('/api/'):
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate, max-age=0'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+    return response
+
+# -------------------------------------------------------------
+# 0. CATALOG & SETTINGS STORAGE APIs
+# -------------------------------------------------------------
+@app.route('/api/catalog', methods=['GET', 'POST'])
+def handle_catalog():
+    if request.method == 'GET':
+        if os.path.exists(CATALOG_FILE):
+            try:
+                with open(CATALOG_FILE, 'r', encoding='utf-8') as f:
+                    return jsonify(json.load(f))
+            except Exception:
+                pass
+        return jsonify([])
+    else:
+        data = request.json or []
+        try:
+            with open(CATALOG_FILE, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+            return jsonify({"success": True})
+        except Exception as e:
+            return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/settings', methods=['GET', 'POST'])
+def handle_settings():
+    if request.method == 'GET':
+        if os.path.exists(SETTINGS_FILE):
+            try:
+                with open(SETTINGS_FILE, 'r', encoding='utf-8') as f:
+                    return jsonify(json.load(f))
+            except Exception:
+                pass
+        return jsonify({})
+    else:
+        data = request.json or {}
+        try:
+            with open(SETTINGS_FILE, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+            return jsonify({"success": True})
+        except Exception as e:
+            return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/requests', methods=['GET', 'POST'])
+def handle_requests():
+    if request.method == 'GET':
+        if os.path.exists(REQUESTS_FILE):
+            try:
+                with open(REQUESTS_FILE, 'r', encoding='utf-8') as f:
+                    return jsonify(json.load(f))
+            except Exception:
+                pass
+        return jsonify([])
+    else:
+        data = request.json or []
+        try:
+            with open(REQUESTS_FILE, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+            return jsonify({"success": True})
+        except Exception as e:
+            return jsonify({"success": False, "error": str(e)}), 500
 
 # -------------------------------------------------------------
 # 1. STATIC FILES SERVING

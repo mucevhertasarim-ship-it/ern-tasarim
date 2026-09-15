@@ -1,0 +1,19 @@
+{
+  "whatsapp": "905320000000",
+  "whatsappDisplay": "+90 (532) 000 00 00",
+  "whatsappHide": true,
+  "phone": "0532 000 00 00",
+  "email": "info@erntasarim.com",
+  "instagram": "https://www.instagram.com/e.r.n.tasarim/",
+  "facebook": "",
+  "tiktok": "",
+  "youtube": "",
+  "bankName": "Garanti BBVA",
+  "bankOwner": "ERN Tasarım & Mücevherat",
+  "iban": "TR00 0000 0000 0000 0000 0000 00",
+  "rateMode": "auto",
+  "manualRate": 34.25,
+  "adminUser": "admin",
+  "adminPass": "admin",
+  "passLastChanged": "Varsayılan"
+}

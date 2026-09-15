@@ -3907,51 +3907,54 @@
             checkAuth();
             setupImageUploader();
             fetchExchangeRate();
+            syncFromServer();
         });
 
-                function initStorageDefaults() {
-            const CATALOG_VERSION = '2026.09.13.v20';
-            const savedVer = localStorage.getItem('ern_catalog_version');
-            const saved = localStorage.getItem('ern_catalog_products');
-
-            let parsed = null;
+        async function syncFromServer() {
             try {
-                parsed = JSON.parse(saved);
+                const catRes = await fetch('/api/catalog?t=' + Date.now());
+                if (catRes.ok) {
+                    const catData = await catRes.json();
+                    if (Array.isArray(catData) && catData.length > 0) {
+                        localStorage.setItem('ern_catalog_products', JSON.stringify(catData));
+                        if (typeof renderAdminProducts === 'function') renderAdminProducts();
+                        if (typeof updateOverviewStats === 'function') updateOverviewStats();
+                    }
+                }
             } catch(e) {}
 
-            const hasBadItems = Array.isArray(parsed) && parsed.some(p => p && p.media && (p.media.includes('kral_yuzuk') || p.media.includes('bozkurt_yuzuk') || p.media.includes('deneme_kemik')));
+            try {
+                const setRes = await fetch('/api/settings?t=' + Date.now());
+                if (setRes.ok) {
+                    const setData = await setRes.json();
+                    if (setData && typeof setData === 'object' && Object.keys(setData).length > 0) {
+                        const current = getSettings();
+                        const merged = { ...current, ...setData };
+                        localStorage.setItem('ern_site_settings', JSON.stringify(merged));
+                        if (typeof fetchExchangeRate === 'function') fetchExchangeRate();
+                        if (typeof populateSettingsForm === 'function') populateSettingsForm();
+                    }
+                }
+            } catch(e) {}
+        }
 
-            if (savedVer !== CATALOG_VERSION || !saved || hasBadItems) {
-                localStorage.setItem('ern_catalog_version', CATALOG_VERSION);
+                function initStorageDefaults() {
+            const saved = localStorage.getItem('ern_catalog_products');
+            if (!saved) {
                 localStorage.setItem('ern_catalog_products', JSON.stringify(DEFAULT_CATALOG));
             } else {
                 try {
-                    if (Array.isArray(parsed) && parsed.length < DEFAULT_CATALOG.length) {
-                        const existingMedia = new Set(parsed.map(p => p.media));
-                        let merged = [...parsed];
-                        let updated = false;
-                        DEFAULT_CATALOG.forEach(p => {
-                            if (!existingMedia.has(p.media)) {
-                                merged.push(p);
-                                updated = true;
-                            }
-                        });
-                        if (updated) {
-                            localStorage.setItem('ern_catalog_products', JSON.stringify(merged));
-                        }
+                    let parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.some(p => p && p.media && (p.media.includes('kral_yuzuk') || p.media.includes('bozkurt_yuzuk') || p.media.includes('deneme_kemik')))) {
+                        // Sadece hatalı/bozuk modelleri temizle, kullanıcının sildiği ürünleri veya değiştirdiği fiyatları asla ezme!
+                        parsed = parsed.filter(p => p && p.media && !p.media.includes('kral_yuzuk') && !p.media.includes('bozkurt_yuzuk') && !p.media.includes('deneme_kemik'));
+                        localStorage.setItem('ern_catalog_products', JSON.stringify(parsed));
                     }
                 } catch(e) {}
             }
+
             if (!localStorage.getItem('ern_site_settings')) {
                 localStorage.setItem('ern_site_settings', JSON.stringify(DEFAULT_SETTINGS));
-            } else {
-                try {
-                    const s = JSON.parse(localStorage.getItem('ern_site_settings') || '{}');
-                    if (!s.instagram || s.instagram.includes('/erntasarim') || s.instagram === 'erntasarim' || s.instagram === '@erntasarim') {
-                        s.instagram = 'https://www.instagram.com/e.r.n.tasarim/';
-                        localStorage.setItem('ern_site_settings', JSON.stringify(s));
-                    }
-                } catch(e) {}
             }
         }
 
@@ -4281,6 +4284,13 @@
 
         function saveCatalog(items) {
             localStorage.setItem('ern_catalog_products', JSON.stringify(items));
+            try {
+                fetch('/api/catalog', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(items)
+                }).catch(() => {});
+            } catch(e) {}
             renderAdminProducts();
             updateOverviewStats();
         }
@@ -4296,6 +4306,13 @@
 
         function saveRequests(reqs) {
             localStorage.setItem('ern_jewelry_requests', JSON.stringify(reqs));
+            try {
+                fetch('/api/requests', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(reqs)
+                }).catch(() => {});
+            } catch(e) {}
             renderAdminRequests();
             updateOverviewStats();
         }
@@ -5682,6 +5699,13 @@
             };
 
             localStorage.setItem('ern_site_settings', JSON.stringify(newSettings));
+            try {
+                fetch('/api/settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newSettings)
+                }).catch(() => {});
+            } catch(e) {}
             fetchExchangeRate();
             loadSecurityTab();
             updateWaPreview();

@@ -2321,29 +2321,18 @@
 ];
 
                         // Yönetici Panelinden (localStorage) Ürünleri Okuma
-        const CATALOG_VERSION = '2026.09.13.v20';
-
         function getCatalogProducts() {
             try {
-                const savedVer = localStorage.getItem('ern_catalog_version');
                 const saved = localStorage.getItem('ern_catalog_products');
-                
-                if (savedVer === CATALOG_VERSION && saved) {
+                if (saved) {
                     let parsed = JSON.parse(saved);
                     if (Array.isArray(parsed) && parsed.length > 0) {
-                        // Var olmayan eski hayali modelleri filtrele
-                        parsed = parsed.filter(p => p && p.media && !p.media.includes('kral_yuzuk') && !p.media.includes('bozkurt_yuzuk') && !p.media.includes('deneme_kemik'));
-                        if (parsed.length >= DEFAULT_PRODUCTS.length) {
-                            return parsed;
-                        }
+                        return parsed;
                     }
                 }
             } catch (e) {
                 console.error('Katalog okuma hatası:', e);
             }
-            // Versiyon değiştiğinde veya eski modeller varsa sıfırla
-            localStorage.setItem('ern_catalog_version', CATALOG_VERSION);
-            localStorage.setItem('ern_catalog_products', JSON.stringify(DEFAULT_PRODUCTS));
             return DEFAULT_PRODUCTS;
         }
 
@@ -2374,7 +2363,35 @@
             fetchExchangeRate();
             updateCartUI();
             render360Grid('all');
+            syncFromServer();
         });
+
+        async function syncFromServer() {
+            try {
+                const catRes = await fetch('/api/catalog?t=' + Date.now());
+                if (catRes.ok) {
+                    const catData = await catRes.json();
+                    if (Array.isArray(catData) && catData.length > 0) {
+                        localStorage.setItem('ern_catalog_products', JSON.stringify(catData));
+                        products = catData;
+                        render360Grid('all');
+                    }
+                }
+            } catch(e) {}
+
+            try {
+                const setRes = await fetch('/api/settings?t=' + Date.now());
+                if (setRes.ok) {
+                    const setData = await setRes.json();
+                    if (setData && typeof setData === 'object' && Object.keys(setData).length > 0) {
+                        const current = getSiteSettings();
+                        localStorage.setItem('ern_site_settings', JSON.stringify({ ...current, ...setData }));
+                        applySiteSettings();
+                        fetchExchangeRate();
+                    }
+                }
+            } catch(e) {}
+        }
 
         // Canlı Kur Çekme Fonksiyonu
         async function fetchExchangeRate() {
