@@ -25,6 +25,7 @@ CONFIG_FILE = os.path.join(DATA_DIR, 'mail_settings.json')
 CATALOG_FILE = os.path.join(DATA_DIR, 'catalog.json')
 SETTINGS_FILE = os.path.join(DATA_DIR, 'settings.json')
 REQUESTS_FILE = os.path.join(DATA_DIR, 'requests.json')
+REKLAMLAR_FILE = os.path.join(DATA_DIR, 'reklamlar.json')
 
 DEFAULT_MAIL_CONFIG = {
     "imap_host": os.environ.get("IMAP_HOST", ""),
@@ -148,6 +149,25 @@ def handle_requests():
         data = request.json or []
         try:
             with open(REQUESTS_FILE, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+            return jsonify({"success": True})
+        except Exception as e:
+            return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/reklamlar', methods=['GET', 'POST'])
+def handle_reklamlar():
+    if request.method == 'GET':
+        if os.path.exists(REKLAMLAR_FILE):
+            try:
+                with open(REKLAMLAR_FILE, 'r', encoding='utf-8') as f:
+                    return jsonify(json.load(f))
+            except Exception:
+                pass
+        return jsonify({})
+    else:
+        data = request.json or {}
+        try:
+            with open(REKLAMLAR_FILE, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
             return jsonify({"success": True})
         except Exception as e:

@@ -221,3 +221,75 @@ class ErnBilgiBandi(QWidget):
         screen = QApplication.primaryScreen().availableGeometry()
         self.move(screen.width() - 320, screen.height() - 45)
         self.show()
+
+
+class ErnTelemetriServisi:
+    """
+    Tüm masaüstü programlarında (Çizim, Muhasebe, Namaz vb.)
+    canlı kullanıcı ve şehir takibi (heartbeat) yapan arka plan servisi.
+    """
+    def __init__(self, app_name="namaz", sehir="İstanbul", interval_sec=300):
+        self.app_name = app_name
+        self.sehir = sehir
+        self.interval_sec = interval_sec
+        self.running = False
+        self._thread = None
+        self.device_id = None
+        self._init_device_id()
+
+    def _init_device_id(self):
+        import uuid
+        dev_file = os.path.join(os.environ.get("APPDATA", ""), "ERN_Tasarim", "device.id")
+        try:
+            os.makedirs(os.path.dirname(dev_file), exist_ok=True)
+            if os.path.exists(dev_file):
+                with open(dev_file, "r", encoding="utf-8") as f:
+                    self.device_id = f.read().strip()
+            if not self.device_id:
+                self.device_id = str(uuid.uuid4())[:12]
+                with open(dev_file, "w", encoding="utf-8") as f:
+                    f.write(self.device_id)
+        except:
+            import uuid
+            self.device_id = str(uuid.uuid4())[:12]
+
+    def baslat(self):
+        if self.running:
+            return
+        self.running = True
+        self._thread = threading.Thread(target=self._loop, daemon=True)
+        self._thread.start()
+
+    def durdur(self):
+        self.running = False
+
+    def gonder(self):
+        try:
+            r = requests.get("https://www.erntasarim.com/data/reklamlar.json", timeout=5)
+            if r.status_code != 200:
+                return
+            telemetri_url = r.json().get("telemetri_api_url", "")
+            if not telemetri_url or not telemetri_url.startswith("http"):
+                return
+            
+            payload = {
+                "action": "ping",
+                "app": self.app_name,
+                "city": self.sehir,
+                "device_id": self.device_id,
+                "os": "Windows"
+            }
+            requests.post(telemetri_url, json=payload, timeout=6)
+        except:
+            pass
+
+    def _loop(self):
+        import time
+        self.gonder()
+        while self.running:
+            for _ in range(self.interval_sec):
+                if not self.running:
+                    break
+                time.sleep(1)
+            if self.running:
+                self.gonder()

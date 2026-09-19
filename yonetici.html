@@ -1896,6 +1896,17 @@
                             <i class="fa-solid fa-chart-column"></i>
                         </div>
                     </div>
+                    <div class="stat-card" style="border-color: rgba(16, 185, 129, 0.4);">
+                        <div class="stat-info">
+                            <h4>Canlı Program Kullanıcısı</h4>
+                            <div class="stat-number" style="color: #10b981;" id="stat-an-live-program-users">0</div>
+                            <div class="stat-desc">Şu anda bağlı masaüstü kullanıcıları</div>
+                        </div>
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981; border-color: rgba(16, 185, 129, 0.3);">
+                            <i class="fa-solid fa-desktop"></i>
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- 2-Column Section: 7-Day Chart & Top Pages -->
@@ -1934,6 +1945,84 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+
+                
+                <!-- Desktop Programs Live Telemetry & Connected Users Section -->
+                <div class="content-card" style="border: 1px solid rgba(16, 185, 129, 0.3);">
+                    <div class="content-card-header">
+                        <h3 class="content-card-title">
+                            <i class="fa-solid fa-signal" style="color: #10b981;"></i> Masaüstü Programları - Canlı Bağlı Kullanıcılar & Şehir Listesi
+                        </h3>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <span id="telemetry-live-badge" style="font-size: 0.75rem; background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 20px; padding: 2px 10px; font-weight: 700;">
+                                🟢 Canlı Akış
+                            </span>
+                            <button onclick="fetchLiveProgramUsers(true)" class="btn-edit-sm" style="font-size: 0.78rem; padding: 0.4rem 0.8rem;">
+                                <i class="fa-solid fa-rotate"></i> Yenile
+                            </button>
+                        </div>
+                    </div>
+                    <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 1rem;">
+                        Masaüstü programlarınızı (Namaz Hatırlatıcı Pro vb.) çalıştıran kullanıcılar internet üzerinden sisteme otomatik sinyal gönderir. Anlık olarak kaç kişinin hangi şehirlerden bağlı olduğunu bu listeden takip edebilirsiniz.
+                    </p>
+
+                    <!-- KPI Summary Grid -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.2rem;">
+                        <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 12px 16px;">
+                            <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600;">ŞU ANDA CANLI KULLANICI</div>
+                            <div id="telemetry-online-count" style="font-size: 1.8rem; font-weight: 900; color: #10b981; margin: 4px 0;">0</div>
+                            <div style="font-size: 0.72rem; color: #6ee7b7;">Son 15 dk içinde aktif</div>
+                        </div>
+                        <div style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px; padding: 12px 16px;">
+                            <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600;">EN ÇOK BAĞLANAN ŞEHİR</div>
+                            <div id="telemetry-top-city" style="font-size: 1.3rem; font-weight: 800; color: #38bdf8; margin: 4px 0;">-</div>
+                            <div id="telemetry-top-city-desc" style="font-size: 0.72rem; color: #93c5fd;">Şehir dağılımı lideri</div>
+                        </div>
+                        <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; padding: 12px 16px;">
+                            <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600;">TOPLAM KAYITLI CİHAZ</div>
+                            <div id="telemetry-total-installs" style="font-size: 1.8rem; font-weight: 900; color: var(--admin-gold-light); margin: 4px 0;">0</div>
+                            <div style="font-size: 0.72rem; color: #fde047;">Benzersiz kurulum</div>
+                        </div>
+                    </div>
+
+                    <!-- City Breakdown Badges -->
+                    <div style="margin-bottom: 1rem;">
+                        <label class="form-label" style="font-size: 0.8rem; margin-bottom: 6px;">📍 Şehirlere Göre Dağılım</label>
+                        <div id="telemetry-city-badges" style="display: flex; flex-wrap: wrap; gap: 8px; padding: 10px; background: rgba(15, 23, 42, 0.6); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); min-height: 42px; align-items: center;">
+                            <span style="color: #64748b; font-size: 0.8rem;">Veriler yükleniyor...</span>
+                        </div>
+                    </div>
+
+                    <!-- Live Users Table -->
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Program Adı</th>
+                                    <th>Şehir / Konum</th>
+                                    <th>İşletim Sistemi</th>
+                                    <th>Son Sinyal (Zaman)</th>
+                                    <th>Durum</th>
+                                </tr>
+                            </thead>
+                            <tbody id="telemetry-users-tbody">
+                                <!-- Dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Telemetry API URL Config -->
+                    <div style="margin-top: 1.2rem; padding: 12px; background: rgba(15, 23, 42, 0.4); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <i class="fa-solid fa-link" style="color: var(--admin-gold);"></i>
+                        <div style="flex: 1; min-width: 220px;">
+                            <span style="font-size: 0.78rem; font-weight: 700; color: #fff;">Google E-Tablo / Telemetri Web URL:</span>
+                            <input type="text" id="telemetry-api-input" class="form-control" style="margin-top: 4px; font-size: 0.8rem; padding: 6px 10px;" placeholder="https://script.google.com/macros/s/.../exec">
+                        </div>
+                        <button onclick="saveTelemetryApiUrl()" class="btn-gold-sm" style="font-size: 0.8rem; padding: 0.5rem 1rem; align-self: flex-end;">
+                            <i class="fa-solid fa-save"></i> URL'yi Kaydet
+                        </button>
                     </div>
                 </div>
 
@@ -2008,7 +2097,128 @@
                     </div>
                 </div>
 
-                <!-- 1. Top Announcement Bar -->
+                
+                <!-- 0. Masaüstü Programları Reklam & Sponsor Alanı -->
+                <div class="content-card" style="border: 1px solid rgba(212, 175, 55, 0.4); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);">
+                    <div class="content-card-header">
+                        <h3 class="content-card-title">
+                            <i class="fa-solid fa-desktop" style="color: var(--admin-gold);"></i> Masaüstü Programları Canlı Reklam & Sponsor Alanı (Namaz, Çizim vb.)
+                        </h3>
+                        <label class="toggle-wrap">
+                            <input type="checkbox" id="prog-ad-active" checked onchange="updateProgAdPreview()">
+                            <div class="toggle-slider"></div>
+                            <span style="font-size: 0.85rem; font-weight: 700; color: #fff;">Reklam Yayında</span>
+                        </label>
+                    </div>
+                    <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 1.5rem;">
+                        Masaüstü programlarınızdaki (Namaz Hatırlatıcı Pro vb.) yeşil reklam kutusunda ve görev çubuğundaki bilgi bandında gösterilecek görsel afişi ve tıklanınca açılacak web sitesi linkini buradan yönetin.
+                    </p>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="prog-ad-select">Yönetilecek Program</label>
+                            <select id="prog-ad-select" class="form-control" onchange="switchProgramAdTab()">
+                                <option value="namaz">🕌 Namaz Hatırlatıcı Pro</option>
+                                <option value="cizim">💎 Kuyumcu 3D Çizim</option>
+                                <option value="muhasebe">📊 Kuyumcu Muhasebe</option>
+                                <option value="goldhesap">⚖️ Gold Hesap & Altın</option>
+                                <option value="genel">🌐 Tüm Programlar (Genel)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="prog-ad-target-url">🔗 Tıklanınca Açılacak Web Sitesi (Hedef Link)</label>
+                            <input type="url" id="prog-ad-target-url" class="form-control" placeholder="https://www.arcelik.com.tr" oninput="updateProgAdPreview()">
+                            <small style="color: #94a3b8; font-size: 0.75rem;">Kullanıcı programdaki reklama tıkladığında doğrudan bu web sayfası açılır.</small>
+                        </div>
+                    </div>
+
+                    <!-- Resim Seçme / Yükleme Alanı -->
+                    <div class="form-row" style="margin-top: 0.5rem;">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label class="form-label">🖼️ Reklam Görseli / Afişi</label>
+                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                                <input type="file" id="prog-ad-file" accept="image/*" style="display: none;" onchange="handleProgAdFileUpload(event)">
+                                <button type="button" onclick="document.getElementById('prog-ad-file').click()" class="btn-edit-sm" style="background: rgba(212, 175, 55, 0.2); border-color: var(--admin-gold); color: #fff;">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Bilgisayardan Resim Seç
+                                </button>
+                                <input type="text" id="prog-ad-image-url" class="form-control" style="flex: 1; min-width: 240px;" placeholder="veya doğrudan resim linki yapıştırın (https://.../afis.jpg)" oninput="updateProgAdPreview()">
+                                <button type="button" onclick="clearProgAdImage()" class="btn-del-sm" title="Resmi Kaldır">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                            <small style="color: #94a3b8; font-size: 0.75rem; margin-top: 4px; display: block;">
+                                Tavsiye edilen boyut: 154x80 piksel (veya yatay banner afişi). Resim seçtiğinizde programdaki kutuda doğrudan bu afiş görünür.
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Yedek Metin / Slogan (Resim yoksa çıkar) -->
+                    <div class="form-row" style="margin-top: 0.5rem;">
+                        <div class="form-group">
+                            <label class="form-label" for="prog-ad-title">Sponsor / Marka Başlığı (Resim Yoksa Çıkar)</label>
+                            <input type="text" id="prog-ad-title" class="form-control" placeholder="ARÇELİK" oninput="updateProgAdPreview()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="prog-ad-slogan">Reklam Sloganı (Resim Yoksa Çıkar)</label>
+                            <input type="text" id="prog-ad-slogan" class="form-control" placeholder="Büyük Bahar İndirimi Başladı!" oninput="updateProgAdPreview()">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label class="form-label" for="prog-ad-banner-text">📢 Görev Çubuğu Bilgi Bandı Kayan Yazısı</label>
+                            <input type="text" id="prog-ad-banner-text" class="form-control" placeholder="Arçelik Bahar Kampanyasını Kaçırmayın! Ayrıntılar için tıklayın." oninput="updateProgAdPreview()">
+                            <small style="color: #94a3b8; font-size: 0.75rem;">Masaüstünün en altında görev çubuğunda kayan reklam/duyuru cümlesidir.</small>
+                        </div>
+                    </div>
+
+                    <!-- Canlı Önizleme Kutusu -->
+                    <div style="margin: 1.5rem 0; padding: 16px; background: rgba(15, 23, 42, 0.7); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08);">
+                        <label class="form-label" style="margin-bottom: 8px;"><i class="fa-solid fa-eye" style="color: var(--admin-gold);"></i> Masaüstü Canlı Önizleme (Programdaki Yeşil Kutu)</label>
+                        <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+                            <!-- 154x80 Box -->
+                            <div id="prog-ad-preview-box" style="width: 154px; height: 80px; background-color: #06090e; border: 1px dashed #00ff88; border-radius: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; cursor: pointer; overflow: hidden; position: relative;" onclick="testTargetLink()">
+                                <img id="prog-ad-preview-img" style="width: 100%; height: 100%; object-fit: cover; display: none;" alt="Afiş">
+                                <div id="prog-ad-preview-text" style="padding: 4px; display: flex; flex-direction: column; align-items: center;">
+                                    <span id="prev-badge" style="font-size: 7px; color: #d4af37; font-weight: 800; text-transform: uppercase;">ÖZEL SPONSOR</span>
+                                    <strong id="prev-title" style="font-size: 11px; color: #ffd700; font-weight: 900; text-transform: uppercase;">ARÇELİK</strong>
+                                    <span id="prev-slogan" style="font-size: 8px; color: #cbd5e1;">Büyük Bahar İndirimi</span>
+                                    <span id="prev-link-tag" style="font-size: 7px; color: #ffd700; margin-top: 2px;">Tıklayın ➔</span>
+                                </div>
+                            </div>
+
+                            <!-- Bilgi ve Test Butonu -->
+                            <div style="flex: 1; min-width: 220px;">
+                                <div style="font-size: 0.85rem; color: #e2e8f0; font-weight: 600; margin-bottom: 4px;">
+                                    Kutuya tıklayarak hedef linkin açılışını test edebilirsiniz.
+                                </div>
+                                <div style="font-size: 0.78rem; color: #94a3b8; margin-bottom: 10px;">
+                                    Aktif Hedef Link: <span id="prev-target-display" style="color: #38bdf8; word-break: break-all;">https://www.erntasarim.com</span>
+                                </div>
+                                <button type="button" onclick="testTargetLink()" class="btn-edit-sm" style="font-size: 0.78rem; padding: 4px 10px;">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Linki Yeni Sekmede Test Et
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aksiyon Butonları -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 1rem;">
+                        <div style="display: flex; gap: 8px;">
+                            <button type="button" onclick="downloadReklamlarJson()" class="btn-edit-sm" title="Dosyayı İndir">
+                                <i class="fa-solid fa-download"></i> reklamlar.json İndir
+                            </button>
+                            <button type="button" onclick="copyReklamlarJson()" class="btn-edit-sm" title="JSON Kopyala">
+                                <i class="fa-solid fa-copy"></i> Kodu Kopyala
+                            </button>
+                        </div>
+                        <button type="button" onclick="saveProgramAdSettings()" class="btn-gold-sm" style="font-size: 0.95rem; padding: 0.6rem 1.4rem;">
+                            <i class="fa-solid fa-check-double"></i> Reklamı Kaydet & Yayınla
+                        </button>
+                    </div>
+                </div>
+
+<!-- 1. Top Announcement Bar -->
                 <div class="content-card">
                     <div class="content-card-header">
                         <h3 class="content-card-title">
@@ -3907,6 +4117,8 @@
             checkAuth();
             setupImageUploader();
             fetchExchangeRate();
+            loadProgramAdsFromStorage();
+            setInterval(fetchLiveProgramUsers, 30000);
             syncFromServer();
         });
 
@@ -4128,7 +4340,7 @@
             }
             if (tabName === 'settings') populateSettingsForm();
             if (tabName === 'overview') updateOverviewStats();
-            if (tabName === 'analytics') loadAnalyticsTab();
+            if (tabName === 'analytics') { loadAnalyticsTab(); fetchLiveProgramUsers(); }
             if (tabName === 'ads') loadAdsTab();
             if (tabName === 'cms') loadCmsTab();
             if (tabName === 'security') loadSecurityTab();
@@ -5911,6 +6123,347 @@
 
             let linkHtml = link ? `<a href="javascript:void(0)" style="color: inherit; text-decoration: underline; margin-left: 6px;">${btnText}</a>` : '';
             preview.innerHTML = `<span><i class="fa-solid fa-bullhorn" style="margin-right: 6px;"></i> ${text} ${linkHtml}</span> ${!isActive ? '<span style="font-size: 0.72rem; background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; margin-left: 8px;">(Pasif)</span>' : ''}`;
+        }
+
+        
+        // =========================================================================
+        // MASAÜSTÜ PROGRAMLARI REKLAM, AFİŞ & SPONSOR YÖNETİMİ
+        // =========================================================================
+        let programAdsData = {
+            guncelleme_tarihi: new Date().toISOString().slice(0, 10),
+            telemetri_api_url: '',
+            genel: {
+                aktif: true,
+                baslik: 'ERN TASARIM',
+                slogan: 'Kişiye Özel Lüks Mücevher & 3D Çizim',
+                aciklama: 'Siz Hayal Edin, Biz Yapalım',
+                resim_url: '',
+                hedef_url: 'https://www.erntasarim.com',
+                alt_bar_metni: 'Ziyaret edin: www.erntasarim.com - Kişiye Özel Lüks Mücevher Tasarımı'
+            },
+            programlar: {
+                namaz: {
+                    aktif: true,
+                    baslik: 'ERN TASARIM',
+                    slogan: 'Kişiye Özel Lüks Mücevher Sanatı',
+                    aciklama: '3D CAD & Özel Tasarım Takı',
+                    resim_url: '',
+                    hedef_url: 'https://www.erntasarim.com',
+                    alt_bar_metni: 'Ziyaret edin: www.erntasarim.com - Kişiye Özel Lüks Mücevher Tasarımı'
+                },
+                muhasebe: {
+                    aktif: true,
+                    baslik: 'ERN TASARIM',
+                    slogan: 'Profesyonel Kuyumcu Yazılımları',
+                    aciklama: 'Çizim & Muhasebe Çözümleri',
+                    resim_url: '',
+                    hedef_url: 'https://www.erntasarim.com',
+                    alt_bar_metni: 'Ziyaret edin: www.erntasarim.com - Kuyumcu ve Çizim Yazılımları'
+                },
+                goldhesap: {
+                    aktif: true,
+                    baslik: 'ERN TASARIM',
+                    slogan: 'Hassas Altın ve Değerli Maden Hesaplama',
+                    aciklama: 'Kuyumcu ve Tasarımcılar İçin',
+                    resim_url: '',
+                    hedef_url: 'https://www.erntasarim.com',
+                    alt_bar_metni: 'Ziyaret edin: www.erntasarim.com - Canlı Altın ve Maliyet Hesaplama'
+                }
+            }
+        };
+
+        function loadProgramAdsFromStorage() {
+            try {
+                const saved = localStorage.getItem('ern_program_ads');
+                if (saved) {
+                    programAdsData = JSON.parse(saved);
+                    populateProgramAdForm();
+                    return;
+                }
+                fetch('/data/reklamlar.json?t=' + Date.now())
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data && data.programlar) {
+                            programAdsData = data;
+                            localStorage.setItem('ern_program_ads', JSON.stringify(data));
+                            populateProgramAdForm();
+                        }
+                    })
+                    .catch(() => {
+                        populateProgramAdForm();
+                    });
+            } catch(e) {
+                populateProgramAdForm();
+            }
+        }
+
+        function getCurrentSelectedAd() {
+            const prog = document.getElementById('prog-ad-select').value;
+            if (prog === 'genel') {
+                if (!programAdsData.genel) programAdsData.genel = {};
+                return programAdsData.genel;
+            }
+            if (!programAdsData.programlar) programAdsData.programlar = {};
+            if (!programAdsData.programlar[prog]) programAdsData.programlar[prog] = {};
+            return programAdsData.programlar[prog];
+        }
+
+        function switchProgramAdTab() {
+            populateProgramAdForm();
+        }
+
+        function populateProgramAdForm() {
+            const ad = getCurrentSelectedAd();
+            const activeEl = document.getElementById('prog-ad-active');
+            const targetEl = document.getElementById('prog-ad-target-url');
+            const imgEl = document.getElementById('prog-ad-image-url');
+            const titleEl = document.getElementById('prog-ad-title');
+            const sloganEl = document.getElementById('prog-ad-slogan');
+            const bannerEl = document.getElementById('prog-ad-banner-text');
+
+            if (activeEl) activeEl.checked = ad.aktif !== false;
+            if (targetEl) targetEl.value = ad.hedef_url || 'https://www.erntasarim.com';
+            if (imgEl) imgEl.value = ad.resim_url || '';
+            if (titleEl) titleEl.value = ad.baslik || 'ERN TASARIM';
+            if (sloganEl) sloganEl.value = ad.slogan || 'Kişiye Özel Lüks Mücevher Sanatı';
+            if (bannerEl) bannerEl.value = ad.alt_bar_metni || 'Ziyaret edin: www.erntasarim.com';
+            
+            const telemetriInput = document.getElementById('telemetry-api-input');
+            if (telemetriInput && programAdsData.telemetri_api_url) {
+                telemetriInput.value = programAdsData.telemetri_api_url;
+            }
+            updateProgAdPreview();
+        }
+
+        function handleProgAdFileUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const base64 = evt.target.result;
+                document.getElementById('prog-ad-image-url').value = base64;
+                updateProgAdPreview();
+                showToast('Afiş görseli seçildi ve önizlemeye yüklendi!');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearProgAdImage() {
+            document.getElementById('prog-ad-image-url').value = '';
+            document.getElementById('prog-ad-file').value = '';
+            updateProgAdPreview();
+            showToast('Afiş görseli kaldırıldı. Metin modu aktif.');
+        }
+
+        function updateProgAdPreview() {
+            const imgUrlInput = document.getElementById('prog-ad-image-url');
+            const targetUrlInput = document.getElementById('prog-ad-target-url');
+            const titleInput = document.getElementById('prog-ad-title');
+            const sloganInput = document.getElementById('prog-ad-slogan');
+
+            if (!imgUrlInput) return;
+
+            const imgUrl = imgUrlInput.value.trim();
+            const targetUrl = targetUrlInput ? targetUrlInput.value.trim() : 'https://www.erntasarim.com';
+            const title = titleInput ? titleInput.value.trim() : 'ERN TASARIM';
+            const slogan = sloganInput ? sloganInput.value.trim() : 'Özel Tasarım & Reklam';
+
+            const imgEl = document.getElementById('prog-ad-preview-img');
+            const textEl = document.getElementById('prog-ad-preview-text');
+            const targetDisp = document.getElementById('prev-target-display');
+
+            if (targetDisp) targetDisp.textContent = targetUrl;
+
+            if (imgEl && textEl) {
+                if (imgUrl) {
+                    imgEl.src = imgUrl;
+                    imgEl.style.display = 'block';
+                    textEl.style.display = 'none';
+                } else {
+                    imgEl.style.display = 'none';
+                    textEl.style.display = 'flex';
+                    const prevTitle = document.getElementById('prev-title');
+                    const prevSlogan = document.getElementById('prev-slogan');
+                    if (prevTitle) prevTitle.textContent = title;
+                    if (prevSlogan) prevSlogan.textContent = slogan;
+                }
+            }
+        }
+
+        function testTargetLink() {
+            const targetUrlInput = document.getElementById('prog-ad-target-url');
+            const url = targetUrlInput ? targetUrlInput.value.trim() : 'https://www.erntasarim.com';
+            window.open(url, '_blank');
+        }
+
+        function saveProgramAdSettings() {
+            try {
+                const ad = getCurrentSelectedAd();
+                ad.aktif = document.getElementById('prog-ad-active').checked;
+                ad.hedef_url = document.getElementById('prog-ad-target-url').value.trim();
+                ad.resim_url = document.getElementById('prog-ad-image-url').value.trim();
+                ad.baslik = document.getElementById('prog-ad-title').value.trim();
+                ad.slogan = document.getElementById('prog-ad-slogan').value.trim();
+                ad.alt_bar_metni = document.getElementById('prog-ad-banner-text').value.trim();
+                ad.aciklama = 'Masaüstü Sponsor Reklamı';
+                
+                programAdsData.guncelleme_tarihi = new Date().toISOString().slice(0, 10);
+                
+                localStorage.setItem('ern_program_ads', JSON.stringify(programAdsData));
+
+                try {
+                    fetch('/api/reklamlar', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(programAdsData)
+                    }).catch(() => {});
+                } catch(e) {}
+
+                showToast('🎉 Reklam ayarları kaydedildi! Programlar bu linki ve görseli açacaktır.');
+            } catch(err) {
+                alert('Kaydetme hatası: ' + err);
+            }
+        }
+
+        function downloadReklamlarJson() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(programAdsData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "reklamlar.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast('reklamlar.json dosyası indirildi.');
+        }
+
+        function copyReklamlarJson() {
+            navigator.clipboard.writeText(JSON.stringify(programAdsData, null, 2)).then(() => {
+                showToast('reklamlar.json kodu panoya kopyalandı!');
+            });
+        }
+
+        // =========================================================================
+        // MASAÜSTÜ PROGRAMLARI CANLI KULLANICI & ŞEHİR TAKİBİ (TELEMETRİ)
+        // =========================================================================
+        function saveTelemetryApiUrl() {
+            const url = document.getElementById('telemetry-api-input').value.trim();
+            programAdsData.telemetri_api_url = url;
+            localStorage.setItem('ern_program_ads', JSON.stringify(programAdsData));
+            try {
+                fetch('/api/reklamlar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(programAdsData)
+                }).catch(() => {});
+            } catch(e) {}
+            showToast('Telemetri Web URL kaydedildi!');
+            fetchLiveProgramUsers(true);
+        }
+
+        function fetchLiveProgramUsers(manual = false) {
+            const apiUrl = (programAdsData && programAdsData.telemetri_api_url) || (document.getElementById('telemetry-api-input') ? document.getElementById('telemetry-api-input').value.trim() : '');
+            
+            if (!apiUrl || !apiUrl.startsWith('http')) {
+                renderTelemetryData({
+                    online_count: 3,
+                    total_installs: 18,
+                    top_city: 'İstanbul',
+                    top_city_count: 2,
+                    city_stats: { 'İstanbul': 2, 'Ankara': 1 },
+                    users: [
+                        { app: 'Namaz Hatırlatıcı Pro', city: 'İstanbul', last_seen: 'Az önce', os: 'Windows 11', status: 'online' },
+                        { app: 'Namaz Hatırlatıcı Pro', city: 'İstanbul', last_seen: '2 dk önce', os: 'Windows 10', status: 'online' },
+                        { app: 'Namaz Hatırlatıcı Pro', city: 'Ankara', last_seen: '5 dk önce', os: 'Windows 11', status: 'online' }
+                    ],
+                    is_demo: true
+                });
+                if (manual) showToast('Google Sheet linki girilene kadar demo veriler gösteriliyor.');
+                return;
+            }
+
+            fetch(apiUrl)
+                .then(r => r.json())
+                .then(data => {
+                    if (data && data.status === 'success') {
+                        renderTelemetryData(data);
+                        if (manual) showToast('Canlı kullanıcı listesi güncellendi!');
+                    }
+                })
+                .catch(err => {
+                    console.error('Telemetri alma hatası:', err);
+                });
+        }
+
+        function renderTelemetryData(data) {
+            const countEl = document.getElementById('telemetry-online-count');
+            const topCityEl = document.getElementById('telemetry-top-city');
+            const topCityDesc = document.getElementById('telemetry-top-city-desc');
+            const totalEl = document.getElementById('telemetry-total-installs');
+            const badgesEl = document.getElementById('telemetry-city-badges');
+            const tbody = document.getElementById('telemetry-users-tbody');
+            const liveBadge = document.getElementById('telemetry-live-badge');
+            const statCardNum = document.getElementById('stat-an-live-program-users');
+
+            if (statCardNum) statCardNum.textContent = data.online_count || 0;
+            if (countEl) countEl.textContent = data.online_count || 0;
+            if (totalEl) totalEl.textContent = data.total_installs || 0;
+            if (topCityEl) topCityEl.textContent = data.top_city || '-';
+            if (topCityDesc) topCityDesc.textContent = (data.top_city_count ? `${data.top_city_count} kişi bağlı` : 'Lider şehir');
+
+            if (liveBadge) {
+                if (data.is_demo) {
+                    liveBadge.style.background = 'rgba(234, 179, 8, 0.2)';
+                    liveBadge.style.color = '#eab308';
+                    liveBadge.style.borderColor = 'rgba(234, 179, 8, 0.4)';
+                    liveBadge.textContent = '🟡 Demo Önizleme (URL Bekleniyor)';
+                } else {
+                    liveBadge.style.background = 'rgba(16, 185, 129, 0.2)';
+                    liveBadge.style.color = '#10b981';
+                    liveBadge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+                    liveBadge.textContent = '🟢 Canlı Akış (Google E-Tablo)';
+                }
+            }
+
+            if (badgesEl) {
+                const stats = data.city_stats || {};
+                const cities = Object.keys(stats);
+                if (cities.length === 0) {
+                    badgesEl.innerHTML = '<span style="color: #64748b; font-size: 0.8rem;">Henüz aktif kullanıcı yok.</span>';
+                } else {
+                    badgesEl.innerHTML = cities.map(c => `
+                        <span style="display: inline-flex; align-items: center; gap: 5px; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 6px; padding: 4px 10px; font-size: 0.8rem; color: #f8fafc; font-weight: 600;">
+                            <i class="fa-solid fa-location-dot" style="color: #38bdf8;"></i> ${c}: <strong style="color: #4ade80;">${stats[c]}</strong>
+                        </span>
+                    `).join('');
+                }
+            }
+
+            if (tbody) {
+                const users = data.users || [];
+                if (users.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 1.5rem;">Şu anda çevrimiçi bağlı masaüstü kullanıcısı bulunmuyor.</td></tr>';
+                } else {
+                    tbody.innerHTML = users.map(u => `
+                        <tr>
+                            <td>
+                                <strong style="color: #f8fafc;"><i class="fa-solid fa-desktop" style="color: var(--admin-gold); margin-right: 6px;"></i> ${u.app}</strong>
+                            </td>
+                            <td>
+                                <span style="display: inline-flex; align-items: center; gap: 5px; color: #38bdf8; font-weight: 600;">
+                                    <i class="fa-solid fa-location-dot"></i> ${u.city}
+                                </span>
+                            </td>
+                            <td style="color: #94a3b8;">${u.os || 'Windows'}</td>
+                            <td style="color: #cbd5e1; font-weight: 600;">${u.last_seen}</td>
+                            <td>
+                                <span style="display: inline-flex; align-items: center; gap: 5px; color: #10b981; font-size: 0.78rem; font-weight: 700; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 4px; padding: 2px 8px;">
+                                    <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%;"></span> Çevrimiçi
+                                </span>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            }
         }
 
         function saveAdsSettings() {

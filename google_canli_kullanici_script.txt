@@ -1,0 +1,159 @@
+// =====================================================================================
+// ERN TASARIM - MASAÜSTÜ PROGRAMLARI CANLI KULLANICI & ŞEHİR TAKİP SİSTEMİ
+// (Google Apps Script - Google E-Tablolar)
+// =====================================================================================
+//
+// BU KOD NE İŞE YARAR?
+// Masaüstü programlarınızı (Namaz Hatırlatıcı Pro, Çizim, Muhasebe vb.) kullanan kişilerin
+// kaç kişi olduğunu, hangi şehirlerden bağlandıklarını ve canlı çevrimiçi durumlarını
+// sitenizdeki Yönetici Paneline (yonetici.html) aktarır.
+//
+// NASIL KURULUR? (3 DAKİKADA HAZIR)
+// 1. https://sheets.google.com adresine gidip YENİ BİR E-TABLO (Google Sheet) oluşturun.
+// 2. Adını "ERN Program Telemetri & Canlı Kullanıcılar" yapın.
+// 3. İlk sayfanın adını "Canli_Kullanicilar" yapın (sol alttaki sekme adı).
+// 4. İlk satıra (Başlıklar) sırasıyla şunları yazın:
+//    A1: Cihaz ID | B1: Program | C1: Şehir | D1: Son Sinyal | E1: İşletim Sistemi | F1: Durum
+// 5. Üst menüden "Uzantılar" (Extensions) -> "Apps Script" seçeneğine tıklayın.
+// 6. Açılan ekrandaki tüm kodları silin ve aşağıdaki KODUN TAMAMINI yapıştırın.
+// 7. Sağ üstteki mavi "Dağıt" (Deploy) -> "Yeni dağıtım" (New deployment) seçeneğine tıklayın.
+// 8. Dişli çarktan "Web uygulaması" (Web app) seçin:
+//    - Açıklama: ERN Program Telemetri
+//    - Web uygulaması şu kişi olarak yürütülsün: Ben (E-postanız)
+//    - Erişimi olan kişi: Herkes (Anyone)  <-- Bu ÇOK ÖNEMLİDİR!
+// 9. "Dağıt" butonuna basın ve Google izinlerini onaylayın.
+// 10. Size bir "Web uygulaması URL'si" verecektir (https://script.google.com/macros/s/.../exec).
+// 11. Bu linki sitenizdeki Yönetici Paneli -> "Giriş & Ziyaretçi" sekmesindeki Telemetri URL kutusuna yapıştırıp kaydedin!
+//
+// =====================================================================================
+
+function doPost(e) {
+  try {
+    const sheet = getOrCreateSheet("Canli_Kullanicilar");
+    const data = JSON.parse(e.postData.contents);
+    
+    if (data.action === "ping") {
+      const devId = String(data.device_id || "bilinmiyor");
+      const appName = String(data.app || "Masaüstü Programı");
+      const city = String(data.city || "Bilinmiyor");
+      const os = String(data.os || "Windows");
+      const now = new Date();
+      
+      const rows = sheet.getDataRange().getValues();
+      let foundIndex = -1;
+      
+      // İlk satır başlık olduğu için 1'den başla
+      for (let i = 1; i < rows.length; i++) {
+        if (String(rows[i][0]) === devId) {
+          foundIndex = i + 1; // 1-indexed
+          break;
+        }
+      }
+      
+      if (foundIndex > 0) {
+        // Mevcut kullanıcıyı güncelle
+        sheet.getRange(foundIndex, 2).setValue(appName);
+        sheet.getRange(foundIndex, 3).setValue(city);
+        sheet.getRange(foundIndex, 4).setValue(now);
+        sheet.getRange(foundIndex, 5).setValue(os);
+        sheet.getRange(foundIndex, 6).setValue("online");
+      } else {
+        // Yeni kullanıcı satırı ekle
+        sheet.appendRow([devId, appName, city, now, os, "online"]);
+      }
+      
+      return ContentService.createTextOutput(JSON.stringify({ result: "success", status: "ok" }))
+                           .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify({ result: "ignored" }))
+                         .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ result: "error", message: err.toString() }))
+                         .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  try {
+    const sheet = getOrCreateSheet("Canli_Kullanicilar");
+    const rows = sheet.getDataRange().getValues();
+    
+    const now = new Date().getTime();
+    const fifteenMinutes = 15 * 60 * 1000;
+    
+    let onlineUsers = [];
+    let cityCounts = {};
+    let totalInstalls = 0;
+    
+    for (let i = 1; i < rows.length; i++) {
+      const devId = rows[i][0];
+      const app = rows[i][1];
+      const city = rows[i][2] || "Bilinmiyor";
+      const lastSeen = new Date(rows[i][3]);
+      const os = rows[i][4] || "Windows";
+      
+      if (!devId) continue;
+      totalInstalls++;
+      
+      const diff = now - lastSeen.getTime();
+      const isOnline = diff <= fifteenMinutes;
+      
+      if (isOnline) {
+        // Saat ve Dakika formatı
+        const timeStr = Utilities.formatDate(lastSeen, "GMT+3", "HH:mm:ss");
+        onlineUsers.push({
+          device_id: devId,
+          app: app,
+          city: city,
+          last_seen: timeStr,
+          diff_minutes: Math.round(diff / 60000),
+          os: os,
+          status: "online"
+        });
+        
+        cityCounts[city] = (cityCounts[city] || 0) + 1;
+      }
+    }
+    
+    // En çok bağlanan şehri bul
+    let topCity = "-";
+    let maxCityCount = 0;
+    for (const [c, cnt] of Object.entries(cityCounts)) {
+      if (cnt > maxCityCount) {
+        maxCityCount = cnt;
+        topCity = c;
+      }
+    }
+    
+    // Son sinyale göre sırala (en yeni en üstte)
+    onlineUsers.reverse();
+    
+    const response = {
+      status: "success",
+      online_count: onlineUsers.length,
+      total_installs: totalInstalls,
+      top_city: topCity,
+      top_city_count: maxCityCount,
+      city_stats: cityCounts,
+      users: onlineUsers,
+      timestamp: new Date().toISOString()
+    };
+    
+    return ContentService.createTextOutput(JSON.stringify(response))
+                         .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: "error", message: err.toString() }))
+                         .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function getOrCreateSheet(name) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(name);
+  if (!sheet) {
+    sheet = ss.insertSheet(name);
+    sheet.appendRow(["Cihaz ID", "Program", "Şehir", "Son Sinyal", "İşletim Sistemi", "Durum"]);
+  }
+  return sheet;
+}
