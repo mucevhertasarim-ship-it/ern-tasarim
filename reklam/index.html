@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ERN Tasarım Reklam</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            overflow: hidden !important;
+            background-color: #06090e !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif !important;
+            cursor: pointer;
+        }
+        .ad-card {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4px 6px;
+            text-align: center;
+            text-decoration: none;
+            background: radial-gradient(circle at center, #111827 0%, #06090e 100%);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .ad-card:hover {
+            border-color: #d4af37;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+        }
+        /* Parıltı Efekti */
+        .ad-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 45%,
+                rgba(255, 215, 0, 0.15) 50%,
+                transparent 55%
+            );
+            transform: rotate(25deg);
+            animation: shimmer 3.5s infinite;
+            pointer-events: none;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(25deg); }
+            100% { transform: translateX(100%) rotate(25deg); }
+        }
+        .badge {
+            font-size: 8px !important;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #d4af37 !important;
+            font-weight: 800;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .badge svg {
+            width: 10px;
+            height: 10px;
+            fill: #d4af37;
+        }
+        .brand-title {
+            font-size: 13px !important;
+            font-weight: 900 !important;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #fff 20%, #ffd700 60%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 !important;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+        .slogan {
+            font-size: 9px !important;
+            color: #cbd5e1 !important;
+            font-weight: 600;
+            margin: 2px 0 0 0 !important;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 95%;
+        }
+        .action-tag {
+            margin-top: 3px;
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.15);
+            border: 0.5px solid rgba(212, 175, 55, 0.4);
+            border-radius: 4px;
+            padding: 1px 6px;
+            font-size: 7.5px !important;
+            color: #ffd700 !important;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        #ad-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="ad-card" id="ad-container" onclick="openTarget()">
+        <img id="ad-image" alt="ERN Tasarım Reklam">
+        <div id="ad-content" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+            <div class="badge">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                </svg>
+                <span id="ad-category">ÖZEL MÜCEVHER</span>
+            </div>
+            <h1 class="brand-title" id="ad-title">ERN TASARIM</h1>
+            <p class="slogan" id="ad-slogan">Kişiye Özel Lüks Tasarım & 3D CAD</p>
+            <div class="action-tag" id="ad-action">www.erntasarim.com ➔</div>
+        </div>
+    </div>
+
+    <script>
+        let targetUrl = "https://www.erntasarim.com";
+
+        function openTarget() {
+            try {
+                window.open(targetUrl, '_blank');
+            } catch(e) {}
+            if (window.top) {
+                window.top.location.href = targetUrl;
+            } else {
+                window.location.href = targetUrl;
+            }
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const appName = (urlParams.get('app') || 'namaz').toLowerCase();
+
+        fetch('/data/reklamlar.json')
+            .then(res => {
+                if (!res.ok) throw new Error('Ağ hatası');
+                return res.json();
+            })
+            .then(data => {
+                let ad = null;
+                if (data.programlar && data.programlar[appName] && data.programlar[appName].aktif) {
+                    ad = data.programlar[appName];
+                } else if (data.genel && data.genel.aktif) {
+                    ad = data.genel;
+                }
+
+                if (ad) {
+                    if (ad.hedef_url) targetUrl = ad.hedef_url;
+                    
+                    if (ad.resim_url && ad.resim_url.trim() !== "") {
+                        const img = document.getElementById('ad-image');
+                        img.src = ad.resim_url;
+                        img.style.display = 'block';
+                        document.getElementById('ad-content').style.display = 'none';
+                    } else {
+                        if (ad.baslik) document.getElementById('ad-title').textContent = ad.baslik;
+                        if (ad.slogan) document.getElementById('ad-slogan').textContent = ad.slogan;
+                        if (ad.aciklama) document.getElementById('ad-category').textContent = ad.aciklama.toUpperCase();
+                    }
+                }
+            })
+            .catch(err => {
+                console.log("Varsayılan reklam aktif:", err);
+            });
+    </script>
+</body>
+</html>

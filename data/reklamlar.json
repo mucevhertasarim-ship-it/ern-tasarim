@@ -1,0 +1,41 @@
+{
+  "guncelleme_tarihi": "2026-09-19",
+  "genel": {
+    "aktif": true,
+    "baslik": "ERN TASARIM",
+    "slogan": "Kişiye Özel Lüks Mücevher & 3D Çizim",
+    "aciklama": "Siz Hayal Edin, Biz Yapalım",
+    "resim_url": "",
+    "hedef_url": "https://www.erntasarim.com",
+    "alt_bar_metni": "Ziyaret edin: www.erntasarim.com - Kişiye Özel Lüks Mücevher Tasarımı"
+  },
+  "programlar": {
+    "namaz": {
+      "aktif": true,
+      "baslik": "ERN TASARIM",
+      "slogan": "Kişiye Özel Lüks Mücevher Sanatı",
+      "aciklama": "3D CAD & Özel Tasarım Takı",
+      "resim_url": "",
+      "hedef_url": "https://www.erntasarim.com",
+      "alt_bar_metni": "Ziyaret edin: www.erntasarim.com - Kişiye Özel Lüks Mücevher Tasarımı"
+    },
+    "muhasebe": {
+      "aktif": true,
+      "baslik": "ERN TASARIM",
+      "slogan": "Profesyonel Kuyumcu Yazılımları",
+      "aciklama": "Çizim & Muhasebe Çözümleri",
+      "resim_url": "",
+      "hedef_url": "https://www.erntasarim.com",
+      "alt_bar_metni": "Ziyaret edin: www.erntasarim.com - Kuyumcu ve Çizim Yazılımları"
+    },
+    "goldhesap": {
+      "aktif": true,
+      "baslik": "ERN TASARIM",
+      "slogan": "Hassas Altın ve Değerli Maden Hesaplama",
+      "aciklama": "Kuyumcu ve Tasarımcılar İçin",
+      "resim_url": "",
+      "hedef_url": "https://www.erntasarim.com",
+      "alt_bar_metni": "Ziyaret edin: www.erntasarim.com - Canlı Altın ve Maliyet Hesaplama"
+    }
+  }
+}

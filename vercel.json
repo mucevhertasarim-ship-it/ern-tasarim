@@ -1,5 +1,16 @@
 {
   "version": 2,
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/reklam",
+      "destination": "/reklam.html"
+    },
+    {
+      "source": "/mesaj",
+      "destination": "/mesaj.html"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
