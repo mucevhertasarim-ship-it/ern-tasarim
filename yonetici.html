@@ -6377,7 +6377,7 @@
             return false;
         }
 
-        function saveProgramAdSettings(silent = false) {
+        async function saveProgramAdSettings(silent = false) {
             try {
                 const ad = getCurrentSelectedAd();
                 ad.aktif = document.getElementById('prog-ad-active').checked;
@@ -6392,16 +6392,37 @@
                 
                 localStorage.setItem('ern_program_ads', JSON.stringify(programAdsData));
 
-                // 1. Yerel Python sunucusuna kaydet (Lokal_Sunucu_Baslat.bat çalışıyorsa)
+                let syncedToProgram = false;
+
+                // 1. Masaüstü Programı Canlı Köprüsü (127.0.0.1:1881)
                 try {
-                    fetch('/api/reklamlar', {
+                    const r = await fetch('http://127.0.0.1:1881/api/reklamlar', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(programAdsData)
-                    }).catch(() => {});
+                    });
+                    if (r.ok) {
+                        syncedToProgram = true;
+                    }
                 } catch(e) {}
 
-                // 2. Canlı Google E-Tabloya anında kaydet
+                // 2. Yerel Python/Flask sunucusuna kaydet (Lokal_Sunucu_Baslat.bat çalışıyorsa)
+                try {
+                    await fetch('http://127.0.0.1:8085/api/reklamlar', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(programAdsData)
+                    });
+                } catch(e) {}
+                try {
+                    await fetch('/api/reklamlar', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(programAdsData)
+                    });
+                } catch(e) {}
+
+                // 3. Canlı Google E-Tabloya anında kaydet
                 const teleUrl = (programAdsData && programAdsData.telemetri_api_url) || (document.getElementById('telemetry-api-input') ? document.getElementById('telemetry-api-input').value.trim() : '');
                 let hasGoogle = false;
                 if (teleUrl && teleUrl.startsWith('http')) {
@@ -6415,17 +6436,17 @@
                                 action: 'save_ad',
                                 data: programAdsData
                             })
-                        }).then(() => {
-                            console.log('Google Apps Script reklam verisi güncellendi.');
-                        }).catch(e => console.log(e));
+                        });
                     } catch(e) {}
                 }
 
                 if (!silent) {
-                    if (hasGoogle) {
-                        showToast('🎉 Reklam ayarları kaydedildi ve Google Tabloya aktarıldı! Masaüstü programlar ve site saniyeler içinde canlıya alacaktır.');
+                    if (syncedToProgram) {
+                        showToast('🎉 Harika! Reklam masaüstü programına anında aktarıldı ve ekranda güncellendi!');
+                    } else if (hasGoogle) {
+                        showToast('🎉 Reklam ayarları Google Tabloya aktarıldı! Programlar saniyeler içinde canlıya alacaktır.');
                     } else {
-                        showToast('💾 Reklam ayarları tarayıcıya kaydedildi. Canlı site ve programlar için Google E-Tablo linki bağlayabilir veya reklamlar.json dosyasını kaydedip GitHub\'a yükleyebilirsiniz.');
+                        showToast('💾 Tarayıcıya kaydedildi. Program açıldığında veya data/reklamlar.json dosyasına yazıldığında otomatik eşitlenir.');
                     }
                 }
             } catch(err) {
