@@ -2202,11 +2202,25 @@
                         </div>
                     </div>
 
+                    <!-- Canlı Yayın & Kaydetme Bilgilendirme Kutusu -->
+                    <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 8px; padding: 12px 16px; margin: 1.2rem 0 0.8rem 0;">
+                        <div style="font-size: 0.85rem; font-weight: 700; color: #60a5fa; margin-bottom: 5px;">
+                            <i class="fa-solid fa-circle-info"></i> Değişiklikler Canlı Sitede ve Masaüstü Programlarında Nasıl Görünür?
+                        </div>
+                        <div style="font-size: 0.78rem; color: #cbd5e1; line-height: 1.5;">
+                            <strong>1. Google E-Tablo ile (Önerilen - 0 Saniye Canlı):</strong> 'Giriş & Ziyaretçi' sekmesine Google Web Uygulaması linkinizi bağladıysanız, <em>'Reklamı Kaydet & Yayınla'</em> butonuna bastığınız an 1 saniyede hem sitede hem masaüstü programlarda anında canlıya girer. GitHub'a hiçbir şey yüklemeniz gerekmez!<br>
+                            <strong>2. Doğrudan Bilgisayara Kaydet (Tek Tık):</strong> <em>'data/reklamlar.json'a Doğrudan Yaz'</em> butonuna basarak dosyanızı doğrudan sitenizin <code>data/reklamlar.json</code> klasörüne kaydedebilirsiniz. Ardından GitHub'a yüklediğinizde Vercel siteniz güncellenir.
+                        </div>
+                    </div>
+
                     <!-- Aksiyon Butonları -->
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 1rem;">
-                        <div style="display: flex; gap: 8px;">
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button type="button" onclick="saveDirectlyToFile()" class="btn-edit-sm" style="background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #10b981;" title="Doğrudan Bilgisayara Kaydet">
+                                <i class="fa-solid fa-floppy-disk"></i> data/reklamlar.json'a Doğrudan Yaz
+                            </button>
                             <button type="button" onclick="downloadReklamlarJson()" class="btn-edit-sm" title="Dosyayı İndir">
-                                <i class="fa-solid fa-download"></i> reklamlar.json İndir
+                                <i class="fa-solid fa-download"></i> İndir
                             </button>
                             <button type="button" onclick="copyReklamlarJson()" class="btn-edit-sm" title="JSON Kopyala">
                                 <i class="fa-solid fa-copy"></i> Kodu Kopyala
@@ -6238,12 +6252,50 @@
         function handleProgAdFileUpload(e) {
             const file = e.target.files[0];
             if (!file) return;
+
             const reader = new FileReader();
             reader.onload = function(evt) {
-                const base64 = evt.target.result;
-                document.getElementById('prog-ad-image-url').value = base64;
-                updateProgAdPreview();
-                showToast('Afiş görseli seçildi ve önizlemeye yüklendi!');
+                const img = new Image();
+                img.onload = function() {
+                    try {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        
+                        // 154x80 kutusu için 2 kat retina çözünürlüğü (308x160)
+                        const targetW = 308;
+                        const targetH = 160;
+                        canvas.width = targetW;
+                        canvas.height = targetH;
+                        
+                        const imgAspect = img.width / img.height;
+                        const targetAspect = targetW / targetH;
+                        let drawW, drawH;
+                        
+                        if (imgAspect > targetAspect) {
+                            drawH = targetH;
+                            drawW = targetH * imgAspect;
+                        } else {
+                            drawW = targetW;
+                            drawH = targetW / imgAspect;
+                        }
+                        const dx = (targetW - drawW) / 2;
+                        const dy = (targetH - drawH) / 2;
+                        
+                        ctx.drawImage(img, dx, dy, drawW, drawH);
+                        
+                        // JPEG %85 kalitede sıkıştır (Sadece ~15-20 KB!)
+                        const optimizedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+                        
+                        document.getElementById('prog-ad-image-url').value = optimizedBase64;
+                        updateProgAdPreview();
+                        showToast('🎉 Afiş görseli optimize edildi ve önizlemeye yüklendi! (~20 KB)');
+                    } catch(err) {
+                        // Hata durumunda doğrudan base64 al
+                        document.getElementById('prog-ad-image-url').value = evt.target.result;
+                        updateProgAdPreview();
+                    }
+                };
+                img.src = evt.target.result;
             };
             reader.readAsDataURL(file);
         }
@@ -6296,7 +6348,36 @@
             window.open(url, '_blank');
         }
 
-        function saveProgramAdSettings() {
+        async function saveDirectlyToFile() {
+            try {
+                // Önce veriyi toparla
+                saveProgramAdSettings(true); // sessiz kaydet
+                
+                if ('showSaveFilePicker' in window) {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: 'reklamlar.json',
+                        types: [{
+                            description: 'JSON Dosyası',
+                            accept: { 'application/json': ['.json'] },
+                        }],
+                    });
+                    const writable = await handle.createWritable();
+                    await writable.write(JSON.stringify(programAdsData, null, 2));
+                    await writable.close();
+                    showToast('✅ data/reklamlar.json dosyası doğrudan diske kaydedildi!');
+                    return true;
+                } else {
+                    downloadReklamlarJson();
+                }
+            } catch(err) {
+                if (err && err.name !== 'AbortError') {
+                    downloadReklamlarJson();
+                }
+            }
+            return false;
+        }
+
+        function saveProgramAdSettings(silent = false) {
             try {
                 const ad = getCurrentSelectedAd();
                 ad.aktif = document.getElementById('prog-ad-active').checked;
@@ -6311,6 +6392,7 @@
                 
                 localStorage.setItem('ern_program_ads', JSON.stringify(programAdsData));
 
+                // 1. Yerel Python sunucusuna kaydet (Lokal_Sunucu_Baslat.bat çalışıyorsa)
                 try {
                     fetch('/api/reklamlar', {
                         method: 'POST',
@@ -6319,9 +6401,35 @@
                     }).catch(() => {});
                 } catch(e) {}
 
-                showToast('🎉 Reklam ayarları kaydedildi! Programlar bu linki ve görseli açacaktır.');
+                // 2. Canlı Google E-Tabloya anında kaydet
+                const teleUrl = (programAdsData && programAdsData.telemetri_api_url) || (document.getElementById('telemetry-api-input') ? document.getElementById('telemetry-api-input').value.trim() : '');
+                let hasGoogle = false;
+                if (teleUrl && teleUrl.startsWith('http')) {
+                    hasGoogle = true;
+                    try {
+                        fetch(teleUrl, {
+                            method: 'POST',
+                            mode: 'no-cors',
+                            headers: { 'Content-Type': 'text/plain' },
+                            body: JSON.stringify({
+                                action: 'save_ad',
+                                data: programAdsData
+                            })
+                        }).then(() => {
+                            console.log('Google Apps Script reklam verisi güncellendi.');
+                        }).catch(e => console.log(e));
+                    } catch(e) {}
+                }
+
+                if (!silent) {
+                    if (hasGoogle) {
+                        showToast('🎉 Reklam ayarları kaydedildi ve Google Tabloya aktarıldı! Masaüstü programlar ve site saniyeler içinde canlıya alacaktır.');
+                    } else {
+                        showToast('💾 Reklam ayarları tarayıcıya kaydedildi. Canlı site ve programlar için Google E-Tablo linki bağlayabilir veya reklamlar.json dosyasını kaydedip GitHub\'a yükleyebilirsiniz.');
+                    }
+                }
             } catch(err) {
-                alert('Kaydetme hatası: ' + err);
+                if (!silent) alert('Kaydetme hatası: ' + err);
             }
         }
 

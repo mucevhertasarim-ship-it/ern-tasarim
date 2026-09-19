@@ -159,41 +159,69 @@
         // URL'den hangi uygulamanın reklamını çekeceğini anlama (?app=namaz vb.)
         const urlParams = new URLSearchParams(window.location.search);
         const appName = (urlParams.get('app') || 'namaz').toLowerCase();
+        const paramTeleUrl = urlParams.get('tele_url');
 
-        fetch('/data/reklamlar.json?t=' + Date.now())
+        function applyAd(ad) {
+            if (!ad) return;
+            if (ad.hedef_url) targetUrl = ad.hedef_url;
+            
+            if (ad.resim_url && ad.resim_url.trim() !== "") {
+                const img = document.getElementById('ad-image');
+                img.src = ad.resim_url;
+                img.style.display = 'block';
+                document.getElementById('ad-content').style.display = 'none';
+            } else {
+                const img = document.getElementById('ad-image');
+                img.style.display = 'none';
+                document.getElementById('ad-content').style.display = 'flex';
+                if (ad.baslik) document.getElementById('ad-title').textContent = ad.baslik;
+                if (ad.slogan) document.getElementById('ad-slogan').textContent = ad.slogan;
+                if (ad.aciklama) document.getElementById('ad-category').textContent = ad.aciklama.toUpperCase();
+            }
+        }
+
+        const jsonPath = (window.location.protocol === 'file:') ? 'data/reklamlar.json' : ('/data/reklamlar.json?t=' + Date.now());
+
+        fetch(jsonPath)
             .then(res => {
                 if (!res.ok) throw new Error('Ağ hatası');
                 return res.json();
             })
             .then(data => {
-                let ad = null;
+                let defaultAd = null;
                 if (data.programlar && data.programlar[appName] && data.programlar[appName].aktif) {
-                    ad = data.programlar[appName];
+                    defaultAd = data.programlar[appName];
                 } else if (data.genel && data.genel.aktif) {
-                    ad = data.genel;
+                    defaultAd = data.genel;
                 }
+                applyAd(defaultAd);
 
-                if (ad) {
-                    if (ad.hedef_url) targetUrl = ad.hedef_url;
-                    
-                    if (ad.resim_url && ad.resim_url.trim() !== "") {
-                        const img = document.getElementById('ad-image');
-                        img.src = ad.resim_url;
-                        img.style.display = 'block';
-                        document.getElementById('ad-content').style.display = 'none';
-                    } else {
-                        if (ad.baslik) document.getElementById('ad-title').textContent = ad.baslik;
-                        if (ad.slogan) document.getElementById('ad-slogan').textContent = ad.slogan;
-                        if (ad.aciklama) document.getElementById('ad-category').textContent = ad.aciklama.toUpperCase();
-                    }
+                // Eğer canlı Google E-Tablo / Telemetri linki varsa oradaki en güncel reklamı çek
+                const liveTeleUrl = paramTeleUrl || data.telemetri_api_url;
+                if (liveTeleUrl && liveTeleUrl.startsWith('http')) {
+                    fetch(liveTeleUrl + '?type=ad')
+                        .then(r => r.json())
+                        .then(liveData => {
+                            if (liveData && (liveData.programlar || liveData.genel)) {
+                                let liveAd = null;
+                                if (liveData.programlar && liveData.programlar[appName] && liveData.programlar[appName].aktif) {
+                                    liveAd = liveData.programlar[appName];
+                                } else if (liveData.genel && liveData.genel.aktif) {
+                                    liveAd = liveData.genel;
+                                }
+                                if (liveAd) applyAd(liveAd);
+                            }
+                        })
+                        .catch(() => {});
                 }
 
                 // Canlı Telemetri Sinyali (Şehir ve UID varsa)
                 try {
                     const city = urlParams.get('city');
                     const uid = urlParams.get('uid');
-                    if (data.telemetri_api_url && city) {
-                        fetch(data.telemetri_api_url, {
+                    const pingUrl = paramTeleUrl || data.telemetri_api_url;
+                    if (pingUrl && city) {
+                        fetch(pingUrl, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
@@ -210,6 +238,15 @@
             })
             .catch(err => {
                 console.log("Varsayılan reklam aktif:", err);
+                // JSON okunamasa bile URL'de tele_url varsa doğrudan Google'dan çekmeyi dene
+                if (paramTeleUrl && paramTeleUrl.startsWith('http')) {
+                    fetch(paramTeleUrl + '?type=ad')
+                        .then(r => r.json())
+                        .then(liveData => {
+                            let liveAd = liveData.programlar ? liveData.programlar[appName] : liveData.genel;
+                            if (liveAd) applyAd(liveAd);
+                        }).catch(() => {});
+                }
             });
     </script>
 </body>

@@ -65,6 +65,13 @@ function doPost(e) {
       return ContentService.createTextOutput(JSON.stringify({ result: "success", status: "ok" }))
                            .setMimeType(ContentService.MimeType.JSON);
     }
+
+    if (data.action === "save_ad") {
+      const adSheet = getOrCreateSheet("Reklamlar");
+      adSheet.getRange("A1").setValue(JSON.stringify(data.data));
+      return ContentService.createTextOutput(JSON.stringify({ result: "success", message: "Reklam başarıyla kaydedildi!" }))
+                           .setMimeType(ContentService.MimeType.JSON);
+    }
     
     return ContentService.createTextOutput(JSON.stringify({ result: "ignored" }))
                          .setMimeType(ContentService.MimeType.JSON);
@@ -76,6 +83,19 @@ function doPost(e) {
 
 function doGet(e) {
   try {
+    // 1. Canlı Reklam Verisi Talebi (?type=ad)
+    if (e && e.parameter && e.parameter.type === "ad") {
+      const adSheet = getOrCreateSheet("Reklamlar");
+      const savedJson = adSheet.getRange("A1").getValue();
+      if (savedJson && String(savedJson).trim().startsWith("{")) {
+        return ContentService.createTextOutput(String(savedJson))
+                             .setMimeType(ContentService.MimeType.JSON);
+      }
+      return ContentService.createTextOutput(JSON.stringify({}))
+                           .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // 2. Canlı Kullanıcı Listesi Talebi
     const sheet = getOrCreateSheet("Canli_Kullanicilar");
     const rows = sheet.getDataRange().getValues();
     
