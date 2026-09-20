@@ -3,7 +3,7 @@
     "id": "item_3d_1euro",
     "title": "1 Euro Madalyon Kolye Ucu",
     "category": "kolye",
-    "price": 39,
+    "price": 10,
     "code": "ERN-3D101",
     "media": "models/1euro.glb",
     "image": "models/1euro.jpg",
@@ -26,7 +26,7 @@
     "id": "item_3d_2cm_meryem1",
     "title": "2cm Meryem Ana Kolye Ucu",
     "category": "kolye",
-    "price": 35,
+    "price": 20,
     "code": "ERN-3D102",
     "media": "models/2cm_meryem1.glb",
     "image": "models/2cm_meryem1.jpg",
@@ -49,7 +49,7 @@
     "id": "item_3d_7cm_hc",
     "title": "7cm Pırlanta Taşlı Haç Kolye",
     "category": "kolye",
-    "price": 49,
+    "price": 30,
     "code": "ERN-3D103",
     "media": "models/7cm_hc.glb",
     "image": "models/7cm_hc.jpg",
@@ -72,7 +72,7 @@
     "id": "item_3d_alkan-5",
     "title": "Alkan-5 Özel Tasarım Kolye",
     "category": "kolye",
-    "price": 29,
+    "price": 10,
     "code": "ERN-3D104",
     "media": "models/alkan-5.glb",
     "image": "models/alkan-5.jpg",
@@ -95,7 +95,7 @@
     "id": "item_3d_eller",
     "title": "Kenetlenen Dua Eden Eller Kolye",
     "category": "kolye",
-    "price": 39,
+    "price": 35,
     "code": "ERN-3D105",
     "media": "models/eller.glb",
     "image": "models/eller.jpg",
@@ -118,7 +118,7 @@
     "id": "item_3d_kowboy",
     "title": "Kovboy Şapkası & Figürü Kolye",
     "category": "kolye",
-    "price": 39,
+    "price": 35,
     "code": "ERN-3D106",
     "media": "models/kowboy.glb",
     "image": "models/kowboy.jpg",
@@ -141,7 +141,7 @@
     "id": "item_3d_kolyeler2-58_a",
     "title": "Balerin & Figür Kolye (58-A)",
     "category": "kolye",
-    "price": 39,
+    "price": 30,
     "code": "ERN-3D107",
     "media": "models/kolyeler2-58_a.glb",
     "image": "models/kolyeler2-58_a.jpg",
@@ -164,7 +164,7 @@
     "id": "item_3d_kolyeler2_57",
     "title": "Lüks Kolye Ucu (No. 57)",
     "category": "kolye",
-    "price": 49,
+    "price": 40,
     "code": "ERN-3D108",
     "media": "models/kolyeler2_57.glb",
     "image": "models/kolyeler2_57.jpg",
@@ -187,7 +187,7 @@
     "id": "item_3d_serenay",
     "title": "Serenay Özel Tasarım Kolye",
     "category": "kolye",
-    "price": 49,
+    "price": 30,
     "code": "ERN-3D109",
     "media": "models/serenay.glb",
     "image": "models/serenay.jpg",
@@ -210,7 +210,7 @@
     "id": "item_3d_akrep_kolye",
     "title": "Akrep Kolye Ucu (3D Rölyef)",
     "category": "kolye",
-    "price": 49,
+    "price": 50,
     "code": "ERN-3D110",
     "media": "models/akrep_kolye.glb",
     "image": "models/akrep_kolye.jpg",
@@ -233,7 +233,7 @@
     "id": "item_3d_akrep",
     "title": "Büyük Akrep Heykelcik Kolye",
     "category": "kolye",
-    "price": 49,
+    "price": 30,
     "code": "ERN-3D111",
     "media": "models/akrep.glb",
     "image": "models/akrep.jpg",
@@ -256,7 +256,7 @@
     "id": "item_3d_bil_cengelli_igne",
     "title": "Pırlantalı Çengelli İğne Kolye Ucu",
     "category": "kolye",
-    "price": 29,
+    "price": 10,
     "code": "ERN-3D112",
     "media": "models/bil_cengelli_igne.glb",
     "image": "models/bil_cengelli_igne.jpg",
@@ -279,7 +279,7 @@
     "id": "item_3d_bozkurt",
     "title": "Bozkurt Hilal Kolye Ucu",
     "category": "kolye",
-    "price": 29,
+    "price": 30,
     "code": "ERN-3D113",
     "media": "models/bozkurt.glb",
     "image": "models/bozkurt.jpg",
@@ -302,7 +302,7 @@
     "id": "item_3d_dolar",
     "title": "100 Dolar Plaka Kolye Ucu",
     "category": "kolye",
-    "price": 29,
+    "price": 50,
     "code": "ERN-3D114",
     "media": "models/dolar.glb",
     "image": "models/dolar.jpg",
@@ -325,7 +325,7 @@
     "id": "item_3d_ejderha",
     "title": "Ejderha Kolye Ucu",
     "category": "kolye",
-    "price": 35,
+    "price": 50,
     "code": "ERN-3D115",
     "media": "models/ejderha.glb",
     "image": "models/ejderha.jpg",
@@ -348,7 +348,7 @@
     "id": "item_3d_geyik",
     "title": "Boynuzlu Geyik Başı Kolye",
     "category": "kolye",
-    "price": 49,
+    "price": 30,
     "code": "ERN-3D116",
     "media": "models/geyik.glb",
     "image": "models/geyik.jpg",
@@ -371,7 +371,7 @@
     "id": "item_3d_kaplan",
     "title": "Kükreyen Kaplan Başı Kolye",
     "category": "kolye",
-    "price": 39,
+    "price": 40,
     "code": "ERN-3D117",
     "media": "models/kaplan.glb",
     "image": "models/kaplan.jpg",
@@ -394,7 +394,7 @@
     "id": "item_3d_kaplan1_8mm",
     "title": "Kaplan 8mm Kolye / Yüzük",
     "category": "yuzuk",
-    "price": 49,
+    "price": 35,
     "code": "ERN-3D118",
     "media": "models/kaplan1_8mm.glb",
     "image": "models/kaplan1_8mm.jpg",
@@ -417,7 +417,7 @@
     "id": "item_3d_kaplan1",
     "title": "Kaplan Kolye Ucu (Sade)",
     "category": "kolye",
-    "price": 29,
+    "price": 30,
     "code": "ERN-3D119",
     "media": "models/kaplan1.glb",
     "image": "models/kaplan1.jpg",
@@ -440,7 +440,7 @@
     "id": "item_3d_keles_sade",
     "title": "Keleş (AK-47) Kolye Ucu (Sade)",
     "category": "kolye",
-    "price": 39,
+    "price": 20,
     "code": "ERN-3D120",
     "media": "models/keles_sade.glb",
     "image": "models/keles_sade.jpg",
@@ -463,7 +463,7 @@
     "id": "item_3d_kimber",
     "title": "Kimber Tabanca Kolye Ucu",
     "category": "kolye",
-    "price": 39,
+    "price": 35,
     "code": "ERN-3D121",
     "media": "models/kimber.glb",
     "image": "models/kimber.jpg",
@@ -486,7 +486,7 @@
     "id": "item_3d_kolye2-17_meryem",
     "title": "Meryem Ana Oval Kolye Ucu (2-17)",
     "category": "kolye",
-    "price": 29,
+    "price": 35,
     "code": "ERN-3D122",
     "media": "models/kolye2-17_meryem.glb",
     "image": "models/kolye2-17_meryem.jpg",
@@ -506,56 +506,10 @@
     }
   },
   {
-    "id": "item_3d_kolye2-20_isa",
-    "title": "Haç Gövdesi Kolye Parçası",
-    "category": "kolye",
-    "price": 29,
-    "code": "ERN-3D123",
-    "media": "models/kolye2-20_isa.glb",
-    "image": "models/kolye2-20_isa.jpg",
-    "stl": "models/kolye2-20_isa.glb",
-    "desc": "14.5 × 32.5 × 2.1 mm ölçülerinde, 14K Altında 1.81 gr, 925 Gümüşte 1.44 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
-    "is360": true,
-    "dims": {
-      "x": "14.5 mm",
-      "y": "32.5 mm",
-      "z": "2.1 mm"
-    },
-    "weights": {
-      "gold14": "1.81 gr",
-      "gold18": "2.15 gr",
-      "gold22": "2.46 gr",
-      "silver925": "1.44 gr"
-    }
-  },
-  {
-    "id": "item_3d_kolye2-20_isa1",
-    "title": "İsa Figürü Kolye Parçası",
-    "category": "kolye",
-    "price": 29,
-    "code": "ERN-3D124",
-    "media": "models/kolye2-20_isa1.glb",
-    "image": "models/kolye2-20_isa1.jpg",
-    "stl": "models/kolye2-20_isa1.glb",
-    "desc": "13.2 × 16.6 × 7.2 mm ölçülerinde, 14K Altında 1.42 gr, 925 Gümüşte 1.13 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
-    "is360": true,
-    "dims": {
-      "x": "13.2 mm",
-      "y": "16.6 mm",
-      "z": "7.2 mm"
-    },
-    "weights": {
-      "gold14": "1.42 gr",
-      "gold18": "1.69 gr",
-      "gold22": "1.93 gr",
-      "silver925": "1.13 gr"
-    }
-  },
-  {
     "id": "item_3d_kolye33-1_ak47",
     "title": "AK-47 Keleş Kolye Ucu (33-1)",
     "category": "kolye",
-    "price": 39,
+    "price": 25,
     "code": "ERN-3D125",
     "media": "models/kolye33-1_ak47.glb",
     "image": "models/kolye33-1_ak47.jpg",
@@ -578,7 +532,7 @@
     "id": "item_3d_kolye34-2",
     "title": "Özel Tasarım Kolye Ucu (34-2)",
     "category": "kolye",
-    "price": 29,
+    "price": 10,
     "code": "ERN-3D126",
     "media": "models/kolye34-2.glb",
     "image": "models/kolye34-2.jpg",
@@ -598,33 +552,10 @@
     }
   },
   {
-    "id": "item_3d_kolye44",
-    "title": "Lüks Taş Yuvalı Kolye Ucu (44)",
-    "category": "kolye",
-    "price": 29,
-    "code": "ERN-3D127",
-    "media": "models/kolye44.glb",
-    "image": "models/kolye44.jpg",
-    "stl": "models/kolye44.glb",
-    "desc": "20.4 × 24.5 × 3.8 mm ölçülerinde, 14K Altında 3.0 gr, 925 Gümüşte 2.39 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
-    "is360": true,
-    "dims": {
-      "x": "20.4 mm",
-      "y": "24.5 mm",
-      "z": "3.8 mm"
-    },
-    "weights": {
-      "gold14": "3.0 gr",
-      "gold18": "3.58 gr",
-      "gold22": "4.09 gr",
-      "silver925": "2.39 gr"
-    }
-  },
-  {
     "id": "item_3d_kolye49_nharf_alt",
     "title": "N Harfi Pırlantalı Kolye Ucu",
     "category": "kolye",
-    "price": 49,
+    "price": 20,
     "code": "ERN-3D128",
     "media": "models/kolye49_nharf_alt.glb",
     "image": "models/kolye49_nharf_alt.jpg",
@@ -647,7 +578,7 @@
     "id": "item_3d_kolye53_asma_kilit",
     "title": "Asma Kilit Kolye Ucu",
     "category": "kilit",
-    "price": 29,
+    "price": 10,
     "code": "ERN-3D129",
     "media": "models/kolye53_asma_kilit.glb",
     "image": "models/kolye53_asma_kilit.jpg",
@@ -670,7 +601,7 @@
     "id": "item_3d_kolye56_aslan",
     "title": "Kral Aslan Başı Kolye Ucu",
     "category": "kolye",
-    "price": 35,
+    "price": 20,
     "code": "ERN-3D130",
     "media": "models/kolye56_aslan.glb",
     "image": "models/kolye56_aslan.jpg",
@@ -693,7 +624,7 @@
     "id": "item_3d_kolye56",
     "title": "Özel Madalyon Kolye Ucu (56)",
     "category": "kolye",
-    "price": 35,
+    "price": 20,
     "code": "ERN-3D131",
     "media": "models/kolye56.glb",
     "image": "models/kolye56.jpg",
@@ -739,7 +670,7 @@
     "id": "item_3d_kolyeler2-2_balerin",
     "title": "Balerin Kolye Ucu (2-2)",
     "category": "kolye",
-    "price": 39,
+    "price": 35,
     "code": "ERN-3D133",
     "media": "models/kolyeler2-2_balerin.glb",
     "image": "models/kolyeler2-2_balerin.jpg",
@@ -762,7 +693,7 @@
     "id": "item_3d_kolyeler2-20_balerin4",
     "title": "Dans Eden Balerin Kolye (20-4)",
     "category": "kolye",
-    "price": 39,
+    "price": 35,
     "code": "ERN-3D134",
     "media": "models/kolyeler2-20_balerin4.glb",
     "image": "models/kolyeler2-20_balerin4.jpg",
@@ -785,7 +716,7 @@
     "id": "item_3d_kolyeler2-3_balerin2",
     "title": "Balerin Kolye Ucu (2-3)",
     "category": "kolye",
-    "price": 39,
+    "price": 35,
     "code": "ERN-3D135",
     "media": "models/kolyeler2-3_balerin2.glb",
     "image": "models/kolyeler2-3_balerin2.jpg",
@@ -808,7 +739,7 @@
     "id": "item_3d_kolyeler2-45_2_6cm",
     "title": "2.6cm Yuvarlak Madalyon (45)",
     "category": "kolye",
-    "price": 29,
+    "price": 20,
     "code": "ERN-3D136",
     "media": "models/kolyeler2-45_2_6cm.glb",
     "image": "models/kolyeler2-45_2_6cm.jpg",
@@ -831,7 +762,7 @@
     "id": "item_3d_kolyeler2-49",
     "title": "Özel Kolye Ucu (49)",
     "category": "kolye",
-    "price": 29,
+    "price": 10,
     "code": "ERN-3D137",
     "media": "models/kolyeler2-49.glb",
     "image": "models/kolyeler2-49.jpg",
@@ -854,7 +785,7 @@
     "id": "item_3d_kolyeler2-6",
     "title": "Lüks Uzun Kolye Ucu (2-6)",
     "category": "kolye",
-    "price": 49,
+    "price": 20,
     "code": "ERN-3D138",
     "media": "models/kolyeler2-6.glb",
     "image": "models/kolyeler2-6.jpg",
@@ -877,7 +808,7 @@
     "id": "item_3d_kral_hac",
     "title": "Kraliyet Haçı Kolye Ucu",
     "category": "kolye",
-    "price": 49,
+    "price": 20,
     "code": "ERN-3D139",
     "media": "models/kral_hac.glb",
     "image": "models/kral_hac.jpg",
@@ -900,7 +831,7 @@
     "id": "item_3d_madalyon2",
     "title": "Kabartma Rölyef Madalyon (No. 2)",
     "category": "kolye",
-    "price": 35,
+    "price": 30,
     "code": "ERN-3D140",
     "media": "models/madalyon2.glb",
     "image": "models/madalyon2.jpg",
@@ -923,7 +854,7 @@
     "id": "item_3d_mhp",
     "title": "Üç Hilal Kolye Ucu",
     "category": "kolye",
-    "price": 29,
+    "price": 10,
     "code": "ERN-3D141",
     "media": "models/mhp.glb",
     "image": "models/mhp.jpg",
@@ -969,7 +900,7 @@
     "id": "item_3d_ozkan-11-1",
     "title": "Özkan Özel Tasarım Kolye (11-1)",
     "category": "kolye",
-    "price": 29,
+    "price": 10,
     "code": "ERN-3D143",
     "media": "models/ozkan-11-1.glb",
     "image": "models/ozkan-11-1.jpg",
@@ -992,7 +923,7 @@
     "id": "item_3d_ozkan-12",
     "title": "Özkan Özel Tasarım Kolye (12)",
     "category": "kolye",
-    "price": 35,
+    "price": 20,
     "code": "ERN-3D144",
     "media": "models/ozkan-12.glb",
     "image": "models/ozkan-12.jpg",
@@ -1015,7 +946,7 @@
     "id": "item_3d_ozkan-14",
     "title": "Özkan Tasarım Kolye / Yüzük (14)",
     "category": "yuzuk",
-    "price": 39,
+    "price": 40,
     "code": "ERN-3D145",
     "media": "models/ozkan-14.glb",
     "image": "models/ozkan-14.jpg",
@@ -1038,7 +969,7 @@
     "id": "item_3d_pig",
     "title": "3D Sevimli Domuz Figür Kolye",
     "category": "kolye",
-    "price": 49,
+    "price": 50,
     "code": "ERN-3D146",
     "media": "models/pig.glb",
     "image": "models/pig.jpg",
@@ -1061,7 +992,7 @@
     "id": "item_3d_ramses",
     "title": "Firavun Ramses Kolye Ucu",
     "category": "kolye",
-    "price": 39,
+    "price": 30,
     "code": "ERN-3D147",
     "media": "models/ramses.glb",
     "image": "models/ramses.jpg",
@@ -1084,7 +1015,7 @@
     "id": "item_3d_serdar_abi",
     "title": "Serdar Özel Kolye Ucu",
     "category": "kolye",
-    "price": 29,
+    "price": 10,
     "code": "ERN-3D148",
     "media": "models/serdar_abi.glb",
     "image": "models/serdar_abi.jpg",
@@ -1107,7 +1038,7 @@
     "id": "item_3d_shell_01_of_hollow_of_kolye",
     "title": "Hafifletilmiş Kolye Ön Parça",
     "category": "kolye",
-    "price": 35,
+    "price": 20,
     "code": "ERN-3D149",
     "media": "models/shell_01_of_hollow_of_kolye.glb",
     "image": "models/shell_01_of_hollow_of_kolye.jpg",
@@ -1130,7 +1061,7 @@
     "id": "item_3d_shell_01_of_hollow_of_bool",
     "title": "Hollow Tasarım Parça A",
     "category": "kolye",
-    "price": 29,
+    "price": 10,
     "code": "ERN-3D150",
     "media": "models/shell_01_of_hollow_of_bool.glb",
     "image": "models/shell_01_of_hollow_of_bool.jpg",
@@ -1153,7 +1084,7 @@
     "id": "item_3d_shell_01_of_hollow_of_meryem1",
     "title": "Meryem Kolye İçi Boş Ön Parça",
     "category": "kolye",
-    "price": 29,
+    "price": 20,
     "code": "ERN-3D151",
     "media": "models/shell_01_of_hollow_of_meryem1.glb",
     "image": "models/shell_01_of_hollow_of_meryem1.jpg",
@@ -1176,7 +1107,7 @@
     "id": "item_3d_shell_02_of_hollow_of_bool",
     "title": "Hollow Tasarım Parça B",
     "category": "kolye",
-    "price": 29,
+    "price": 10,
     "code": "ERN-3D152",
     "media": "models/shell_02_of_hollow_of_bool.glb",
     "image": "models/shell_02_of_hollow_of_bool.jpg",
@@ -1196,33 +1127,10 @@
     }
   },
   {
-    "id": "item_3d_shell_02_of_hollow_of_meryem1",
-    "title": "Meryem Kolye İçi Boş Arka Kapak",
-    "category": "kolye",
-    "price": 29,
-    "code": "ERN-3D153",
-    "media": "models/shell_02_of_hollow_of_meryem1.glb",
-    "image": "models/shell_02_of_hollow_of_meryem1.jpg",
-    "stl": "models/shell_02_of_hollow_of_meryem1.glb",
-    "desc": "15.3 × 12.3 × 1.6 mm ölçülerinde, 14K Altında 1.24 gr, 925 Gümüşte 0.98 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
-    "is360": true,
-    "dims": {
-      "x": "15.3 mm",
-      "y": "12.3 mm",
-      "z": "1.6 mm"
-    },
-    "weights": {
-      "gold14": "1.24 gr",
-      "gold18": "1.47 gr",
-      "gold22": "1.68 gr",
-      "silver925": "0.98 gr"
-    }
-  },
-  {
     "id": "item_3d_shell_03_of_hollow_of_bool",
     "title": "Hollow Tasarım Parça C",
     "category": "kolye",
-    "price": 29,
+    "price": 10,
     "code": "ERN-3D154",
     "media": "models/shell_03_of_hollow_of_bool.glb",
     "image": "models/shell_03_of_hollow_of_bool.jpg",
@@ -1245,7 +1153,7 @@
     "id": "item_3d_shovalye",
     "title": "Şövalye Kalkan Kolye Ucu",
     "category": "yuzuk",
-    "price": 39,
+    "price": 20,
     "code": "ERN-3D155",
     "media": "models/shovalye.glb",
     "image": "models/shovalye.jpg",
@@ -1268,7 +1176,7 @@
     "id": "item_3d_tasli_kimber",
     "title": "Taşlı Kimber Tabanca Kolye Ucu",
     "category": "kolye",
-    "price": 39,
+    "price": 30,
     "code": "ERN-3D156",
     "media": "models/tasli_kimber.glb",
     "image": "models/tasli_kimber.jpg",
@@ -1291,7 +1199,7 @@
     "id": "item_3d_yildiz_tasli",
     "title": "Taşlı Kutup Yıldızı Kolye Ucu",
     "category": "kolye",
-    "price": 29,
+    "price": 10,
     "code": "ERN-3D157",
     "media": "models/yildiz_tasli.glb",
     "image": "models/yildiz_tasli.jpg",
@@ -1314,7 +1222,7 @@
     "id": "item_3d_yumruk01",
     "title": "Boksör Yumruğu Kolye Ucu",
     "category": "kolye",
-    "price": 39,
+    "price": 40,
     "code": "ERN-3D158",
     "media": "models/yumruk01.glb",
     "image": "models/yumruk01.jpg",
@@ -1337,7 +1245,7 @@
     "id": "item_3d_yunus",
     "title": "Sıçrayan Yunus Kolye Ucu",
     "category": "kolye",
-    "price": 39,
+    "price": 15,
     "code": "ERN-3D159",
     "media": "models/yunus.glb",
     "image": "models/yunus.jpg",
@@ -1360,7 +1268,7 @@
     "id": "item_3d_seyma",
     "title": "Şeyma Özel İsimli Kolye Ucu",
     "category": "kolye",
-    "price": 29,
+    "price": 10,
     "code": "ERN-3D160",
     "media": "models/seyma.glb",
     "image": "models/seyma.jpg",
@@ -1383,7 +1291,7 @@
     "id": "item_3d_isa_carmikh_montaj",
     "title": "İsa Çarmıh Haç Kolye (2 Parça Lüks Çift Renk Montaj)",
     "category": "kolye",
-    "price": 29,
+    "price": 70,
     "code": "ERN-3D161",
     "media": "models/isa_carmikh_montaj.glb",
     "image": "models/isa_carmikh_montaj.jpg",
@@ -1400,6 +1308,1409 @@
       "gold18": "3.84 gr",
       "gold22": "4.39 gr",
       "silver925": "2.57 gr"
+    }
+  },
+  {
+    "id": "item_3d_deneme_kemik",
+    "title": "Deneme Kemik",
+    "category": "kolye",
+    "price": 30,
+    "code": "ERN-3DZ158",
+    "media": "models/deneme_kemik.glb",
+    "image": "models/deneme_kemik.jpg",
+    "stl": "models/deneme_kemik.glb",
+    "desc": "14K Altında 50.48 gr, 925 Gümüşte 40.23 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "50.48 gr",
+      "gold18": "60.19 gr",
+      "gold22": "68.73 gr",
+      "silver925": "40.23 gr"
+    }
+  },
+  {
+    "id": "item_3d_hollow_of_17cm",
+    "title": "Hollow Of 17Cm",
+    "category": "kolye",
+    "price": 30,
+    "code": "ERN-3DZ160",
+    "media": "models/hollow_of_17cm.glb",
+    "image": "models/hollow_of_17cm.jpg",
+    "stl": "models/hollow_of_17cm.glb",
+    "desc": "14K Altında 34.97 gr, 925 Gümüşte 27.87 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "34.97 gr",
+      "gold18": "41.7 gr",
+      "gold22": "47.61 gr",
+      "silver925": "27.87 gr"
+    }
+  },
+  {
+    "id": "item_3d_shell_001_of_hollow_of_4x2_5_cavus",
+    "title": "Shell 001 Of Hollow Of 4X2.5 Cavus",
+    "category": "kolye",
+    "price": 30,
+    "code": "ERN-3DZ162",
+    "media": "models/shell_001_of_hollow_of_4x2_5_cavus.glb",
+    "image": "models/shell_001_of_hollow_of_4x2_5_cavus.jpg",
+    "stl": "models/shell_001_of_hollow_of_4x2_5_cavus.glb",
+    "desc": "14K Altında 21.15 gr, 925 Gümüşte 16.86 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "21.15 gr",
+      "gold18": "25.22 gr",
+      "gold22": "28.8 gr",
+      "silver925": "16.86 gr"
+    }
+  },
+  {
+    "id": "item_3d_shell_1_of_bool",
+    "title": "Shell 1 Of Bool",
+    "category": "kolye",
+    "price": 30,
+    "code": "ERN-3DZ164",
+    "media": "models/shell_1_of_bool.glb",
+    "image": "models/shell_1_of_bool.jpg",
+    "stl": "models/shell_1_of_bool.glb",
+    "desc": "14K Altında 26.3 gr, 925 Gümüşte 20.96 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "26.3 gr",
+      "gold18": "31.36 gr",
+      "gold22": "35.81 gr",
+      "silver925": "20.96 gr"
+    }
+  },
+  {
+    "id": "item_3d_shell_2_of_bool",
+    "title": "Shell 2 Of Bool",
+    "category": "kolye",
+    "price": 30,
+    "code": "ERN-3DZ166",
+    "media": "models/shell_2_of_bool.glb",
+    "image": "models/shell_2_of_bool.jpg",
+    "stl": "models/shell_2_of_bool.glb",
+    "desc": "14K Altında 21.49 gr, 925 Gümüşte 17.13 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "21.49 gr",
+      "gold18": "25.62 gr",
+      "gold22": "29.26 gr",
+      "silver925": "17.13 gr"
+    }
+  },
+  {
+    "id": "item_3d_sss",
+    "title": "Sss",
+    "category": "kolye",
+    "price": 30,
+    "code": "ERN-3DZ168",
+    "media": "models/sss.glb",
+    "image": "models/sss.jpg",
+    "stl": "models/sss.glb",
+    "desc": "14K Altında 21.74 gr, 925 Gümüşte 17.32 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "21.74 gr",
+      "gold18": "25.92 gr",
+      "gold22": "29.59 gr",
+      "silver925": "17.32 gr"
+    }
+  },
+  {
+    "id": "item_3d_yepisyeni_yildiz",
+    "title": "Yepisyeni Yildiz",
+    "category": "kolye",
+    "price": 30,
+    "code": "ERN-3DZ170",
+    "media": "models/yepisyeni_yildiz.glb",
+    "image": "models/yepisyeni_yildiz.jpg",
+    "stl": "models/yepisyeni_yildiz.glb",
+    "desc": "14K Altında 12.9 gr, 925 Gümüşte 10.28 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "12.9 gr",
+      "gold18": "15.38 gr",
+      "gold22": "17.56 gr",
+      "silver925": "10.28 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5_63_3_5mm",
+    "title": "Yzn5.63 3.5Mm",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ172",
+    "media": "models/yzn5_63_3_5mm.glb",
+    "image": "models/yzn5_63_3_5mm.jpg",
+    "stl": "models/yzn5_63_3_5mm.glb",
+    "desc": "14K Altında 39.08 gr, 925 Gümüşte 31.14 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "39.08 gr",
+      "gold18": "46.59 gr",
+      "gold22": "53.21 gr",
+      "silver925": "31.14 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-74",
+    "title": "Yzn5-74",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ174",
+    "media": "models/yzn5-74.glb",
+    "image": "models/yzn5-74.jpg",
+    "stl": "models/yzn5-74.glb",
+    "desc": "14K Altında 23.11 gr, 925 Gümüşte 18.42 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "23.11 gr",
+      "gold18": "27.56 gr",
+      "gold22": "31.47 gr",
+      "silver925": "18.42 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-75_sade",
+    "title": "Yzn5-75 Sade",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ176",
+    "media": "models/yzn5-75_sade.glb",
+    "image": "models/yzn5-75_sade.jpg",
+    "stl": "models/yzn5-75_sade.glb",
+    "desc": "14K Altında 27.31 gr, 925 Gümüşte 21.77 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "27.31 gr",
+      "gold18": "32.57 gr",
+      "gold22": "37.19 gr",
+      "silver925": "21.77 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-75_tasli",
+    "title": "Yzn5-75 Tasli ",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ178",
+    "media": "models/yzn5-75_tasli.glb",
+    "image": "models/yzn5-75_tasli.jpg",
+    "stl": "models/yzn5-75_tasli.glb",
+    "desc": "14K Altında 28.2 gr, 925 Gümüşte 22.47 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "28.2 gr",
+      "gold18": "33.62 gr",
+      "gold22": "38.39 gr",
+      "silver925": "22.47 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-77_a_sade",
+    "title": "Yzn5-77 A Sade",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ180",
+    "media": "models/yzn5-77_a_sade.glb",
+    "image": "models/yzn5-77_a_sade.jpg",
+    "stl": "models/yzn5-77_a_sade.glb",
+    "desc": "14K Altında 29.56 gr, 925 Gümüşte 23.56 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "29.56 gr",
+      "gold18": "35.25 gr",
+      "gold22": "40.25 gr",
+      "silver925": "23.56 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-77_b_orta_tas",
+    "title": "Yzn5-77 B Orta Tas",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ182",
+    "media": "models/yzn5-77_b_orta_tas.glb",
+    "image": "models/yzn5-77_b_orta_tas.jpg",
+    "stl": "models/yzn5-77_b_orta_tas.glb",
+    "desc": "14K Altında 30.77 gr, 925 Gümüşte 24.52 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "30.77 gr",
+      "gold18": "36.69 gr",
+      "gold22": "41.9 gr",
+      "silver925": "24.52 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-81",
+    "title": "Yzn5-81",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ184",
+    "media": "models/yzn5-81.glb",
+    "image": "models/yzn5-81.jpg",
+    "stl": "models/yzn5-81.glb",
+    "desc": "14K Altında 22.74 gr, 925 Gümüşte 18.12 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "22.74 gr",
+      "gold18": "27.11 gr",
+      "gold22": "30.96 gr",
+      "silver925": "18.12 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-86",
+    "title": "Yzn5-86",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ186",
+    "media": "models/yzn5-86.glb",
+    "image": "models/yzn5-86.jpg",
+    "stl": "models/yzn5-86.glb",
+    "desc": "14K Altında 21.66 gr, 925 Gümüşte 17.26 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "21.66 gr",
+      "gold18": "25.82 gr",
+      "gold22": "29.49 gr",
+      "silver925": "17.26 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-87_a",
+    "title": "Yzn5-87 A",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ188",
+    "media": "models/yzn5-87_a.glb",
+    "image": "models/yzn5-87_a.jpg",
+    "stl": "models/yzn5-87_a.glb",
+    "desc": "14K Altında 19.41 gr, 925 Gümüşte 15.47 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "19.41 gr",
+      "gold18": "23.14 gr",
+      "gold22": "26.43 gr",
+      "silver925": "15.47 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-87",
+    "title": "Yzn5-87",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ190",
+    "media": "models/yzn5-87.glb",
+    "image": "models/yzn5-87.jpg",
+    "stl": "models/yzn5-87.glb",
+    "desc": "14K Altında 19.41 gr, 925 Gümüşte 15.47 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "19.41 gr",
+      "gold18": "23.14 gr",
+      "gold22": "26.43 gr",
+      "silver925": "15.47 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-88",
+    "title": "Yzn5-88",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ192",
+    "media": "models/yzn5-88.glb",
+    "image": "models/yzn5-88.jpg",
+    "stl": "models/yzn5-88.glb",
+    "desc": "14K Altında 19.6 gr, 925 Gümüşte 15.62 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "19.6 gr",
+      "gold18": "23.37 gr",
+      "gold22": "26.69 gr",
+      "silver925": "15.62 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-90_1",
+    "title": "Yzn5-90 1",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ194",
+    "media": "models/yzn5-90_1.glb",
+    "image": "models/yzn5-90_1.jpg",
+    "stl": "models/yzn5-90_1.glb",
+    "desc": "14K Altında 20.93 gr, 925 Gümüşte 16.68 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "20.93 gr",
+      "gold18": "24.96 gr",
+      "gold22": "28.5 gr",
+      "silver925": "16.68 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-90_2",
+    "title": "Yzn5-90 2",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ196",
+    "media": "models/yzn5-90_2.glb",
+    "image": "models/yzn5-90_2.jpg",
+    "stl": "models/yzn5-90_2.glb",
+    "desc": "14K Altında 19.99 gr, 925 Gümüşte 15.93 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "19.99 gr",
+      "gold18": "23.84 gr",
+      "gold22": "27.22 gr",
+      "silver925": "15.93 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-90_3",
+    "title": "Yzn5-90 3",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ198",
+    "media": "models/yzn5-90_3.glb",
+    "image": "models/yzn5-90_3.jpg",
+    "stl": "models/yzn5-90_3.glb",
+    "desc": "14K Altında 19.97 gr, 925 Gümüşte 15.91 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "19.97 gr",
+      "gold18": "23.81 gr",
+      "gold22": "27.19 gr",
+      "silver925": "15.91 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-90_4",
+    "title": "Yzn5-90 4",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ200",
+    "media": "models/yzn5-90_4.glb",
+    "image": "models/yzn5-90_4.jpg",
+    "stl": "models/yzn5-90_4.glb",
+    "desc": "14K Altında 17.63 gr, 925 Gümüşte 14.05 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "17.63 gr",
+      "gold18": "21.02 gr",
+      "gold22": "24.0 gr",
+      "silver925": "14.05 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-90_5",
+    "title": "Yzn5-90 5",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ202",
+    "media": "models/yzn5-90_5.glb",
+    "image": "models/yzn5-90_5.jpg",
+    "stl": "models/yzn5-90_5.glb",
+    "desc": "14K Altında 17.97 gr, 925 Gümüşte 14.32 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "17.97 gr",
+      "gold18": "21.42 gr",
+      "gold22": "24.46 gr",
+      "silver925": "14.32 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-90_6",
+    "title": "Yzn5-90 6",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ204",
+    "media": "models/yzn5-90_6.glb",
+    "image": "models/yzn5-90_6.jpg",
+    "stl": "models/yzn5-90_6.glb",
+    "desc": "14K Altında 16.13 gr, 925 Gümüşte 12.86 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "16.13 gr",
+      "gold18": "19.24 gr",
+      "gold22": "21.97 gr",
+      "silver925": "12.86 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-90_7",
+    "title": "Yzn5-90 7",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ206",
+    "media": "models/yzn5-90_7.glb",
+    "image": "models/yzn5-90_7.jpg",
+    "stl": "models/yzn5-90_7.glb",
+    "desc": "14K Altında 15.94 gr, 925 Gümüşte 12.7 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "15.94 gr",
+      "gold18": "19.0 gr",
+      "gold22": "21.7 gr",
+      "silver925": "12.7 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-91_1",
+    "title": "Yzn5-91 1",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ208",
+    "media": "models/yzn5-91_1.glb",
+    "image": "models/yzn5-91_1.jpg",
+    "stl": "models/yzn5-91_1.glb",
+    "desc": "14K Altında 24.74 gr, 925 Gümüşte 19.72 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "24.74 gr",
+      "gold18": "29.5 gr",
+      "gold22": "33.68 gr",
+      "silver925": "19.72 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-91_2",
+    "title": "Yzn5-91 2",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ210",
+    "media": "models/yzn5-91_2.glb",
+    "image": "models/yzn5-91_2.jpg",
+    "stl": "models/yzn5-91_2.glb",
+    "desc": "14K Altında 24.87 gr, 925 Gümüşte 19.82 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "24.87 gr",
+      "gold18": "29.65 gr",
+      "gold22": "33.86 gr",
+      "silver925": "19.82 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-91_3",
+    "title": "Yzn5-91 3",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ212",
+    "media": "models/yzn5-91_3.glb",
+    "image": "models/yzn5-91_3.jpg",
+    "stl": "models/yzn5-91_3.glb",
+    "desc": "14K Altında 20.71 gr, 925 Gümüşte 16.5 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "20.71 gr",
+      "gold18": "24.69 gr",
+      "gold22": "28.2 gr",
+      "silver925": "16.5 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-91_4",
+    "title": "Yzn5-91 4",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ214",
+    "media": "models/yzn5-91_4.glb",
+    "image": "models/yzn5-91_4.jpg",
+    "stl": "models/yzn5-91_4.glb",
+    "desc": "14K Altında 21.55 gr, 925 Gümüşte 17.18 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "21.55 gr",
+      "gold18": "25.7 gr",
+      "gold22": "29.35 gr",
+      "silver925": "17.18 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-91_5",
+    "title": "Yzn5-91 5",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ216",
+    "media": "models/yzn5-91_5.glb",
+    "image": "models/yzn5-91_5.jpg",
+    "stl": "models/yzn5-91_5.glb",
+    "desc": "14K Altında 17.28 gr, 925 Gümüşte 13.77 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "17.28 gr",
+      "gold18": "20.6 gr",
+      "gold22": "23.52 gr",
+      "silver925": "13.77 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-91_6",
+    "title": "Yzn5-91 6",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ218",
+    "media": "models/yzn5-91_6.glb",
+    "image": "models/yzn5-91_6.jpg",
+    "stl": "models/yzn5-91_6.glb",
+    "desc": "14K Altında 17.67 gr, 925 Gümüşte 14.08 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "17.67 gr",
+      "gold18": "21.06 gr",
+      "gold22": "24.05 gr",
+      "silver925": "14.08 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-91_7",
+    "title": "Yzn5-91 7",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ220",
+    "media": "models/yzn5-91_7.glb",
+    "image": "models/yzn5-91_7.jpg",
+    "stl": "models/yzn5-91_7.glb",
+    "desc": "14K Altında 15.8 gr, 925 Gümüşte 12.59 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "15.8 gr",
+      "gold18": "18.83 gr",
+      "gold22": "21.51 gr",
+      "silver925": "12.59 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-92_2",
+    "title": "Yzn5-92 2",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ222",
+    "media": "models/yzn5-92_2.glb",
+    "image": "models/yzn5-92_2.jpg",
+    "stl": "models/yzn5-92_2.glb",
+    "desc": "14K Altında 22.4 gr, 925 Gümüşte 17.85 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "22.4 gr",
+      "gold18": "26.71 gr",
+      "gold22": "30.5 gr",
+      "silver925": "17.85 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-92_3",
+    "title": "Yzn5-92 3",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ224",
+    "media": "models/yzn5-92_3.glb",
+    "image": "models/yzn5-92_3.jpg",
+    "stl": "models/yzn5-92_3.glb",
+    "desc": "14K Altında 21.87 gr, 925 Gümüşte 17.43 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "21.87 gr",
+      "gold18": "26.07 gr",
+      "gold22": "29.77 gr",
+      "silver925": "17.43 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-92_a",
+    "title": "Yzn5-92 A",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ226",
+    "media": "models/yzn5-92_a.glb",
+    "image": "models/yzn5-92_a.jpg",
+    "stl": "models/yzn5-92_a.glb",
+    "desc": "14K Altında 24.73 gr, 925 Gümüşte 19.7 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "24.73 gr",
+      "gold18": "29.48 gr",
+      "gold22": "33.67 gr",
+      "silver925": "19.7 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-95",
+    "title": "Yzn5-95",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ228",
+    "media": "models/yzn5-95.glb",
+    "image": "models/yzn5-95.jpg",
+    "stl": "models/yzn5-95.glb",
+    "desc": "14K Altında 21.52 gr, 925 Gümüşte 17.15 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "21.52 gr",
+      "gold18": "25.65 gr",
+      "gold22": "29.29 gr",
+      "silver925": "17.15 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-96_a",
+    "title": "Yzn5-96 A",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ230",
+    "media": "models/yzn5-96_a.glb",
+    "image": "models/yzn5-96_a.jpg",
+    "stl": "models/yzn5-96_a.glb",
+    "desc": "14K Altında 18.49 gr, 925 Gümüşte 14.73 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "18.49 gr",
+      "gold18": "22.04 gr",
+      "gold22": "25.17 gr",
+      "silver925": "14.73 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-96",
+    "title": "Yzn5-96",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ232",
+    "media": "models/yzn5-96.glb",
+    "image": "models/yzn5-96.jpg",
+    "stl": "models/yzn5-96.glb",
+    "desc": "14K Altında 17.8 gr, 925 Gümüşte 14.18 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "17.8 gr",
+      "gold18": "21.22 gr",
+      "gold22": "24.23 gr",
+      "silver925": "14.18 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-97_1",
+    "title": "Yzn5-97 1",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ234",
+    "media": "models/yzn5-97_1.glb",
+    "image": "models/yzn5-97_1.jpg",
+    "stl": "models/yzn5-97_1.glb",
+    "desc": "14K Altında 16.64 gr, 925 Gümüşte 13.26 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "16.64 gr",
+      "gold18": "19.84 gr",
+      "gold22": "22.66 gr",
+      "silver925": "13.26 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-97_2",
+    "title": "Yzn5-97 2",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ236",
+    "media": "models/yzn5-97_2.glb",
+    "image": "models/yzn5-97_2.jpg",
+    "stl": "models/yzn5-97_2.glb",
+    "desc": "14K Altında 21.83 gr, 925 Gümüşte 17.39 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "21.83 gr",
+      "gold18": "26.02 gr",
+      "gold22": "29.72 gr",
+      "silver925": "17.39 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-97_3",
+    "title": "Yzn5-97 3",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ238",
+    "media": "models/yzn5-97_3.glb",
+    "image": "models/yzn5-97_3.jpg",
+    "stl": "models/yzn5-97_3.glb",
+    "desc": "14K Altında 18.27 gr, 925 Gümüşte 14.56 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "18.27 gr",
+      "gold18": "21.78 gr",
+      "gold22": "24.87 gr",
+      "silver925": "14.56 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-97_4",
+    "title": "Yzn5-97 4",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ240",
+    "media": "models/yzn5-97_4.glb",
+    "image": "models/yzn5-97_4.jpg",
+    "stl": "models/yzn5-97_4.glb",
+    "desc": "14K Altında 17.89 gr, 925 Gümüşte 14.26 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "17.89 gr",
+      "gold18": "21.33 gr",
+      "gold22": "24.36 gr",
+      "silver925": "14.26 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-97_5",
+    "title": "Yzn5-97 5",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ242",
+    "media": "models/yzn5-97_5.glb",
+    "image": "models/yzn5-97_5.jpg",
+    "stl": "models/yzn5-97_5.glb",
+    "desc": "14K Altında 16.04 gr, 925 Gümüşte 12.78 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "16.04 gr",
+      "gold18": "19.13 gr",
+      "gold22": "21.84 gr",
+      "silver925": "12.78 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-97_6",
+    "title": "Yzn5-97 6",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ244",
+    "media": "models/yzn5-97_6.glb",
+    "image": "models/yzn5-97_6.jpg",
+    "stl": "models/yzn5-97_6.glb",
+    "desc": "14K Altında 15.46 gr, 925 Gümüşte 12.32 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "15.46 gr",
+      "gold18": "18.43 gr",
+      "gold22": "21.05 gr",
+      "silver925": "12.32 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-97_7",
+    "title": "Yzn5-97 7",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ246",
+    "media": "models/yzn5-97_7.glb",
+    "image": "models/yzn5-97_7.jpg",
+    "stl": "models/yzn5-97_7.glb",
+    "desc": "14K Altında 14.88 gr, 925 Gümüşte 11.86 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "14.88 gr",
+      "gold18": "17.75 gr",
+      "gold22": "20.27 gr",
+      "silver925": "11.86 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-104",
+    "title": "Yzn5-104 ",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ248",
+    "media": "models/yzn5-104.glb",
+    "image": "models/yzn5-104.jpg",
+    "stl": "models/yzn5-104.glb",
+    "desc": "14K Altında 19.21 gr, 925 Gümüşte 15.31 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "19.21 gr",
+      "gold18": "22.91 gr",
+      "gold22": "26.16 gr",
+      "silver925": "15.31 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-105",
+    "title": "Yzn5-105",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ250",
+    "media": "models/yzn5-105.glb",
+    "image": "models/yzn5-105.jpg",
+    "stl": "models/yzn5-105.glb",
+    "desc": "14K Altında 16.64 gr, 925 Gümüşte 13.26 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "16.64 gr",
+      "gold18": "19.84 gr",
+      "gold22": "22.66 gr",
+      "silver925": "13.26 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-106",
+    "title": "Yzn5-106",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ252",
+    "media": "models/yzn5-106.glb",
+    "image": "models/yzn5-106.jpg",
+    "stl": "models/yzn5-106.glb",
+    "desc": "14K Altında 24.56 gr, 925 Gümüşte 19.57 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "24.56 gr",
+      "gold18": "29.28 gr",
+      "gold22": "33.44 gr",
+      "silver925": "19.57 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-107",
+    "title": "Yzn5-107",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ254",
+    "media": "models/yzn5-107.glb",
+    "image": "models/yzn5-107.jpg",
+    "stl": "models/yzn5-107.glb",
+    "desc": "14K Altında 17.73 gr, 925 Gümüşte 14.13 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "17.73 gr",
+      "gold18": "21.14 gr",
+      "gold22": "24.14 gr",
+      "silver925": "14.13 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-108",
+    "title": "Yzn5-108",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ256",
+    "media": "models/yzn5-108.glb",
+    "image": "models/yzn5-108.jpg",
+    "stl": "models/yzn5-108.glb",
+    "desc": "14K Altında 16.78 gr, 925 Gümüşte 13.37 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "16.78 gr",
+      "gold18": "20.01 gr",
+      "gold22": "22.85 gr",
+      "silver925": "13.37 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-109",
+    "title": "Yzn5-109 ",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ258",
+    "media": "models/yzn5-109.glb",
+    "image": "models/yzn5-109.jpg",
+    "stl": "models/yzn5-109.glb",
+    "desc": "14K Altında 19.77 gr, 925 Gümüşte 15.76 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "19.77 gr",
+      "gold18": "23.58 gr",
+      "gold22": "26.92 gr",
+      "silver925": "15.76 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-110",
+    "title": "Yzn5-110 ",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ260",
+    "media": "models/yzn5-110.glb",
+    "image": "models/yzn5-110.jpg",
+    "stl": "models/yzn5-110.glb",
+    "desc": "14K Altında 17.52 gr, 925 Gümüşte 13.97 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "17.52 gr",
+      "gold18": "20.89 gr",
+      "gold22": "23.86 gr",
+      "silver925": "13.97 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-126_basak",
+    "title": "Yzn5-126 Basak",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ262",
+    "media": "models/yzn5-126_basak.glb",
+    "image": "models/yzn5-126_basak.jpg",
+    "stl": "models/yzn5-126_basak.glb",
+    "desc": "14K Altında 26.77 gr, 925 Gümüşte 21.33 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "26.77 gr",
+      "gold18": "31.91 gr",
+      "gold22": "36.44 gr",
+      "silver925": "21.33 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-130",
+    "title": "Yzn5-130",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ264",
+    "media": "models/yzn5-130.glb",
+    "image": "models/yzn5-130.jpg",
+    "stl": "models/yzn5-130.glb",
+    "desc": "14K Altında 22.35 gr, 925 Gümüşte 17.81 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "22.35 gr",
+      "gold18": "26.64 gr",
+      "gold22": "30.43 gr",
+      "silver925": "17.81 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-132",
+    "title": "Yzn5-132",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ266",
+    "media": "models/yzn5-132.glb",
+    "image": "models/yzn5-132.jpg",
+    "stl": "models/yzn5-132.glb",
+    "desc": "14K Altında 20.47 gr, 925 Gümüşte 16.32 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "20.47 gr",
+      "gold18": "24.41 gr",
+      "gold22": "27.88 gr",
+      "silver925": "16.32 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-133_a",
+    "title": "Yzn5-133 A",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ268",
+    "media": "models/yzn5-133_a.glb",
+    "image": "models/yzn5-133_a.jpg",
+    "stl": "models/yzn5-133_a.glb",
+    "desc": "14K Altında 18.03 gr, 925 Gümüşte 14.37 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "18.03 gr",
+      "gold18": "21.5 gr",
+      "gold22": "24.55 gr",
+      "silver925": "14.37 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-133_b",
+    "title": "Yzn5-133 B",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ270",
+    "media": "models/yzn5-133_b.glb",
+    "image": "models/yzn5-133_b.jpg",
+    "stl": "models/yzn5-133_b.glb",
+    "desc": "14K Altında 26.84 gr, 925 Gümüşte 21.39 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "26.84 gr",
+      "gold18": "32.01 gr",
+      "gold22": "36.55 gr",
+      "silver925": "21.39 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-133_c",
+    "title": "Yzn5-133 C",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ272",
+    "media": "models/yzn5-133_c.glb",
+    "image": "models/yzn5-133_c.jpg",
+    "stl": "models/yzn5-133_c.glb",
+    "desc": "14K Altında 19.3 gr, 925 Gümüşte 15.38 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "19.3 gr",
+      "gold18": "23.02 gr",
+      "gold22": "26.28 gr",
+      "silver925": "15.38 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-134-furkan",
+    "title": "Yzn5-134-Furkan",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ274",
+    "media": "models/yzn5-134-furkan.glb",
+    "image": "models/yzn5-134-furkan.jpg",
+    "stl": "models/yzn5-134-furkan.glb",
+    "desc": "14K Altında 26.03 gr, 925 Gümüşte 20.74 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "26.03 gr",
+      "gold18": "31.03 gr",
+      "gold22": "35.44 gr",
+      "silver925": "20.74 gr"
+    }
+  },
+  {
+    "id": "item_3d_yzn5-136",
+    "title": "Yzn5-136",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ276",
+    "media": "models/yzn5-136.glb",
+    "image": "models/yzn5-136.jpg",
+    "stl": "models/yzn5-136.glb",
+    "desc": "14K Altında 35.01 gr, 925 Gümüşte 27.9 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "35.01 gr",
+      "gold18": "41.74 gr",
+      "gold22": "47.67 gr",
+      "silver925": "27.9 gr"
+    }
+  },
+  {
+    "id": "item_3d_zincir_kalem",
+    "title": "Zincir Kalem",
+    "category": "kilit",
+    "price": 30,
+    "code": "ERN-3DZ278",
+    "media": "models/zincir_kalem.glb",
+    "image": "models/zincir_kalem.jpg",
+    "stl": "models/zincir_kalem.glb",
+    "desc": "14K Altında 17.73 gr, 925 Gümüşte 14.13 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
+    "is360": true,
+    "dims": {
+      "x": "—",
+      "y": "—",
+      "z": "—"
+    },
+    "weights": {
+      "gold14": "17.73 gr",
+      "gold18": "21.14 gr",
+      "gold22": "24.14 gr",
+      "silver925": "14.13 gr"
     }
   }
 ]
