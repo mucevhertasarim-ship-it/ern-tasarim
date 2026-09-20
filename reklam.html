@@ -144,15 +144,25 @@
     <script>
         let targetUrl = "https://www.erntasarim.com";
 
+        function ensureTargetUrl(raw) {
+            let url = (raw || '').trim();
+            if (!url || url === '#' || url === 'about:blank') return 'https://www.erntasarim.com';
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+            return url;
+        }
+
         function openTarget() {
+            const finalUrl = ensureTargetUrl(targetUrl);
             try {
-                window.open(targetUrl, '_blank');
+                window.open(finalUrl, '_blank', 'noopener,noreferrer');
             } catch(e) {}
             // Tarayıcı içinde açılması için
-            if (window.top) {
-                window.top.location.href = targetUrl;
+            if (window.top && window.top !== window) {
+                window.top.location.href = finalUrl;
             } else {
-                window.location.href = targetUrl;
+                window.location.href = finalUrl;
             }
         }
 
@@ -163,7 +173,7 @@
 
         function applyAd(ad) {
             if (!ad) return;
-            if (ad.hedef_url) targetUrl = ad.hedef_url;
+            if (ad.hedef_url) targetUrl = ensureTargetUrl(ad.hedef_url);
             
             if (ad.resim_url && ad.resim_url.trim() !== "") {
                 const img = document.getElementById('ad-image');

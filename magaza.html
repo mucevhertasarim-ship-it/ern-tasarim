@@ -734,8 +734,8 @@
                 </p>
             </div>
 
-            <!-- Kategori Filtreleri -->
-            <div class="portfolio-filters" style="display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+            <!-- Kategori Filtreleri (Dinamik JS ile Doldurulur) -->
+            <div class="portfolio-filters" id="category-filter-bar" style="display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
                 <button class="filter-btn active" onclick="filterShop('all', this)">⭐ Tüm 3D Modeller</button>
                 <button class="filter-btn" onclick="filterShop('yuzuk', this)">💎 Yüzükler</button>
                 <button class="filter-btn" onclick="filterShop('kolye', this)">🦁 Kolyeler</button>
@@ -2358,10 +2358,48 @@
 
         let products = getCatalogProducts();
 
+        // ==========================================
+        // 🏷️ DİNAMİK MAĞAZA KATEGORİLERİ SİSTEMİ
+        // ==========================================
+        let currentFilterCategory = 'all';
+
+        const DEFAULT_CATEGORIES = [
+            { id: "yuzuk", name: "Yüzükler", icon: "💎", active: true },
+            { id: "kolye", name: "Kolyeler", icon: "🦁", active: true },
+            { id: "kilit", name: "Kilit ve Zincir", icon: "🔒", active: true },
+            { id: "bileklik", name: "Bileklikler", icon: "✨", active: true },
+            { id: "kupe", name: "Küpeler", icon: "💠", active: true }
+        ];
+
+        function getCategories() {
+            try {
+                const saved = localStorage.getItem('ern_site_categories');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch(e) {}
+            return DEFAULT_CATEGORIES;
+        }
+
+        function renderCategoryFilters() {
+            const bar = document.getElementById('category-filter-bar');
+            if (!bar) return;
+            const cats = getCategories().filter(c => c.active !== false);
+            let html = `<button class="filter-btn ${currentFilterCategory === 'all' ? 'active' : ''}" onclick="filterShop('all', this)">⭐ Tüm 3D Modeller</button>`;
+            cats.forEach(c => {
+                const isActive = currentFilterCategory === c.id ? 'active' : '';
+                const iconStr = c.icon ? c.icon + ' ' : '';
+                html += `<button class="filter-btn ${isActive}" onclick="filterShop('${c.id}', this)">${iconStr}${c.name}</button>`;
+            });
+            bar.innerHTML = html;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             applySiteSettings();
             fetchExchangeRate();
             updateCartUI();
+            renderCategoryFilters();
             render360Grid('all');
             syncFromServer();
         });
@@ -2374,7 +2412,22 @@
                     if (Array.isArray(catData) && catData.length > 0) {
                         localStorage.setItem('ern_catalog_products', JSON.stringify(catData));
                         products = catData;
-                        render360Grid('all');
+                        render360Grid(currentFilterCategory);
+                    }
+                }
+            } catch(e) {}
+
+            try {
+                let catgRes = await fetch('/api/categories?t=' + Date.now());
+                if (!catgRes.ok) {
+                    catgRes = await fetch('/data/categories.json?t=' + Date.now());
+                }
+                if (catgRes.ok) {
+                    const catgData = await catgRes.json();
+                    if (Array.isArray(catgData) && catgData.length > 0) {
+                        localStorage.setItem('ern_site_categories', JSON.stringify(catgData));
+                        renderCategoryFilters();
+                        render360Grid(currentFilterCategory);
                     }
                 }
             } catch(e) {}
@@ -2432,6 +2485,8 @@
                 return;
             }
 
+            const allCats = getCategories();
+
             grid360.innerHTML = items360.map(item => {
                 const bustSuffix = '?v=20260913_v20';
                 const imgRaw = item.image || item.media.replace('.glb', '.jpg');
@@ -2439,12 +2494,8 @@
                 const w14 = item.weights ? item.weights.gold14 : '—';
                 const wSilver = item.weights ? item.weights.silver925 : '—';
 
-                const catNames = {
-                    'yuzuk': 'YÜZÜK',
-                    'kolye': 'KOLYE',
-                    'kilit': 'KİLİT VE ZİNCİR'
-                };
-                const catLabel = catNames[item.category] || (item.category ? item.category.toUpperCase() : '3D CAD ÇİZİM');
+                const catObj = allCats.find(c => c.id === item.category);
+                const catLabel = catObj ? (catObj.name ? catObj.name.toUpperCase() : item.category.toUpperCase()) : (item.category ? item.category.toUpperCase() : '3D CAD ÇİZİM');
                 const safeTitle = item.title.replace(/'/g, "\'");
 
                 return `
@@ -2486,6 +2537,7 @@
         }
 
         function filterShop(category, btn) {
+            currentFilterCategory = category;
             const buttons = document.querySelectorAll('.filter-btn');
             buttons.forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');

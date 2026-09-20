@@ -1,0 +1,37 @@
+[
+  {
+    "id": "yuzuk",
+    "name": "Yüzükler",
+    "icon": "💎",
+    "active": true,
+    "order": 1
+  },
+  {
+    "id": "kolye",
+    "name": "Kolyeler",
+    "icon": "🦁",
+    "active": true,
+    "order": 2
+  },
+  {
+    "id": "kilit",
+    "name": "Kilit ve Zincir",
+    "icon": "🔒",
+    "active": true,
+    "order": 3
+  },
+  {
+    "id": "bileklik",
+    "name": "Bileklikler",
+    "icon": "✨",
+    "active": true,
+    "order": 4
+  },
+  {
+    "id": "kupe",
+    "name": "Küpeler",
+    "icon": "💠",
+    "active": true,
+    "order": 5
+  }
+]

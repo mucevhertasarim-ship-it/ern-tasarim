@@ -1094,7 +1094,10 @@
                         <h1 class="panel-title"><i class="fa-solid fa-gem" style="color: var(--admin-gold);"></i> 3D CAD & Mağaza Ürünleri</h1>
                         <div class="panel-subtitle">Mağazadaki tüm takı ve 3D modellerin fiyatlarını, gramajlarını, açıklamalarını düzenleyin veya yeni çizimler ekleyin.</div>
                     </div>
-                    <div style="display: flex; gap: 0.75rem;">
+                    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                        <button type="button" onclick="openCategoryManagerModal()" class="btn-edit-sm" style="background: rgba(212, 175, 55, 0.15); border-color: var(--admin-gold); color: #ffd700; font-weight: 700; padding: 0.5rem 1rem;">
+                            <i class="fa-solid fa-tags"></i> 🏷️ Kategorileri Yönet
+                        </button>
                         <button onclick="resetDefaultProducts()" class="btn-del-sm" title="Orijinal 5 3D modeli geri yükler">
                             <i class="fa-solid fa-rotate-left"></i> Fabrika Ayarlarına Sıfırla
                         </button>
@@ -2127,8 +2130,8 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="prog-ad-target-url">🔗 Tıklanınca Açılacak Web Sitesi (Hedef Link)</label>
-                            <input type="url" id="prog-ad-target-url" class="form-control" placeholder="https://www.arcelik.com.tr" oninput="updateProgAdPreview()">
-                            <small style="color: #94a3b8; font-size: 0.75rem;">Kullanıcı programdaki reklama tıkladığında doğrudan bu web sayfası açılır.</small>
+                            <input type="url" id="prog-ad-target-url" class="form-control" placeholder="https://www.erntasarim.com" oninput="updateProgAdPreview()" onblur="this.value = cleanAdTargetUrl(this.value); updateProgAdPreview();" onchange="this.value = cleanAdTargetUrl(this.value); updateProgAdPreview();">
+                            <small style="color: #94a3b8; font-size: 0.75rem;">Kullanıcı programdaki reklama tıkladığında doğrudan bu web sayfası açılır (Örn: https://www.erntasarim.com).</small>
                         </div>
                     </div>
 
@@ -2141,7 +2144,7 @@
                                 <button type="button" onclick="document.getElementById('prog-ad-file').click()" class="btn-edit-sm" style="background: rgba(212, 175, 55, 0.2); border-color: var(--admin-gold); color: #fff;">
                                     <i class="fa-solid fa-cloud-arrow-up"></i> Bilgisayardan Resim Seç
                                 </button>
-                                <input type="text" id="prog-ad-image-url" class="form-control" style="flex: 1; min-width: 240px;" placeholder="veya doğrudan resim linki yapıştırın (https://.../afis.jpg)" oninput="updateProgAdPreview()">
+                                <input type="text" id="prog-ad-image-url" class="form-control" style="flex: 1; min-width: 240px;" placeholder="veya doğrudan resim linki yapıştırın (https://.../afis.jpg)" oninput="onAdImageUrlInput()">
                                 <button type="button" onclick="clearProgAdImage()" class="btn-del-sm" title="Resmi Kaldır">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
@@ -2174,11 +2177,16 @@
 
                     <!-- Canlı Önizleme Kutusu -->
                     <div style="margin: 1.5rem 0; padding: 16px; background: rgba(15, 23, 42, 0.7); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                        <label class="form-label" style="margin-bottom: 8px;"><i class="fa-solid fa-eye" style="color: var(--admin-gold);"></i> Masaüstü Canlı Önizleme (Programdaki Yeşil Kutu)</label>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+                            <label class="form-label" style="margin-bottom: 0;"><i class="fa-solid fa-eye" style="color: var(--admin-gold);"></i> Masaüstü Canlı Önizleme (Programdaki Yeşil Kutu)</label>
+                            <span id="ad-interactive-badge" style="font-size: 0.75rem; color: #38bdf8; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); padding: 3px 10px; border-radius: 12px; display: none;">
+                                <i class="fa-solid fa-arrows-up-down-left-right"></i> Resmi kutu içinde fareyle tutup sürükleyebilir / tekerlekle boyutlandırabilirsiniz
+                            </span>
+                        </div>
                         <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
                             <!-- 154x80 Box -->
-                            <div id="prog-ad-preview-box" style="width: 154px; height: 80px; background-color: #06090e; border: 1px dashed #00ff88; border-radius: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; cursor: pointer; overflow: hidden; position: relative;" onclick="testTargetLink()">
-                                <img id="prog-ad-preview-img" style="width: 100%; height: 100%; object-fit: cover; display: none;" alt="Afiş">
+                            <div id="prog-ad-preview-box" style="width: 154px; height: 80px; background-color: #06090e; border: 1px dashed #00ff88; border-radius: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; cursor: pointer; overflow: hidden; position: relative; user-select: none;" onclick="onAdPreviewBoxClick(event)" title="Test için tıklayın veya resmi fareyle sürükleyip taşıyın">
+                                <img id="prog-ad-preview-img" style="width: 100%; height: 100%; object-fit: contain; display: none; pointer-events: none;" alt="Afiş">
                                 <div id="prog-ad-preview-text" style="padding: 4px; display: flex; flex-direction: column; align-items: center;">
                                     <span id="prev-badge" style="font-size: 7px; color: #d4af37; font-weight: 800; text-transform: uppercase;">ÖZEL SPONSOR</span>
                                     <strong id="prev-title" style="font-size: 11px; color: #ffd700; font-weight: 900; text-transform: uppercase;">ARÇELİK</strong>
@@ -2195,8 +2203,87 @@
                                 <div style="font-size: 0.78rem; color: #94a3b8; margin-bottom: 10px;">
                                     Aktif Hedef Link: <span id="prev-target-display" style="color: #38bdf8; word-break: break-all;">https://www.erntasarim.com</span>
                                 </div>
-                                <button type="button" onclick="testTargetLink()" class="btn-edit-sm" style="font-size: 0.78rem; padding: 4px 10px;">
-                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Linki Yeni Sekmede Test Et
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    <button type="button" onclick="testTargetLink()" class="btn-edit-sm" style="font-size: 0.78rem; padding: 4px 10px;">
+                                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Linki Yeni Sekmede Test Et
+                                    </button>
+                                    <button type="button" onclick="saveProgramAdSettings(false)" class="btn-gold-sm" style="background: linear-gradient(135deg, #10b981, #059669); border: none; color: #ffffff; font-weight: 700; font-size: 0.78rem; padding: 4px 12px; border-radius: 6px; cursor: pointer;">
+                                        <i class="fa-solid fa-paper-plane"></i> 🚀 Masaüstü Programına Anında Gönder
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 🎛️ Görsel Boyutlandırma, Sığdırma & Kırpma Kontrol Paneli -->
+                        <div id="prog-ad-adjuster" style="display: none; margin-top: 14px; padding: 14px; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+                                <div style="font-size: 0.85rem; font-weight: 700; color: #38bdf8;">
+                                    <i class="fa-solid fa-sliders"></i> Görsel Boyutlandırma & Kutuya Sığdırma Kontrolleri
+                                </div>
+                                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                    <button type="button" onclick="setAdFitMode('fit')" class="btn-edit-sm" style="font-size: 0.75rem; padding: 4px 10px; background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; color: #38bdf8;" title="Resmin hiçbir yeri kesilmeden tamamını kutuya sığdırır">
+                                        <i class="fa-solid fa-compress"></i> 📐 Tam Sığdır (Fit)
+                                    </button>
+                                    <button type="button" onclick="setAdFitMode('cover')" class="btn-edit-sm" style="font-size: 0.75rem; padding: 4px 10px; background: rgba(212, 175, 55, 0.15); border-color: var(--admin-gold); color: #ffd700;" title="Kutuyu kenar boşluksuz tamamen doldurur">
+                                        <i class="fa-solid fa-expand"></i> 🖼️ Kutuyu Doldur (Cover)
+                                    </button>
+                                    <button type="button" onclick="resetAdAdjustments()" class="btn-edit-sm" style="font-size: 0.75rem; padding: 4px 10px;" title="Konum ve boyutu varsayılana sıfırlar">
+                                        <i class="fa-solid fa-rotate-left"></i> 🎯 Merkeze Al
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Ayar Slayderları Izgarası -->
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 10px;">
+                                <!-- Zoom / Boyut -->
+                                <div style="background: rgba(30, 41, 59, 0.6); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                        <span style="font-size: 0.78rem; font-weight: 600; color: #e2e8f0;"><i class="fa-solid fa-magnifying-glass"></i> Boyut (Zoom)</span>
+                                        <div style="display: flex; align-items: center; gap: 4px;">
+                                            <button type="button" onclick="stepAdZoom(-5)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 3px; width: 22px; height: 20px; cursor: pointer; font-size: 12px; line-height: 1;">-</button>
+                                            <span id="ad-zoom-val" style="font-size: 0.75rem; color: #38bdf8; font-weight: 700; min-width: 38px; text-align: center;">100%</span>
+                                            <button type="button" onclick="stepAdZoom(5)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 3px; width: 22px; height: 20px; cursor: pointer; font-size: 12px; line-height: 1;">+</button>
+                                        </div>
+                                    </div>
+                                    <input type="range" id="ad-zoom-slider" min="20" max="300" value="100" style="width: 100%; cursor: pointer;" oninput="onAdAdjustChange(false)" onchange="onAdAdjustChange(true)">
+                                </div>
+
+                                <!-- Yatay Konum (X) -->
+                                <div style="background: rgba(30, 41, 59, 0.6); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                        <span style="font-size: 0.78rem; font-weight: 600; color: #e2e8f0;"><i class="fa-solid fa-arrows-left-right"></i> Yatay Konum (Sağ/Sol)</span>
+                                        <span id="ad-x-val" style="font-size: 0.75rem; color: #38bdf8; font-weight: 700;">0px</span>
+                                    </div>
+                                    <input type="range" id="ad-x-slider" min="-150" max="150" value="0" style="width: 100%; cursor: pointer;" oninput="onAdAdjustChange(false)" onchange="onAdAdjustChange(true)">
+                                </div>
+
+                                <!-- Dikey Konum (Y) -->
+                                <div style="background: rgba(30, 41, 59, 0.6); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                        <span style="font-size: 0.78rem; font-weight: 600; color: #e2e8f0;"><i class="fa-solid fa-arrows-up-down"></i> Dikey Konum (Yukarı/Aşağı)</span>
+                                        <span id="ad-y-val" style="font-size: 0.75rem; color: #38bdf8; font-weight: 700;">0px</span>
+                                    </div>
+                                    <input type="range" id="ad-y-slider" min="-150" max="150" value="0" style="width: 100%; cursor: pointer;" oninput="onAdAdjustChange(false)" onchange="onAdAdjustChange(true)">
+                                </div>
+
+                                <!-- Boşluk Arka Plan Rengi -->
+                                <div style="background: rgba(30, 41, 59, 0.6); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                        <span style="font-size: 0.78rem; font-weight: 600; color: #e2e8f0;"><i class="fa-solid fa-palette"></i> Kenar Boşluk Rengi</span>
+                                    </div>
+                                    <select id="ad-bg-select" class="form-control" style="font-size: 0.78rem; padding: 4px 8px; height: 32px;" onchange="onAdAdjustChange(true)">
+                                        <option value="#06090e" selected>🖤 Koyu Siyah (Program Kutusuyla Uyumlu)</option>
+                                        <option value="#0f172a">💙 Koyu Lacivert</option>
+                                        <option value="#000000">⬛ Saf Siyah</option>
+                                        <option value="#ffffff">🤍 Beyaz</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 10px; font-size: 0.75rem; color: #94a3b8; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                                <span><i class="fa-solid fa-circle-info" style="color: #38bdf8;"></i> Resmi yukarıdaki yeşil kutu üzerinde <strong>fareyle basılı tutup sürükleyerek</strong> de taşıyabilir veya tekerlekle boyutlandırabilirsiniz.</span>
+                                <button type="button" onclick="saveProgramAdSettings(false)" class="btn-gold-sm" style="font-size: 0.75rem; padding: 4px 12px; background: linear-gradient(135deg, #10b981, #059669); border: none; color: #fff;">
+                                    <i class="fa-solid fa-check"></i> Ayarları Masaüstüne Kaydet
                                 </button>
                             </div>
                         </div>
@@ -2467,6 +2554,127 @@
         </main>
     </div>
 
+    <!-- CATEGORY MANAGEMENT MODAL -->
+    <div class="modal-overlay" id="category-manager-modal" style="display: none; align-items: center; justify-content: center;">
+        <div class="modal-content" style="max-width: 860px; width: 95%; max-height: 90vh; display: flex; flex-direction: column;">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fa-solid fa-tags" style="color: var(--admin-gold);"></i> Mağaza Kategori Yönetimi
+                </h3>
+                <button type="button" class="modal-close" onclick="closeCategoryManagerModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="modal-body" style="overflow-y: auto; padding: 1.5rem; flex: 1;">
+                <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 8px; padding: 12px 16px; margin-bottom: 1.5rem; font-size: 0.82rem; color: #cbd5e1; line-height: 1.5;">
+                    <i class="fa-solid fa-circle-info" style="color: #60a5fa; margin-right: 6px;"></i>
+                    Burada eklediğiniz veya düzenlediğiniz kategoriler; hem mağazadaki (3D CAD & STL Çizim Mağazası) <strong>canlı filtreleme butonlarında</strong>, hem de ürün ekleme/düzenleme formundaki <strong>kategori seçim listesinde</strong> anında görüntülenir.
+                </div>
+
+                <!-- Kategori Ekleme / Düzenleme Kartı -->
+                <div class="content-card" style="background: #0e1422; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 10px; padding: 1.25rem; margin-bottom: 1.5rem;">
+                    <h4 id="cat-form-title" style="font-size: 0.95rem; font-weight: 700; color: #ffd700; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-plus-circle"></i> Yeni Kategori Ekle
+                    </h4>
+                    <form id="category-edit-form" onsubmit="handleCategoryFormSubmit(event)">
+                        <input type="hidden" id="cat-form-mode" value="add">
+                        <input type="hidden" id="cat-form-original-id" value="">
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="cat-input-name">Kategori Adı *</label>
+                                <input type="text" id="cat-input-name" class="form-control" required placeholder="Örn: Bileklikler veya Şahmeran" oninput="onCategoryNameInput()">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="cat-input-id">Kategori Kodu (Sistem ID) *</label>
+                                <input type="text" id="cat-input-id" class="form-control" required placeholder="Örn: bileklik" pattern="[a-zA-Z0-9_-]+" title="Sadece harf, rakam ve tire kullanın">
+                                <small style="color: #94a3b8; font-size: 0.72rem;">Ürünlerle eşleşen benzersiz kod (otomatik oluşturulur).</small>
+                            </div>
+                        </div>
+
+                        <div class="form-row" style="margin-top: 0.75rem;">
+                            <div class="form-group" style="flex: 1;">
+                                <label class="form-label" for="cat-input-icon">Emoji / İkon</label>
+                                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                                    <input type="text" id="cat-input-icon" class="form-control" style="width: 70px; text-align: center; font-size: 1.25rem;" value="💎" maxlength="4">
+                                    <!-- Hızlı emoji seçiciler -->
+                                    <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                                        <button type="button" class="btn-edit-sm" style="padding: 4px 8px; font-size: 1rem;" onclick="setCatEmoji('💎')">💎</button>
+                                        <button type="button" class="btn-edit-sm" style="padding: 4px 8px; font-size: 1rem;" onclick="setCatEmoji('🦁')">🦁</button>
+                                        <button type="button" class="btn-edit-sm" style="padding: 4px 8px; font-size: 1rem;" onclick="setCatEmoji('🔒')">🔒</button>
+                                        <button type="button" class="btn-edit-sm" style="padding: 4px 8px; font-size: 1rem;" onclick="setCatEmoji('✨')">✨</button>
+                                        <button type="button" class="btn-edit-sm" style="padding: 4px 8px; font-size: 1rem;" onclick="setCatEmoji('💠')">💠</button>
+                                        <button type="button" class="btn-edit-sm" style="padding: 4px 8px; font-size: 1rem;" onclick="setCatEmoji('👑')">👑</button>
+                                        <button type="button" class="btn-edit-sm" style="padding: 4px 8px; font-size: 1rem;" onclick="setCatEmoji('💍')">💍</button>
+                                        <button type="button" class="btn-edit-sm" style="padding: 4px 8px; font-size: 1rem;" onclick="setCatEmoji('⌚')">⌚</button>
+                                        <button type="button" class="btn-edit-sm" style="padding: 4px 8px; font-size: 1rem;" onclick="setCatEmoji('🕊️')">🕊️</button>
+                                        <button type="button" class="btn-edit-sm" style="padding: 4px 8px; font-size: 1rem;" onclick="setCatEmoji('⭐')">⭐</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="width: 140px; display: flex; flex-direction: column; justify-content: center;">
+                                <label class="form-label" style="margin-bottom: 8px;">Durum</label>
+                                <label class="toggle-wrap">
+                                    <input type="checkbox" id="cat-input-active" checked>
+                                    <div class="toggle-slider"></div>
+                                    <span style="font-size: 0.8rem; font-weight: 700; color: #fff;">Yayında</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 1rem;">
+                            <button type="button" id="btn-cancel-cat-edit" onclick="resetCategoryForm()" class="btn-del-sm" style="display: none; background: rgba(255,255,255,0.08); color: #fff;">
+                                Vazgeç / Yeniye Dön
+                            </button>
+                            <button type="submit" class="btn-gold-sm" id="btn-save-cat">
+                                <i class="fa-solid fa-plus"></i> Kategoriyi Kaydet
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Mevcut Kategoriler Tablosu -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <h4 style="font-size: 0.92rem; font-weight: 700; color: #e2e8f0; margin: 0;">
+                        <i class="fa-solid fa-list-check" style="color: var(--admin-gold);"></i> Kayıtlı Mağaza Kategorileri (<span id="cat-count-badge">0</span>)
+                    </h4>
+                    <span style="font-size: 0.75rem; color: #94a3b8;">
+                        <i class="fa-solid fa-arrows-up-down"></i> Butonlar sitedeki sırayı belirler
+                    </span>
+                </div>
+
+                <div class="table-responsive" style="border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; overflow: hidden;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">Sıra</th>
+                                <th>Kategori</th>
+                                <th>Sistem Kodu</th>
+                                <th>Bağlı Ürünler</th>
+                                <th>Durum</th>
+                                <th style="text-align: right;">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="category-table-tbody">
+                            <!-- JS ile doldurulacak -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" onclick="saveCategoriesDirectlyToFile()" class="btn-edit-sm" style="background: rgba(16, 185, 129, 0.15); border-color: #10b981; color: #34d399; font-size: 0.78rem;" title="data/categories.json dosyasını doğrudan diske kaydeder">
+                        <i class="fa-solid fa-floppy-disk"></i> data/categories.json'a Yaz
+                    </button>
+                    <button type="button" onclick="downloadCategoriesJson()" class="btn-edit-sm" style="font-size: 0.78rem;" title="categories.json dosyasını bilgisayara indirir">
+                        <i class="fa-solid fa-download"></i> İndir
+                    </button>
+                </div>
+                <button type="button" onclick="closeCategoryManagerModal()" class="btn-del-sm" style="background: rgba(255,255,255,0.08); color: #fff;">Kapat</button>
+            </div>
+        </div>
+    </div>
+
     <!-- PRODUCT EDIT MODAL -->
     <div class="modal-overlay" id="edit-product-modal">
         <div class="modal-content">
@@ -2491,13 +2699,14 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label" for="prod-edit-category">Kategori</label>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                <label class="form-label" for="prod-edit-category" style="margin-bottom: 0;">Kategori</label>
+                                <a href="javascript:void(0)" onclick="openCategoryManagerModal()" style="font-size: 0.72rem; color: #ffd700; text-decoration: none;">
+                                    <i class="fa-solid fa-tags"></i> Kategorileri Düzenle
+                                </a>
+                            </div>
                             <select id="prod-edit-category" class="form-control">
-                                <option value="yuzuk">💎 Yüzük</option>
-                                <option value="kolye">🦁 Kolye / Madalyon</option>
-                                <option value="kilit">🔒 Kilit ve Zincir</option>
-                                <option value="bileklik">✨ Bileklik</option>
-                                <option value="kupe">💠 Küpe</option>
+                                <!-- Dinamik JS ile doldurulur -->
                             </select>
                         </div>
                         <div class="form-group">
@@ -4132,6 +4341,7 @@
             setupImageUploader();
             fetchExchangeRate();
             loadProgramAdsFromStorage();
+            if (typeof initAdPreviewInteractions === 'function') initAdPreviewInteractions();
             setInterval(fetchLiveProgramUsers, 30000);
             syncFromServer();
         });
@@ -4498,6 +4708,354 @@
             if (activeUserEl) activeUserEl.textContent = settings.adminUser || 'admin';
         }
 
+        // ==========================================
+        // 🏷️ MAĞAZA KATEGORİ YÖNETİM SİSTEMİ
+        // ==========================================
+        const DEFAULT_CATEGORIES = [
+            { id: "yuzuk", name: "Yüzükler", icon: "💎", active: true, order: 1 },
+            { id: "kolye", name: "Kolyeler", icon: "🦁", active: true, order: 2 },
+            { id: "kilit", name: "Kilit ve Zincir", icon: "🔒", active: true, order: 3 },
+            { id: "bileklik", name: "Bileklikler", icon: "✨", active: true, order: 4 },
+            { id: "kupe", name: "Küpeler", icon: "💠", active: true, order: 5 }
+        ];
+
+        function getCategories() {
+            try {
+                const data = localStorage.getItem('ern_site_categories');
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch (e) {}
+            return DEFAULT_CATEGORIES;
+        }
+
+        async function loadCategoriesFromStorage() {
+            try {
+                const saved = localStorage.getItem('ern_site_categories');
+                if (!saved) {
+                    let res = await fetch('/api/categories?t=' + Date.now());
+                    if (!res.ok) {
+                        res = await fetch('/data/categories.json?t=' + Date.now());
+                    }
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (Array.isArray(data) && data.length > 0) {
+                            localStorage.setItem('ern_site_categories', JSON.stringify(data));
+                        }
+                    }
+                }
+            } catch(e) {}
+            populateCategorySelect();
+            renderCategoryManagerList();
+        }
+
+        function saveCategories(cats) {
+            localStorage.setItem('ern_site_categories', JSON.stringify(cats));
+            try {
+                fetch('/api/categories', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(cats)
+                }).catch(() => {});
+            } catch(e) {}
+            populateCategorySelect();
+            renderCategoryManagerList();
+            renderAdminProducts();
+        }
+
+        function populateCategorySelect(selectedVal = '') {
+            const select = document.getElementById('prod-edit-category');
+            if (!select) return;
+            const cats = getCategories();
+            select.innerHTML = cats.map(c => {
+                const iconStr = c.icon ? c.icon + ' ' : '';
+                const isSel = c.id === selectedVal ? 'selected' : '';
+                const inactiveTag = c.active === false ? ' (Gizli)' : '';
+                return `<option value="${c.id}" ${isSel}>${iconStr}${c.name}${inactiveTag}</option>`;
+            }).join('');
+        }
+
+        function openCategoryManagerModal() {
+            renderCategoryManagerList();
+            resetCategoryForm();
+            const modal = document.getElementById('category-manager-modal');
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function closeCategoryManagerModal() {
+            const modal = document.getElementById('category-manager-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function setCatEmoji(emoji) {
+            const iconInput = document.getElementById('cat-input-icon');
+            if (iconInput) iconInput.value = emoji;
+        }
+
+        function onCategoryNameInput() {
+            const mode = document.getElementById('cat-form-mode').value;
+            if (mode !== 'add') return;
+            const name = document.getElementById('cat-input-name').value.trim();
+            const idInput = document.getElementById('cat-input-id');
+            if (!idInput) return;
+            
+            const slug = name.toLowerCase()
+                .replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's')
+                .replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ç/g, 'c')
+                .replace(/[^a-z0-9]/g, '_')
+                .replace(/_+/g, '_')
+                .replace(/^_|_$/g, '');
+            idInput.value = slug;
+        }
+
+        function resetCategoryForm() {
+            document.getElementById('cat-form-mode').value = 'add';
+            document.getElementById('cat-form-original-id').value = '';
+            document.getElementById('cat-input-name').value = '';
+            document.getElementById('cat-input-id').value = '';
+            document.getElementById('cat-input-id').readOnly = false;
+            document.getElementById('cat-input-icon').value = '💎';
+            document.getElementById('cat-input-active').checked = true;
+            document.getElementById('cat-form-title').innerHTML = '<i class="fa-solid fa-plus-circle"></i> Yeni Kategori Ekle';
+            document.getElementById('btn-save-cat').innerHTML = '<i class="fa-solid fa-plus"></i> Kategoriyi Kaydet';
+            const cancelBtn = document.getElementById('btn-cancel-cat-edit');
+            if (cancelBtn) cancelBtn.style.display = 'none';
+        }
+
+        function editCategory(id) {
+            const cats = getCategories();
+            const cat = cats.find(c => c.id === id);
+            if (!cat) return;
+
+            document.getElementById('cat-form-mode').value = 'edit';
+            document.getElementById('cat-form-original-id').value = cat.id;
+            document.getElementById('cat-input-name').value = cat.name || '';
+            document.getElementById('cat-input-id').value = cat.id;
+            document.getElementById('cat-input-icon').value = cat.icon || '💎';
+            document.getElementById('cat-input-active').checked = cat.active !== false;
+
+            document.getElementById('cat-form-title').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Kategoriyi Düzenle: ' + cat.name;
+            document.getElementById('btn-save-cat').innerHTML = '<i class="fa-solid fa-check"></i> Güncellemeyi Kaydet';
+            const cancelBtn = document.getElementById('btn-cancel-cat-edit');
+            if (cancelBtn) cancelBtn.style.display = 'inline-block';
+
+            document.getElementById('cat-input-name').focus();
+        }
+
+        function handleCategoryFormSubmit(e) {
+            e.preventDefault();
+            const mode = document.getElementById('cat-form-mode').value;
+            const originalId = document.getElementById('cat-form-original-id').value;
+            const name = document.getElementById('cat-input-name').value.trim();
+            let id = document.getElementById('cat-input-id').value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '');
+            const icon = document.getElementById('cat-input-icon').value.trim() || '💎';
+            const active = document.getElementById('cat-input-active').checked;
+
+            if (!name || !id) {
+                showToast('Lütfen kategori adı ve kodunu eksiksiz doldurun.');
+                return;
+            }
+
+            let cats = getCategories();
+
+            if (mode === 'add') {
+                if (cats.some(c => c.id === id)) {
+                    showToast('Bu kategori kodu zaten mevcut! Lütfen farklı bir kod yazın.');
+                    return;
+                }
+                const newCat = {
+                    id: id,
+                    name: name,
+                    icon: icon,
+                    active: active,
+                    order: cats.length + 1
+                };
+                cats.push(newCat);
+                showToast(`🎉 "${name}" kategorisi başarıyla eklendi!`);
+            } else {
+                const index = cats.findIndex(c => c.id === originalId);
+                if (index === -1) return;
+
+                if (id !== originalId && cats.some((c, i) => i !== index && c.id === id)) {
+                    showToast('Bu kategori kodu başka bir kategoride kullanılıyor!');
+                    return;
+                }
+
+                if (id !== originalId) {
+                    let products = getCatalog();
+                    let updatedCount = 0;
+                    products.forEach(p => {
+                        if (p.category === originalId) {
+                            p.category = id;
+                            updatedCount++;
+                        }
+                    });
+                    if (updatedCount > 0) {
+                        saveCatalog(products);
+                    }
+                }
+
+                cats[index] = {
+                    ...cats[index],
+                    id: id,
+                    name: name,
+                    icon: icon,
+                    active: active
+                };
+                showToast(`✅ "${name}" kategorisi güncellendi!`);
+            }
+
+            saveCategories(cats);
+            resetCategoryForm();
+        }
+
+        function deleteCategory(id) {
+            const cats = getCategories();
+            const cat = cats.find(c => c.id === id);
+            if (!cat) return;
+
+            const products = getCatalog();
+            const productCount = products.filter(p => p.category === id).length;
+
+            let msg = `"${cat.name}" kategorisini silmek istediğinize emin misiniz?`;
+            if (productCount > 0) {
+                msg = `DİKKAT: "${cat.name}" kategorisine bağlı ${productCount} adet ürün var!\n\nBu kategoriyi silerseniz ürünler katalogda kalmaya devam eder ancak bu kategori filtresi siteden kalkar.\n\nYine de silmek istiyor musunuz?`;
+            }
+
+            if (!confirm(msg)) return;
+
+            const updated = cats.filter(c => c.id !== id);
+            saveCategories(updated);
+            showToast(`"${cat.name}" kategorisi silindi.`);
+            resetCategoryForm();
+        }
+
+        function moveCategory(id, direction) {
+            let cats = getCategories();
+            const index = cats.findIndex(c => c.id === id);
+            if (index === -1) return;
+
+            const targetIndex = direction === 'up' ? index - 1 : index + 1;
+            if (targetIndex < 0 || targetIndex >= cats.length) return;
+
+            const temp = cats[index];
+            cats[index] = cats[targetIndex];
+            cats[targetIndex] = temp;
+
+            cats.forEach((c, i) => c.order = i + 1);
+
+            saveCategories(cats);
+        }
+
+        function renderCategoryManagerList() {
+            const tbody = document.getElementById('category-table-tbody');
+            const badge = document.getElementById('cat-count-badge');
+            if (!tbody) return;
+
+            const cats = getCategories();
+            const products = getCatalog();
+
+            if (badge) badge.textContent = cats.length;
+
+            if (cats.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 2rem; color: #64748b;">
+                            Henüz kayıtlı kategori bulunmuyor. Yukarıdan yeni kategori ekleyebilirsiniz.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = cats.map((cat, idx) => {
+                const prodCount = products.filter(p => p.category === cat.id).length;
+                const isFirst = idx === 0;
+                const isLast = idx === cats.length - 1;
+                const statusBadge = cat.active !== false 
+                    ? '<span class="status-badge status-confirmed">Yayında</span>'
+                    : '<span class="status-badge" style="background: rgba(255,255,255,0.08); color: #94a3b8;">Gizli</span>';
+
+                return `
+                    <tr>
+                        <td style="color: #64748b; font-weight: 700;">#${idx + 1}</td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 1.25rem;">${cat.icon || '💎'}</span>
+                                <strong style="color: #f1f5f9; font-size: 0.9rem;">${cat.name}</strong>
+                            </div>
+                        </td>
+                        <td>
+                            <code style="background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px; color: #38bdf8; font-size: 0.8rem;">${cat.id}</code>
+                        </td>
+                        <td>
+                            <span style="font-size: 0.8rem; font-weight: 600; color: ${prodCount > 0 ? '#ffd700' : '#64748b'};">
+                                ${prodCount} Ürün
+                            </span>
+                        </td>
+                        <td>${statusBadge}</td>
+                        <td style="text-align: right; white-space: nowrap;">
+                            <div style="display: inline-flex; gap: 4px;">
+                                <button type="button" onclick="moveCategory('${cat.id}', 'up')" class="btn-edit-sm" style="padding: 3px 7px; ${isFirst ? 'opacity: 0.3; pointer-events: none;' : ''}" title="Yukarı Taşı">
+                                    <i class="fa-solid fa-arrow-up"></i>
+                                </button>
+                                <button type="button" onclick="moveCategory('${cat.id}', 'down')" class="btn-edit-sm" style="padding: 3px 7px; ${isLast ? 'opacity: 0.3; pointer-events: none;' : ''}" title="Aşağı Taşı">
+                                    <i class="fa-solid fa-arrow-down"></i>
+                                </button>
+                                <button type="button" onclick="editCategory('${cat.id}')" class="btn-edit-sm" style="padding: 3px 8px; color: #38bdf8;" title="Düzenle">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button type="button" onclick="deleteCategory('${cat.id}')" class="btn-del-sm" style="padding: 3px 8px;" title="Sil">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function saveCategoriesDirectlyToFile() {
+            try {
+                const cats = getCategories();
+                if ('showSaveFilePicker' in window) {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: 'categories.json',
+                        types: [{
+                            description: 'JSON Dosyası',
+                            accept: { 'application/json': ['.json'] },
+                        }],
+                    });
+                    const writable = await handle.createWritable();
+                    await writable.write(JSON.stringify(cats, null, 2));
+                    await writable.close();
+                    showToast('✅ data/categories.json doğrudan kaydedildi!');
+                    return;
+                } else {
+                    downloadCategoriesJson();
+                }
+            } catch(e) {
+                if (e && e.name !== 'AbortError') {
+                    downloadCategoriesJson();
+                }
+            }
+        }
+
+        function downloadCategoriesJson() {
+            const cats = getCategories();
+            const blob = new Blob([JSON.stringify(cats, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'categories.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('categories.json dosyası indirildi.');
+        }
+
         // DATA RETRIEVAL HELPERS
         function getCatalog() {
             try {
@@ -4585,6 +5143,7 @@
 
         // DASHBOARD OVERVIEW STATS
         function loadDashboardData() {
+            loadCategoriesFromStorage();
             updateOverviewStats();
             renderAdminProducts();
             renderAdminRequests();
@@ -4697,10 +5256,13 @@
                 return;
             }
 
+            const allCats = getCategories();
             container.innerHTML = products.map(prod => {
                 const w14 = prod.weights ? prod.weights.gold14 : '—';
                 const wSilver = prod.weights ? prod.weights.silver925 : '—';
                 const img = prod.image || (prod.media ? prod.media.replace('.glb', '.jpg') : 'models/shovalye.jpg');
+                const catObj = allCats.find(c => c.id === prod.category);
+                const catLabel = catObj ? `${catObj.icon ? catObj.icon + ' ' : ''}${catObj.name}` : (prod.category || 'Genel');
 
                 return `
                     <div class="admin-product-card">
@@ -4709,7 +5271,7 @@
                             <span class="thumb-badge">${prod.code || '3D-CAD'}</span>
                         </div>
                         <div class="admin-prod-body">
-                            <span class="admin-prod-category">${prod.category}</span>
+                            <span class="admin-prod-category">${catLabel}</span>
                             <h3 class="admin-prod-title">${prod.title}</h3>
                             
                             <div class="admin-prod-specs">
@@ -4742,6 +5304,7 @@
             document.getElementById('edit-product-form').reset();
             document.getElementById('prod-edit-id').value = '';
             document.getElementById('prod-edit-code').value = 'ERN-3D' + Math.floor(100 + Math.random() * 900);
+            populateCategorySelect();
             customUploadedBase64 = '';
             document.getElementById('edit-product-modal').style.display = 'flex';
         }
@@ -4755,7 +5318,7 @@
             document.getElementById('prod-edit-id').value = prod.id;
             document.getElementById('prod-edit-title-input').value = prod.title || '';
             document.getElementById('prod-edit-code').value = prod.code || '';
-            document.getElementById('prod-edit-category').value = prod.category || 'yuzuk';
+            populateCategorySelect(prod.category || 'yuzuk');
             document.getElementById('prod-edit-price').value = prod.price || 0;
             document.getElementById('prod-edit-desc').value = prod.desc || '';
             document.getElementById('prod-edit-image').value = prod.image || '';
@@ -6186,11 +6749,27 @@
             }
         };
 
+        function sanitizeAllAdsUrls(data) {
+            if (!data) return;
+            if (data.genel && data.genel.hedef_url) {
+                data.genel.hedef_url = cleanAdTargetUrl(data.genel.hedef_url);
+            }
+            if (data.programlar) {
+                for (const k in data.programlar) {
+                    if (data.programlar[k] && data.programlar[k].hedef_url) {
+                        data.programlar[k].hedef_url = cleanAdTargetUrl(data.programlar[k].hedef_url);
+                    }
+                }
+            }
+        }
+
         function loadProgramAdsFromStorage() {
             try {
                 const saved = localStorage.getItem('ern_program_ads');
                 if (saved) {
                     programAdsData = JSON.parse(saved);
+                    sanitizeAllAdsUrls(programAdsData);
+                    localStorage.setItem('ern_program_ads', JSON.stringify(programAdsData));
                     populateProgramAdForm();
                     return;
                 }
@@ -6199,6 +6778,7 @@
                     .then(data => {
                         if (data && data.programlar) {
                             programAdsData = data;
+                            sanitizeAllAdsUrls(programAdsData);
                             localStorage.setItem('ern_program_ads', JSON.stringify(data));
                             populateProgramAdForm();
                         }
@@ -6222,9 +6802,53 @@
             return programAdsData.programlar[prog];
         }
 
+        function cleanAdTargetUrl(raw) {
+            let url = (raw || '').trim();
+            if (!url || url === '#' || url === 'about:blank' || url === 'null' || url === 'undefined') {
+                return 'https://www.erntasarim.com';
+            }
+            if (url === '/test' || url === 'test' || url === 'https://www.erntasarim.com/test' || url === 'http://www.erntasarim.com/test') {
+                return 'https://www.erntasarim.com';
+            }
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+            return url;
+        }
+
+        function cleanBannerText(raw) {
+            let text = (raw || '').trim();
+            if (!text) return 'Ziyaret edin: https://www.erntasarim.com';
+            // Alan adlarını (surplusgold.com.tr vb.) otomatik https:// ile tamamla
+            return text.replace(/(^|\s)((?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\/[^\s]*)?)/g, function(match, prefix, link) {
+                if (!link.startsWith('http://') && !link.startsWith('https://')) {
+                    return prefix + 'https://' + link;
+                }
+                return match;
+            });
+        }
+
         function switchProgramAdTab() {
             populateProgramAdForm();
         }
+
+        // ==========================================
+        // 🎛️ REKLAM GÖRSELİ GELİŞMİŞ BOYUTLANDIRMA & KUTUYA SIĞDIRMA SİSTEMİ
+        // ==========================================
+        let currentRawAdImage = null;
+        let currentRawAdSrc = '';
+        let adAdjustState = {
+            zoom: 100,
+            offsetX: 0,
+            offsetY: 0,
+            bgColor: '#06090e'
+        };
+        let isAdDragging = false;
+        let hasAdDragged = false;
+        let adDragStartX = 0;
+        let adDragStartY = 0;
+        let adDragInitialX = 0;
+        let adDragInitialY = 0;
 
         function populateProgramAdForm() {
             const ad = getCurrentSelectedAd();
@@ -6236,17 +6860,172 @@
             const bannerEl = document.getElementById('prog-ad-banner-text');
 
             if (activeEl) activeEl.checked = ad.aktif !== false;
-            if (targetEl) targetEl.value = ad.hedef_url || 'https://www.erntasarim.com';
+            if (targetEl) targetEl.value = cleanAdTargetUrl(ad.hedef_url);
             if (imgEl) imgEl.value = ad.resim_url || '';
             if (titleEl) titleEl.value = ad.baslik || 'ERN TASARIM';
             if (sloganEl) sloganEl.value = ad.slogan || 'Kişiye Özel Lüks Mücevher Sanatı';
-            if (bannerEl) bannerEl.value = ad.alt_bar_metni || 'Ziyaret edin: www.erntasarim.com';
+            if (bannerEl) bannerEl.value = cleanBannerText(ad.alt_bar_metni || 'Ziyaret edin: https://www.erntasarim.com');
             
             const telemetriInput = document.getElementById('telemetry-api-input');
             if (telemetriInput && programAdsData.telemetri_api_url) {
                 telemetriInput.value = programAdsData.telemetri_api_url;
             }
+
+            const adjuster = document.getElementById('prog-ad-adjuster');
+            if (ad.resim_url && (ad.resim_url.startsWith('data:image') || ad.resim_url.startsWith('http') || ad.resim_url.startsWith('/'))) {
+                if (adjuster) adjuster.style.display = 'block';
+                if (!currentRawAdImage || currentRawAdSrc !== ad.resim_url) {
+                    const img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    img.onload = function() {
+                        currentRawAdImage = img;
+                        currentRawAdSrc = ad.resim_url;
+                        syncAdAdjustInputs();
+                    };
+                    img.src = ad.resim_url;
+                }
+            } else {
+                if (adjuster) adjuster.style.display = 'none';
+            }
+
             updateProgAdPreview();
+        }
+
+        function syncAdAdjustInputs() {
+            const zoomSlider = document.getElementById('ad-zoom-slider');
+            const xSlider = document.getElementById('ad-x-slider');
+            const ySlider = document.getElementById('ad-y-slider');
+            const bgSelect = document.getElementById('ad-bg-select');
+            const zoomVal = document.getElementById('ad-zoom-val');
+            const xVal = document.getElementById('ad-x-val');
+            const yVal = document.getElementById('ad-y-val');
+
+            if (zoomSlider) zoomSlider.value = adAdjustState.zoom;
+            if (xSlider) xSlider.value = adAdjustState.offsetX;
+            if (ySlider) ySlider.value = adAdjustState.offsetY;
+            if (bgSelect && adAdjustState.bgColor) bgSelect.value = adAdjustState.bgColor;
+
+            if (zoomVal) zoomVal.textContent = adAdjustState.zoom + '%';
+            if (xVal) xVal.textContent = (adAdjustState.offsetX > 0 ? '+' : '') + adAdjustState.offsetX + 'px';
+            if (yVal) yVal.textContent = (adAdjustState.offsetY > 0 ? '+' : '') + adAdjustState.offsetY + 'px';
+        }
+
+        function renderAdAdjustedCanvas(triggerSave = false) {
+            if (!currentRawAdImage || !currentRawAdImage.width || !currentRawAdImage.height) return;
+
+            try {
+                const canvas = document.createElement('canvas');
+                // 154x80 kutusu için 2x retina netliği (308x160)
+                const targetW = 308;
+                const targetH = 160;
+                canvas.width = targetW;
+                canvas.height = targetH;
+                const ctx = canvas.getContext('2d');
+
+                // 1. Kenar boşluk zemin rengini doldur
+                const bgSelect = document.getElementById('ad-bg-select');
+                const bgColor = (bgSelect ? bgSelect.value : '') || adAdjustState.bgColor || '#06090e';
+                ctx.fillStyle = bgColor;
+                ctx.fillRect(0, 0, targetW, targetH);
+
+                // 2. Yüksek kalite yumuşatma
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+
+                // 3. Orantılı ölçekleme hesabı
+                const imgW = currentRawAdImage.width;
+                const imgH = currentRawAdImage.height;
+                const baseScale = Math.min(targetW / imgW, targetH / imgH);
+                const totalScale = baseScale * (adAdjustState.zoom / 100);
+
+                const drawW = imgW * totalScale;
+                const drawH = imgH * totalScale;
+                const drawX = (targetW - drawW) / 2 + (adAdjustState.offsetX * 2);
+                const drawY = (targetH - drawH) / 2 + (adAdjustState.offsetY * 2);
+
+                ctx.drawImage(currentRawAdImage, drawX, drawY, drawW, drawH);
+
+                // 4. Optimize edilmiş JPEG çıktısı (15-25 KB)
+                const optimizedBase64 = canvas.toDataURL('image/jpeg', 0.88);
+                const imgInput = document.getElementById('prog-ad-image-url');
+                if (imgInput) {
+                    imgInput.value = optimizedBase64;
+                }
+
+                updateProgAdPreview();
+
+                if (triggerSave) {
+                    saveProgramAdSettings(true); // Canlı program köprüsüne ve belleğe otomatik aktar
+                }
+            } catch (err) {
+                console.warn('Reklam resmi işlenirken hata oluştu:', err);
+            }
+        }
+
+        function setAdFitMode(mode) {
+            if (!currentRawAdImage || !currentRawAdImage.width) {
+                showToast('Önce bir resim yükleyin veya seçin.');
+                return;
+            }
+
+            if (mode === 'fit') {
+                // Tam sığdır (hiçbir kenarı taşmaz, tamamı görünür)
+                adAdjustState.zoom = 100;
+                adAdjustState.offsetX = 0;
+                adAdjustState.offsetY = 0;
+                syncAdAdjustInputs();
+                renderAdAdjustedCanvas(true);
+                showToast('📐 Resim tam sığdırıldı (orijinal oran korundu).');
+            } else if (mode === 'cover') {
+                // Kutuyu doldur (kenar boşluğu kalmaz)
+                const targetW = 308;
+                const targetH = 160;
+                const fitScale = Math.min(targetW / currentRawAdImage.width, targetH / currentRawAdImage.height);
+                const coverScale = Math.max(targetW / currentRawAdImage.width, targetH / currentRawAdImage.height);
+                const zoomNeeded = Math.min(300, Math.max(20, Math.round((coverScale / fitScale) * 100)));
+                adAdjustState.zoom = zoomNeeded;
+                adAdjustState.offsetX = 0;
+                adAdjustState.offsetY = 0;
+                syncAdAdjustInputs();
+                renderAdAdjustedCanvas(true);
+                showToast('🖼️ Resim kutuyu tamamen dolduracak şekilde boyutlandırıldı.');
+            }
+        }
+
+        function resetAdAdjustments() {
+            adAdjustState.zoom = 100;
+            adAdjustState.offsetX = 0;
+            adAdjustState.offsetY = 0;
+            syncAdAdjustInputs();
+            renderAdAdjustedCanvas(true);
+            showToast('🎯 Resim merkeze alındı.');
+        }
+
+        function stepAdZoom(delta) {
+            adAdjustState.zoom = Math.min(Math.max(adAdjustState.zoom + delta, 20), 300);
+            syncAdAdjustInputs();
+            renderAdAdjustedCanvas(true);
+        }
+
+        function onAdAdjustChange(triggerSave = false) {
+            const zoomSlider = document.getElementById('ad-zoom-slider');
+            const xSlider = document.getElementById('ad-x-slider');
+            const ySlider = document.getElementById('ad-y-slider');
+            const bgSelect = document.getElementById('ad-bg-select');
+
+            if (zoomSlider) adAdjustState.zoom = parseInt(zoomSlider.value, 10) || 100;
+            if (xSlider) adAdjustState.offsetX = parseInt(xSlider.value, 10) || 0;
+            if (ySlider) adAdjustState.offsetY = parseInt(ySlider.value, 10) || 0;
+            if (bgSelect) adAdjustState.bgColor = bgSelect.value || '#06090e';
+
+            const zoomVal = document.getElementById('ad-zoom-val');
+            const xVal = document.getElementById('ad-x-val');
+            const yVal = document.getElementById('ad-y-val');
+            if (zoomVal) zoomVal.textContent = adAdjustState.zoom + '%';
+            if (xVal) xVal.textContent = (adAdjustState.offsetX > 0 ? '+' : '') + adAdjustState.offsetX + 'px';
+            if (yVal) yVal.textContent = (adAdjustState.offsetY > 0 ? '+' : '') + adAdjustState.offsetY + 'px';
+
+            renderAdAdjustedCanvas(triggerSave);
         }
 
         function handleProgAdFileUpload(e) {
@@ -6257,53 +7036,62 @@
             reader.onload = function(evt) {
                 const img = new Image();
                 img.onload = function() {
-                    try {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        
-                        // 154x80 kutusu için 2 kat retina çözünürlüğü (308x160)
-                        const targetW = 308;
-                        const targetH = 160;
-                        canvas.width = targetW;
-                        canvas.height = targetH;
-                        
-                        const imgAspect = img.width / img.height;
-                        const targetAspect = targetW / targetH;
-                        let drawW, drawH;
-                        
-                        if (imgAspect > targetAspect) {
-                            drawH = targetH;
-                            drawW = targetH * imgAspect;
-                        } else {
-                            drawW = targetW;
-                            drawH = targetW / imgAspect;
-                        }
-                        const dx = (targetW - drawW) / 2;
-                        const dy = (targetH - drawH) / 2;
-                        
-                        ctx.drawImage(img, dx, dy, drawW, drawH);
-                        
-                        // JPEG %85 kalitede sıkıştır (Sadece ~15-20 KB!)
-                        const optimizedBase64 = canvas.toDataURL('image/jpeg', 0.85);
-                        
-                        document.getElementById('prog-ad-image-url').value = optimizedBase64;
-                        updateProgAdPreview();
-                        showToast('🎉 Afiş görseli optimize edildi ve önizlemeye yüklendi! (~20 KB)');
-                    } catch(err) {
-                        // Hata durumunda doğrudan base64 al
-                        document.getElementById('prog-ad-image-url').value = evt.target.result;
-                        updateProgAdPreview();
-                    }
+                    currentRawAdImage = img;
+                    currentRawAdSrc = evt.target.result;
+                    
+                    const adjuster = document.getElementById('prog-ad-adjuster');
+                    if (adjuster) adjuster.style.display = 'block';
+
+                    adAdjustState.zoom = 100;
+                    adAdjustState.offsetX = 0;
+                    adAdjustState.offsetY = 0;
+                    syncAdAdjustInputs();
+                    renderAdAdjustedCanvas(true);
+                    showToast('🎉 Resim yüklendi! Kutuda fareyle taşıyabilir veya alttaki kızaklarla sığdırabilirsiniz.');
                 };
                 img.src = evt.target.result;
             };
             reader.readAsDataURL(file);
         }
 
+        function onAdImageUrlInput() {
+            const imgUrlInput = document.getElementById('prog-ad-image-url');
+            if (!imgUrlInput) return;
+            const url = imgUrlInput.value.trim();
+            if (url && (url.startsWith('http') || url.startsWith('data:image') || url.startsWith('/'))) {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = function() {
+                    currentRawAdImage = img;
+                    currentRawAdSrc = url;
+                    const adjuster = document.getElementById('prog-ad-adjuster');
+                    if (adjuster) adjuster.style.display = 'block';
+                    syncAdAdjustInputs();
+                    renderAdAdjustedCanvas(true);
+                };
+                img.onerror = function() {
+                    updateProgAdPreview();
+                };
+                img.src = url;
+            } else if (!url) {
+                const adjuster = document.getElementById('prog-ad-adjuster');
+                if (adjuster) adjuster.style.display = 'none';
+                currentRawAdImage = null;
+                updateProgAdPreview();
+            } else {
+                updateProgAdPreview();
+            }
+        }
+
         function clearProgAdImage() {
+            currentRawAdImage = null;
+            currentRawAdSrc = '';
             document.getElementById('prog-ad-image-url').value = '';
             document.getElementById('prog-ad-file').value = '';
+            const adjuster = document.getElementById('prog-ad-adjuster');
+            if (adjuster) adjuster.style.display = 'none';
             updateProgAdPreview();
+            saveProgramAdSettings(false);
             showToast('Afiş görseli kaldırıldı. Metin modu aktif.');
         }
 
@@ -6316,7 +7104,8 @@
             if (!imgUrlInput) return;
 
             const imgUrl = imgUrlInput.value.trim();
-            const targetUrl = targetUrlInput ? targetUrlInput.value.trim() : 'https://www.erntasarim.com';
+            const rawTarget = targetUrlInput ? targetUrlInput.value.trim() : '';
+            const targetUrl = cleanAdTargetUrl(rawTarget);
             const title = titleInput ? titleInput.value.trim() : 'ERN TASARIM';
             const slogan = sloganInput ? sloganInput.value.trim() : 'Özel Tasarım & Reklam';
 
@@ -6342,10 +7131,70 @@
             }
         }
 
+        function initAdPreviewInteractions() {
+            const box = document.getElementById('prog-ad-preview-box');
+            if (!box || box.dataset.interactionsInit) return;
+            box.dataset.interactionsInit = 'true';
+
+            box.addEventListener('mousedown', function(e) {
+                if (!currentRawAdImage) return;
+                isAdDragging = true;
+                hasAdDragged = false;
+                adDragStartX = e.clientX;
+                adDragStartY = e.clientY;
+                adDragInitialX = adAdjustState.offsetX;
+                adDragInitialY = adAdjustState.offsetY;
+                box.style.cursor = 'grabbing';
+                e.preventDefault();
+            });
+
+            window.addEventListener('mousemove', function(e) {
+                if (!isAdDragging) return;
+                const dx = e.clientX - adDragStartX;
+                const dy = e.clientY - adDragStartY;
+                if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+                    hasAdDragged = true;
+                }
+                adAdjustState.offsetX = Math.min(Math.max(adDragInitialX + dx, -150), 150);
+                adAdjustState.offsetY = Math.min(Math.max(adDragInitialY + dy, -150), 150);
+                syncAdAdjustInputs();
+                renderAdAdjustedCanvas(false);
+            });
+
+            window.addEventListener('mouseup', function(e) {
+                if (isAdDragging) {
+                    isAdDragging = false;
+                    if (box) box.style.cursor = 'pointer';
+                    if (hasAdDragged) {
+                        renderAdAdjustedCanvas(true);
+                    }
+                }
+            });
+
+            box.addEventListener('wheel', function(e) {
+                if (!currentRawAdImage) return;
+                e.preventDefault();
+                const delta = e.deltaY < 0 ? 5 : -5;
+                stepAdZoom(delta);
+            }, { passive: false });
+        }
+
+        function onAdPreviewBoxClick(event) {
+            if (hasAdDragged) {
+                hasAdDragged = false;
+                return;
+            }
+            testTargetLink();
+        }
+
         function testTargetLink() {
             const targetUrlInput = document.getElementById('prog-ad-target-url');
-            const url = targetUrlInput ? targetUrlInput.value.trim() : 'https://www.erntasarim.com';
-            window.open(url, '_blank');
+            const raw = targetUrlInput ? targetUrlInput.value : '';
+            const url = cleanAdTargetUrl(raw);
+            if (targetUrlInput) targetUrlInput.value = url;
+            const targetDisp = document.getElementById('prev-target-display');
+            if (targetDisp) targetDisp.textContent = url;
+            window.open(url, '_blank', 'noopener,noreferrer');
         }
 
         async function saveDirectlyToFile() {
@@ -6381,11 +7230,13 @@
             try {
                 const ad = getCurrentSelectedAd();
                 ad.aktif = document.getElementById('prog-ad-active').checked;
-                ad.hedef_url = document.getElementById('prog-ad-target-url').value.trim();
+                const rawTarget = document.getElementById('prog-ad-target-url').value;
+                ad.hedef_url = cleanAdTargetUrl(rawTarget);
+                document.getElementById('prog-ad-target-url').value = ad.hedef_url;
                 ad.resim_url = document.getElementById('prog-ad-image-url').value.trim();
                 ad.baslik = document.getElementById('prog-ad-title').value.trim();
-                ad.slogan = document.getElementById('prog-ad-slogan').value.trim();
-                ad.alt_bar_metni = document.getElementById('prog-ad-banner-text').value.trim();
+                ad.alt_bar_metni = cleanBannerText(document.getElementById('prog-ad-banner-text').value);
+                document.getElementById('prog-ad-banner-text').value = ad.alt_bar_metni;
                 ad.aciklama = 'Masaüstü Sponsor Reklamı';
                 
                 programAdsData.guncelleme_tarihi = new Date().toISOString().slice(0, 10);

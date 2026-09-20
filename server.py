@@ -26,6 +26,7 @@ CATALOG_FILE = os.path.join(DATA_DIR, 'catalog.json')
 SETTINGS_FILE = os.path.join(DATA_DIR, 'settings.json')
 REQUESTS_FILE = os.path.join(DATA_DIR, 'requests.json')
 REKLAMLAR_FILE = os.path.join(DATA_DIR, 'reklamlar.json')
+CATEGORIES_FILE = os.path.join(DATA_DIR, 'categories.json')
 
 DEFAULT_MAIL_CONFIG = {
     "imap_host": os.environ.get("IMAP_HOST", ""),
@@ -135,6 +136,25 @@ def handle_settings():
         except Exception as e:
             return jsonify({"success": False, "error": str(e)}), 500
 
+@app.route('/api/categories', methods=['GET', 'POST'])
+def handle_categories():
+    if request.method == 'GET':
+        if os.path.exists(CATEGORIES_FILE):
+            try:
+                with open(CATEGORIES_FILE, 'r', encoding='utf-8') as f:
+                    return jsonify(json.load(f))
+            except Exception:
+                pass
+        return jsonify([])
+    else:
+        data = request.json or []
+        try:
+            with open(CATEGORIES_FILE, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+            return jsonify({"success": True})
+        except Exception as e:
+            return jsonify({"success": False, "error": str(e)}), 500
+
 @app.route('/api/requests', methods=['GET', 'POST'])
 def handle_requests():
     if request.method == 'GET':
@@ -167,6 +187,21 @@ def handle_reklamlar():
     else:
         data = request.json or {}
         try:
+            def _clean_url(u):
+                if not u: return 'https://www.erntasarim.com'
+                u = str(u).strip()
+                if not u.startswith('http://') and not u.startswith('https://'):
+                    return 'https://' + u
+                return u
+
+            if isinstance(data, dict):
+                if 'genel' in data and isinstance(data['genel'], dict) and 'hedef_url' in data['genel']:
+                    data['genel']['hedef_url'] = _clean_url(data['genel']['hedef_url'])
+                if 'programlar' in data and isinstance(data['programlar'], dict):
+                    for p in data['programlar'].values():
+                        if isinstance(p, dict) and 'hedef_url' in p:
+                            p['hedef_url'] = _clean_url(p['hedef_url'])
+
             with open(REKLAMLAR_FILE, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
             return jsonify({"success": True})
