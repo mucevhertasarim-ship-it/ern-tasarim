@@ -21,6 +21,70 @@
     <link rel="stylesheet" href="style.css">
     
     <style>
+        /* Kategori Seçim Kutusu */
+        .category-select-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(212, 175, 55, 0.08);
+            border: 1.5px solid rgba(212, 175, 55, 0.35);
+            border-radius: 25px;
+            padding: 0.5rem 1.15rem;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .category-select-box:hover, .category-select-box:focus-within {
+            border-color: var(--gold-primary);
+            background: rgba(212, 175, 55, 0.15);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .category-select-box .select-icon {
+            color: var(--gold-primary);
+            font-size: 0.9rem;
+        }
+
+        .category-select-box .select-label {
+            color: var(--gold-primary);
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .category-select-box select {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 0.88rem;
+            font-weight: 600;
+            font-family: inherit;
+            outline: none;
+            cursor: pointer;
+            padding-right: 1.25rem;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        .category-select-box select option {
+            background: #090e17;
+            color: #f1f5f9;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+
+        .category-select-box .arrow-icon {
+            color: var(--gold-primary);
+            font-size: 0.75rem;
+            pointer-events: none;
+            margin-left: -0.8rem;
+        }
+
         /* Mağaza Özel Stilleri */
         .shop-hero {
             padding: 5rem 1.5rem 3rem 1.5rem;
@@ -735,11 +799,21 @@
             </div>
 
             <!-- Kategori Filtreleri (Dinamik JS ile Doldurulur) -->
-            <div class="portfolio-filters" id="category-filter-bar" style="display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
-                <button class="filter-btn active" onclick="filterShop('all', this)">⭐ Tüm 3D Modeller</button>
-                <button class="filter-btn" onclick="filterShop('yuzuk', this)">💎 Yüzükler</button>
-                <button class="filter-btn" onclick="filterShop('kolye', this)">🦁 Kolyeler</button>
-                <button class="filter-btn" onclick="filterShop('kilit', this)">🔒 Kilit ve Zincir</button>
+            <div class="portfolio-filters" id="category-filter-bar" style="display: flex; justify-content: center; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+                <button class="filter-btn active" data-cat="all" onclick="filterShop('all', this)">⭐ Tüm 3D Modeller</button>
+                <div class="category-select-box" title="Görmek istediğiniz kategoriyi seçin">
+                    <i class="fa-solid fa-layer-group select-icon"></i>
+                    <span class="select-label">Kategori:</span>
+                    <select id="shop-category-select" onchange="filterShop(this.value)">
+                        <option value="all">✨ Tüm Kategoriler...</option>
+                        <option value="kolye">🦁 Kolyeler</option>
+                        <option value="yuzuk">💎 Yüzükler</option>
+                        <option value="kilit">🔒 Kilit ve Zincir</option>
+                        <option value="bileklik">✨ Bileklikler</option>
+                        <option value="kupe">💠 Küpeler</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                </div>
             </div>
 
             <!-- 360 Modeller Grid (JS Tarafından Doldurulur) -->
@@ -919,7 +993,7 @@
                         "id": "item_3d_1euro",
                         "title": "1 Euro Madalyon Kolye Ucu",
                         "category": "kolye",
-                        "price": 39,
+                        "price": 10,
                         "code": "ERN-3D101",
                         "media": "models/1euro.glb",
                         "image": "models/1euro.jpg",
@@ -942,7 +1016,7 @@
                         "id": "item_3d_2cm_meryem1",
                         "title": "2cm Meryem Ana Kolye Ucu",
                         "category": "kolye",
-                        "price": 35,
+                        "price": 20,
                         "code": "ERN-3D102",
                         "media": "models/2cm_meryem1.glb",
                         "image": "models/2cm_meryem1.jpg",
@@ -965,7 +1039,7 @@
                         "id": "item_3d_7cm_hc",
                         "title": "7cm Pırlanta Taşlı Haç Kolye",
                         "category": "kolye",
-                        "price": 49,
+                        "price": 30,
                         "code": "ERN-3D103",
                         "media": "models/7cm_hc.glb",
                         "image": "models/7cm_hc.jpg",
@@ -988,7 +1062,7 @@
                         "id": "item_3d_alkan-5",
                         "title": "Alkan-5 Özel Tasarım Kolye",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 10,
                         "code": "ERN-3D104",
                         "media": "models/alkan-5.glb",
                         "image": "models/alkan-5.jpg",
@@ -1011,7 +1085,7 @@
                         "id": "item_3d_eller",
                         "title": "Kenetlenen Dua Eden Eller Kolye",
                         "category": "kolye",
-                        "price": 39,
+                        "price": 35,
                         "code": "ERN-3D105",
                         "media": "models/eller.glb",
                         "image": "models/eller.jpg",
@@ -1034,7 +1108,7 @@
                         "id": "item_3d_kowboy",
                         "title": "Kovboy Şapkası & Figürü Kolye",
                         "category": "kolye",
-                        "price": 39,
+                        "price": 35,
                         "code": "ERN-3D106",
                         "media": "models/kowboy.glb",
                         "image": "models/kowboy.jpg",
@@ -1057,7 +1131,7 @@
                         "id": "item_3d_kolyeler2-58_a",
                         "title": "Balerin & Figür Kolye (58-A)",
                         "category": "kolye",
-                        "price": 39,
+                        "price": 30,
                         "code": "ERN-3D107",
                         "media": "models/kolyeler2-58_a.glb",
                         "image": "models/kolyeler2-58_a.jpg",
@@ -1080,7 +1154,7 @@
                         "id": "item_3d_kolyeler2_57",
                         "title": "Lüks Kolye Ucu (No. 57)",
                         "category": "kolye",
-                        "price": 49,
+                        "price": 40,
                         "code": "ERN-3D108",
                         "media": "models/kolyeler2_57.glb",
                         "image": "models/kolyeler2_57.jpg",
@@ -1103,7 +1177,7 @@
                         "id": "item_3d_serenay",
                         "title": "Serenay Özel Tasarım Kolye",
                         "category": "kolye",
-                        "price": 49,
+                        "price": 30,
                         "code": "ERN-3D109",
                         "media": "models/serenay.glb",
                         "image": "models/serenay.jpg",
@@ -1126,7 +1200,7 @@
                         "id": "item_3d_akrep_kolye",
                         "title": "Akrep Kolye Ucu (3D Rölyef)",
                         "category": "kolye",
-                        "price": 49,
+                        "price": 50,
                         "code": "ERN-3D110",
                         "media": "models/akrep_kolye.glb",
                         "image": "models/akrep_kolye.jpg",
@@ -1149,7 +1223,7 @@
                         "id": "item_3d_akrep",
                         "title": "Büyük Akrep Heykelcik Kolye",
                         "category": "kolye",
-                        "price": 49,
+                        "price": 30,
                         "code": "ERN-3D111",
                         "media": "models/akrep.glb",
                         "image": "models/akrep.jpg",
@@ -1172,7 +1246,7 @@
                         "id": "item_3d_bil_cengelli_igne",
                         "title": "Pırlantalı Çengelli İğne Kolye Ucu",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 10,
                         "code": "ERN-3D112",
                         "media": "models/bil_cengelli_igne.glb",
                         "image": "models/bil_cengelli_igne.jpg",
@@ -1195,7 +1269,7 @@
                         "id": "item_3d_bozkurt",
                         "title": "Bozkurt Hilal Kolye Ucu",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 30,
                         "code": "ERN-3D113",
                         "media": "models/bozkurt.glb",
                         "image": "models/bozkurt.jpg",
@@ -1218,7 +1292,7 @@
                         "id": "item_3d_dolar",
                         "title": "100 Dolar Plaka Kolye Ucu",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 50,
                         "code": "ERN-3D114",
                         "media": "models/dolar.glb",
                         "image": "models/dolar.jpg",
@@ -1241,7 +1315,7 @@
                         "id": "item_3d_ejderha",
                         "title": "Ejderha Kolye Ucu",
                         "category": "kolye",
-                        "price": 35,
+                        "price": 50,
                         "code": "ERN-3D115",
                         "media": "models/ejderha.glb",
                         "image": "models/ejderha.jpg",
@@ -1264,7 +1338,7 @@
                         "id": "item_3d_geyik",
                         "title": "Boynuzlu Geyik Başı Kolye",
                         "category": "kolye",
-                        "price": 49,
+                        "price": 30,
                         "code": "ERN-3D116",
                         "media": "models/geyik.glb",
                         "image": "models/geyik.jpg",
@@ -1287,7 +1361,7 @@
                         "id": "item_3d_kaplan",
                         "title": "Kükreyen Kaplan Başı Kolye",
                         "category": "kolye",
-                        "price": 39,
+                        "price": 40,
                         "code": "ERN-3D117",
                         "media": "models/kaplan.glb",
                         "image": "models/kaplan.jpg",
@@ -1310,7 +1384,7 @@
                         "id": "item_3d_kaplan1_8mm",
                         "title": "Kaplan 8mm Kolye / Yüzük",
                         "category": "yuzuk",
-                        "price": 49,
+                        "price": 35,
                         "code": "ERN-3D118",
                         "media": "models/kaplan1_8mm.glb",
                         "image": "models/kaplan1_8mm.jpg",
@@ -1333,7 +1407,7 @@
                         "id": "item_3d_kaplan1",
                         "title": "Kaplan Kolye Ucu (Sade)",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 30,
                         "code": "ERN-3D119",
                         "media": "models/kaplan1.glb",
                         "image": "models/kaplan1.jpg",
@@ -1356,7 +1430,7 @@
                         "id": "item_3d_keles_sade",
                         "title": "Keleş (AK-47) Kolye Ucu (Sade)",
                         "category": "kolye",
-                        "price": 39,
+                        "price": 20,
                         "code": "ERN-3D120",
                         "media": "models/keles_sade.glb",
                         "image": "models/keles_sade.jpg",
@@ -1379,7 +1453,7 @@
                         "id": "item_3d_kimber",
                         "title": "Kimber Tabanca Kolye Ucu",
                         "category": "kolye",
-                        "price": 39,
+                        "price": 35,
                         "code": "ERN-3D121",
                         "media": "models/kimber.glb",
                         "image": "models/kimber.jpg",
@@ -1402,7 +1476,7 @@
                         "id": "item_3d_kolye2-17_meryem",
                         "title": "Meryem Ana Oval Kolye Ucu (2-17)",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 35,
                         "code": "ERN-3D122",
                         "media": "models/kolye2-17_meryem.glb",
                         "image": "models/kolye2-17_meryem.jpg",
@@ -1422,56 +1496,10 @@
                         }
             },
             {
-                        "id": "item_3d_kolye2-20_isa",
-                        "title": "Haç Gövdesi Kolye Parçası",
-                        "category": "kolye",
-                        "price": 29,
-                        "code": "ERN-3D123",
-                        "media": "models/kolye2-20_isa.glb",
-                        "image": "models/kolye2-20_isa.jpg",
-                        "stl": "models/kolye2-20_isa.glb",
-                        "desc": "14.5 × 32.5 × 2.1 mm ölçülerinde, 14K Altında 1.81 gr, 925 Gümüşte 1.44 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
-                        "is360": true,
-                        "dims": {
-                                    "x": "14.5 mm",
-                                    "y": "32.5 mm",
-                                    "z": "2.1 mm"
-                        },
-                        "weights": {
-                                    "gold14": "1.81 gr",
-                                    "gold18": "2.15 gr",
-                                    "gold22": "2.46 gr",
-                                    "silver925": "1.44 gr"
-                        }
-            },
-            {
-                        "id": "item_3d_kolye2-20_isa1",
-                        "title": "İsa Figürü Kolye Parçası",
-                        "category": "kolye",
-                        "price": 29,
-                        "code": "ERN-3D124",
-                        "media": "models/kolye2-20_isa1.glb",
-                        "image": "models/kolye2-20_isa1.jpg",
-                        "stl": "models/kolye2-20_isa1.glb",
-                        "desc": "13.2 × 16.6 × 7.2 mm ölçülerinde, 14K Altında 1.42 gr, 925 Gümüşte 1.13 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
-                        "is360": true,
-                        "dims": {
-                                    "x": "13.2 mm",
-                                    "y": "16.6 mm",
-                                    "z": "7.2 mm"
-                        },
-                        "weights": {
-                                    "gold14": "1.42 gr",
-                                    "gold18": "1.69 gr",
-                                    "gold22": "1.93 gr",
-                                    "silver925": "1.13 gr"
-                        }
-            },
-            {
                         "id": "item_3d_kolye33-1_ak47",
                         "title": "AK-47 Keleş Kolye Ucu (33-1)",
                         "category": "kolye",
-                        "price": 39,
+                        "price": 25,
                         "code": "ERN-3D125",
                         "media": "models/kolye33-1_ak47.glb",
                         "image": "models/kolye33-1_ak47.jpg",
@@ -1494,7 +1522,7 @@
                         "id": "item_3d_kolye34-2",
                         "title": "Özel Tasarım Kolye Ucu (34-2)",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 10,
                         "code": "ERN-3D126",
                         "media": "models/kolye34-2.glb",
                         "image": "models/kolye34-2.jpg",
@@ -1514,33 +1542,10 @@
                         }
             },
             {
-                        "id": "item_3d_kolye44",
-                        "title": "Lüks Taş Yuvalı Kolye Ucu (44)",
-                        "category": "kolye",
-                        "price": 29,
-                        "code": "ERN-3D127",
-                        "media": "models/kolye44.glb",
-                        "image": "models/kolye44.jpg",
-                        "stl": "models/kolye44.glb",
-                        "desc": "20.4 × 24.5 × 3.8 mm ölçülerinde, 14K Altında 3.0 gr, 925 Gümüşte 2.39 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
-                        "is360": true,
-                        "dims": {
-                                    "x": "20.4 mm",
-                                    "y": "24.5 mm",
-                                    "z": "3.8 mm"
-                        },
-                        "weights": {
-                                    "gold14": "3.0 gr",
-                                    "gold18": "3.58 gr",
-                                    "gold22": "4.09 gr",
-                                    "silver925": "2.39 gr"
-                        }
-            },
-            {
                         "id": "item_3d_kolye49_nharf_alt",
                         "title": "N Harfi Pırlantalı Kolye Ucu",
                         "category": "kolye",
-                        "price": 49,
+                        "price": 20,
                         "code": "ERN-3D128",
                         "media": "models/kolye49_nharf_alt.glb",
                         "image": "models/kolye49_nharf_alt.jpg",
@@ -1563,7 +1568,7 @@
                         "id": "item_3d_kolye53_asma_kilit",
                         "title": "Asma Kilit Kolye Ucu",
                         "category": "kilit",
-                        "price": 29,
+                        "price": 10,
                         "code": "ERN-3D129",
                         "media": "models/kolye53_asma_kilit.glb",
                         "image": "models/kolye53_asma_kilit.jpg",
@@ -1586,7 +1591,7 @@
                         "id": "item_3d_kolye56_aslan",
                         "title": "Kral Aslan Başı Kolye Ucu",
                         "category": "kolye",
-                        "price": 35,
+                        "price": 20,
                         "code": "ERN-3D130",
                         "media": "models/kolye56_aslan.glb",
                         "image": "models/kolye56_aslan.jpg",
@@ -1609,7 +1614,7 @@
                         "id": "item_3d_kolye56",
                         "title": "Özel Madalyon Kolye Ucu (56)",
                         "category": "kolye",
-                        "price": 35,
+                        "price": 20,
                         "code": "ERN-3D131",
                         "media": "models/kolye56.glb",
                         "image": "models/kolye56.jpg",
@@ -1655,7 +1660,7 @@
                         "id": "item_3d_kolyeler2-2_balerin",
                         "title": "Balerin Kolye Ucu (2-2)",
                         "category": "kolye",
-                        "price": 39,
+                        "price": 35,
                         "code": "ERN-3D133",
                         "media": "models/kolyeler2-2_balerin.glb",
                         "image": "models/kolyeler2-2_balerin.jpg",
@@ -1678,7 +1683,7 @@
                         "id": "item_3d_kolyeler2-20_balerin4",
                         "title": "Dans Eden Balerin Kolye (20-4)",
                         "category": "kolye",
-                        "price": 39,
+                        "price": 35,
                         "code": "ERN-3D134",
                         "media": "models/kolyeler2-20_balerin4.glb",
                         "image": "models/kolyeler2-20_balerin4.jpg",
@@ -1701,7 +1706,7 @@
                         "id": "item_3d_kolyeler2-3_balerin2",
                         "title": "Balerin Kolye Ucu (2-3)",
                         "category": "kolye",
-                        "price": 39,
+                        "price": 35,
                         "code": "ERN-3D135",
                         "media": "models/kolyeler2-3_balerin2.glb",
                         "image": "models/kolyeler2-3_balerin2.jpg",
@@ -1724,7 +1729,7 @@
                         "id": "item_3d_kolyeler2-45_2_6cm",
                         "title": "2.6cm Yuvarlak Madalyon (45)",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 20,
                         "code": "ERN-3D136",
                         "media": "models/kolyeler2-45_2_6cm.glb",
                         "image": "models/kolyeler2-45_2_6cm.jpg",
@@ -1747,7 +1752,7 @@
                         "id": "item_3d_kolyeler2-49",
                         "title": "Özel Kolye Ucu (49)",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 10,
                         "code": "ERN-3D137",
                         "media": "models/kolyeler2-49.glb",
                         "image": "models/kolyeler2-49.jpg",
@@ -1770,7 +1775,7 @@
                         "id": "item_3d_kolyeler2-6",
                         "title": "Lüks Uzun Kolye Ucu (2-6)",
                         "category": "kolye",
-                        "price": 49,
+                        "price": 20,
                         "code": "ERN-3D138",
                         "media": "models/kolyeler2-6.glb",
                         "image": "models/kolyeler2-6.jpg",
@@ -1793,7 +1798,7 @@
                         "id": "item_3d_kral_hac",
                         "title": "Kraliyet Haçı Kolye Ucu",
                         "category": "kolye",
-                        "price": 49,
+                        "price": 20,
                         "code": "ERN-3D139",
                         "media": "models/kral_hac.glb",
                         "image": "models/kral_hac.jpg",
@@ -1816,7 +1821,7 @@
                         "id": "item_3d_madalyon2",
                         "title": "Kabartma Rölyef Madalyon (No. 2)",
                         "category": "kolye",
-                        "price": 35,
+                        "price": 30,
                         "code": "ERN-3D140",
                         "media": "models/madalyon2.glb",
                         "image": "models/madalyon2.jpg",
@@ -1839,7 +1844,7 @@
                         "id": "item_3d_mhp",
                         "title": "Üç Hilal Kolye Ucu",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 10,
                         "code": "ERN-3D141",
                         "media": "models/mhp.glb",
                         "image": "models/mhp.jpg",
@@ -1885,7 +1890,7 @@
                         "id": "item_3d_ozkan-11-1",
                         "title": "Özkan Özel Tasarım Kolye (11-1)",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 10,
                         "code": "ERN-3D143",
                         "media": "models/ozkan-11-1.glb",
                         "image": "models/ozkan-11-1.jpg",
@@ -1908,7 +1913,7 @@
                         "id": "item_3d_ozkan-12",
                         "title": "Özkan Özel Tasarım Kolye (12)",
                         "category": "kolye",
-                        "price": 35,
+                        "price": 20,
                         "code": "ERN-3D144",
                         "media": "models/ozkan-12.glb",
                         "image": "models/ozkan-12.jpg",
@@ -1931,7 +1936,7 @@
                         "id": "item_3d_ozkan-14",
                         "title": "Özkan Tasarım Kolye / Yüzük (14)",
                         "category": "yuzuk",
-                        "price": 39,
+                        "price": 40,
                         "code": "ERN-3D145",
                         "media": "models/ozkan-14.glb",
                         "image": "models/ozkan-14.jpg",
@@ -1954,7 +1959,7 @@
                         "id": "item_3d_pig",
                         "title": "3D Sevimli Domuz Figür Kolye",
                         "category": "kolye",
-                        "price": 49,
+                        "price": 50,
                         "code": "ERN-3D146",
                         "media": "models/pig.glb",
                         "image": "models/pig.jpg",
@@ -1977,7 +1982,7 @@
                         "id": "item_3d_ramses",
                         "title": "Firavun Ramses Kolye Ucu",
                         "category": "kolye",
-                        "price": 39,
+                        "price": 30,
                         "code": "ERN-3D147",
                         "media": "models/ramses.glb",
                         "image": "models/ramses.jpg",
@@ -2000,7 +2005,7 @@
                         "id": "item_3d_serdar_abi",
                         "title": "Serdar Özel Kolye Ucu",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 10,
                         "code": "ERN-3D148",
                         "media": "models/serdar_abi.glb",
                         "image": "models/serdar_abi.jpg",
@@ -2023,7 +2028,7 @@
                         "id": "item_3d_shell_01_of_hollow_of_kolye",
                         "title": "Hafifletilmiş Kolye Ön Parça",
                         "category": "kolye",
-                        "price": 35,
+                        "price": 20,
                         "code": "ERN-3D149",
                         "media": "models/shell_01_of_hollow_of_kolye.glb",
                         "image": "models/shell_01_of_hollow_of_kolye.jpg",
@@ -2046,7 +2051,7 @@
                         "id": "item_3d_shell_01_of_hollow_of_bool",
                         "title": "Hollow Tasarım Parça A",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 10,
                         "code": "ERN-3D150",
                         "media": "models/shell_01_of_hollow_of_bool.glb",
                         "image": "models/shell_01_of_hollow_of_bool.jpg",
@@ -2069,7 +2074,7 @@
                         "id": "item_3d_shell_01_of_hollow_of_meryem1",
                         "title": "Meryem Kolye İçi Boş Ön Parça",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 20,
                         "code": "ERN-3D151",
                         "media": "models/shell_01_of_hollow_of_meryem1.glb",
                         "image": "models/shell_01_of_hollow_of_meryem1.jpg",
@@ -2092,7 +2097,7 @@
                         "id": "item_3d_shell_02_of_hollow_of_bool",
                         "title": "Hollow Tasarım Parça B",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 10,
                         "code": "ERN-3D152",
                         "media": "models/shell_02_of_hollow_of_bool.glb",
                         "image": "models/shell_02_of_hollow_of_bool.jpg",
@@ -2112,33 +2117,10 @@
                         }
             },
             {
-                        "id": "item_3d_shell_02_of_hollow_of_meryem1",
-                        "title": "Meryem Kolye İçi Boş Arka Kapak",
-                        "category": "kolye",
-                        "price": 29,
-                        "code": "ERN-3D153",
-                        "media": "models/shell_02_of_hollow_of_meryem1.glb",
-                        "image": "models/shell_02_of_hollow_of_meryem1.jpg",
-                        "stl": "models/shell_02_of_hollow_of_meryem1.glb",
-                        "desc": "15.3 × 12.3 × 1.6 mm ölçülerinde, 14K Altında 1.24 gr, 925 Gümüşte 0.98 gr döküm gramajlı, döküme ve üretime hazır 3D CAD mücevher tasarımı.",
-                        "is360": true,
-                        "dims": {
-                                    "x": "15.3 mm",
-                                    "y": "12.3 mm",
-                                    "z": "1.6 mm"
-                        },
-                        "weights": {
-                                    "gold14": "1.24 gr",
-                                    "gold18": "1.47 gr",
-                                    "gold22": "1.68 gr",
-                                    "silver925": "0.98 gr"
-                        }
-            },
-            {
                         "id": "item_3d_shell_03_of_hollow_of_bool",
                         "title": "Hollow Tasarım Parça C",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 10,
                         "code": "ERN-3D154",
                         "media": "models/shell_03_of_hollow_of_bool.glb",
                         "image": "models/shell_03_of_hollow_of_bool.jpg",
@@ -2161,7 +2143,7 @@
                         "id": "item_3d_shovalye",
                         "title": "Şövalye Kalkan Kolye Ucu",
                         "category": "yuzuk",
-                        "price": 39,
+                        "price": 20,
                         "code": "ERN-3D155",
                         "media": "models/shovalye.glb",
                         "image": "models/shovalye.jpg",
@@ -2184,7 +2166,7 @@
                         "id": "item_3d_tasli_kimber",
                         "title": "Taşlı Kimber Tabanca Kolye Ucu",
                         "category": "kolye",
-                        "price": 39,
+                        "price": 30,
                         "code": "ERN-3D156",
                         "media": "models/tasli_kimber.glb",
                         "image": "models/tasli_kimber.jpg",
@@ -2207,7 +2189,7 @@
                         "id": "item_3d_yildiz_tasli",
                         "title": "Taşlı Kutup Yıldızı Kolye Ucu",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 10,
                         "code": "ERN-3D157",
                         "media": "models/yildiz_tasli.glb",
                         "image": "models/yildiz_tasli.jpg",
@@ -2230,7 +2212,7 @@
                         "id": "item_3d_yumruk01",
                         "title": "Boksör Yumruğu Kolye Ucu",
                         "category": "kolye",
-                        "price": 39,
+                        "price": 40,
                         "code": "ERN-3D158",
                         "media": "models/yumruk01.glb",
                         "image": "models/yumruk01.jpg",
@@ -2253,7 +2235,7 @@
                         "id": "item_3d_yunus",
                         "title": "Sıçrayan Yunus Kolye Ucu",
                         "category": "kolye",
-                        "price": 39,
+                        "price": 15,
                         "code": "ERN-3D159",
                         "media": "models/yunus.glb",
                         "image": "models/yunus.jpg",
@@ -2276,7 +2258,7 @@
                         "id": "item_3d_seyma",
                         "title": "Şeyma Özel İsimli Kolye Ucu",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 10,
                         "code": "ERN-3D160",
                         "media": "models/seyma.glb",
                         "image": "models/seyma.jpg",
@@ -2299,7 +2281,7 @@
                         "id": "item_3d_isa_carmikh_montaj",
                         "title": "İsa Çarmıh Haç Kolye (2 Parça Lüks Çift Renk Montaj)",
                         "category": "kolye",
-                        "price": 29,
+                        "price": 70,
                         "code": "ERN-3D161",
                         "media": "models/isa_carmikh_montaj.glb",
                         "image": "models/isa_carmikh_montaj.jpg",
@@ -2318,7 +2300,7 @@
                                     "silver925": "2.57 gr"
                         }
             }
-];
+]];
 
                         // Yönetici Panelinden (localStorage) Ürünleri Okuma
         function getCatalogProducts() {
@@ -2386,12 +2368,48 @@
             const bar = document.getElementById('category-filter-bar');
             if (!bar) return;
             const cats = getCategories().filter(c => c.active !== false);
-            let html = `<button class="filter-btn ${currentFilterCategory === 'all' ? 'active' : ''}" onclick="filterShop('all', this)">⭐ Tüm 3D Modeller</button>`;
+
+            // Dinamik ürün sayılarını hesapla
+            const catCounts = {};
+            products.forEach(p => {
+                if (p.is360) {
+                    const c = p.category || 'kolye';
+                    catCounts[c] = (catCounts[c] || 0) + 1;
+                }
+            });
+            const totalCount = products.filter(p => p.is360).length;
+
+            let html = `
+                <!-- 1. Tüm 3D Modeller Butonu -->
+                <button class="filter-btn ${currentFilterCategory === 'all' ? 'active' : ''}" data-cat="all" onclick="filterShop('all', this)">
+                    ⭐ Tüm 3D Modeller (${totalCount})
+                </button>
+
+                <!-- 2. Kategori Seçim Kutusu (Kullanıcının İstediği Kutu) -->
+                <div class="category-select-box" title="Görmek istediğiniz kategoriyi seçin">
+                    <i class="fa-solid fa-layer-group select-icon"></i>
+                    <span class="select-label">Kategori:</span>
+                    <select id="shop-category-select" onchange="filterShop(this.value)">
+                        <option value="all" ${currentFilterCategory === 'all' ? 'selected' : ''}>✨ Tüm Kategoriler (${totalCount})</option>
+                        ${cats.map(c => {
+                            const count = catCounts[c.id] || 0;
+                            const isSel = currentFilterCategory === c.id ? 'selected' : '';
+                            const iconStr = c.icon ? c.icon + ' ' : '';
+                            return `<option value="${c.id}" ${isSel}>${iconStr}${c.name} (${count})</option>`;
+                        }).join('')}
+                    </select>
+                    <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                </div>
+            `;
+
+            // 3. Kategori Hap Butonları (Hızlı tek tıkla geçiş için)
             cats.forEach(c => {
+                const count = catCounts[c.id] || 0;
                 const isActive = currentFilterCategory === c.id ? 'active' : '';
                 const iconStr = c.icon ? c.icon + ' ' : '';
-                html += `<button class="filter-btn ${isActive}" onclick="filterShop('${c.id}', this)">${iconStr}${c.name}</button>`;
+                html += `<button class="filter-btn ${isActive}" data-cat="${c.id}" onclick="filterShop('${c.id}', this)">${iconStr}${c.name} (${count})</button>`;
             });
+
             bar.innerHTML = html;
         }
 
@@ -2406,7 +2424,10 @@
 
         async function syncFromServer() {
             try {
-                const catRes = await fetch('/api/catalog?t=' + Date.now());
+                let catRes = await fetch('/api/catalog?t=' + Date.now());
+                if (!catRes.ok) {
+                    catRes = await fetch('/data/catalog.json?t=' + Date.now());
+                }
                 if (catRes.ok) {
                     const catData = await catRes.json();
                     if (Array.isArray(catData) && catData.length > 0) {
@@ -2539,8 +2560,20 @@
         function filterShop(category, btn) {
             currentFilterCategory = category;
             const buttons = document.querySelectorAll('.filter-btn');
-            buttons.forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
+            buttons.forEach(b => {
+                b.classList.remove('active');
+                if (b.getAttribute('data-cat') === category) {
+                    b.classList.add('active');
+                }
+            });
+            if (btn && btn.classList) btn.classList.add('active');
+
+            // Kategori kutusunu da senkronize et
+            const sel = document.getElementById('shop-category-select');
+            if (sel && sel.value !== category) {
+                sel.value = category;
+            }
+
             render360Grid(category);
         }
 
