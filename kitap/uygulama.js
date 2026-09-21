@@ -848,62 +848,110 @@ function updateLiveDownloadProgress(percent, labelText) {
     }
 }
 
-// PDF Dosyasını Doğrudan Bilgisayarın İndirilenler Klasörüne Kaydeden Motor (Yeni Sekmede Açılmayı %100 Engeller)
+// Archive.org üzerinden kitabın GERÇEK indirilebilir PDF dosya yolunu metadata'dan çözen motor
+async function getRealPdfUrl(identifier) {
+    if (!identifier) return null;
+    
+    // 1. Archive.org Metadata API sorgusu
+    const metaUrl = `https://archive.org/metadata/${identifier}/files`;
+    try {
+        let metaData = await fetchJsonWithProxy(metaUrl);
+        if (!metaData) {
+            const r = await fetch(metaUrl);
+            if (r.ok) metaData = await r.json();
+        }
+        
+        if (metaData && Array.isArray(metaData.result)) {
+            const files = metaData.result;
+            
+            // A. Gerçek PDF dosyalarını filtrele
+            const pdfs = files.filter(f => f.name && f.name.toLowerCase().endsWith('.pdf'));
+            if (pdfs.length > 0) {
+                // Boyuta göre büyükten küçüğe sırala (en kaliteli tam metin PDF ilk gelsin)
+                pdfs.sort((a, b) => (parseInt(b.size || '0', 10) - parseInt(a.size || '0', 10)));
+                const bestPdf = pdfs[0];
+                return `https://archive.org/download/${identifier}/${encodeURIComponent(bestPdf.name)}`;
+            }
+            
+            // B. PDF yoksa EPUB ara
+            const epubs = files.filter(f => f.name && f.name.toLowerCase().endsWith('.epub'));
+            if (epubs.length > 0) {
+                return `https://archive.org/download/${identifier}/${encodeURIComponent(epubs[0].name)}`;
+            }
+        }
+    } catch(err) {
+        console.warn('Metadata çözülemedi, standart yol deneniyor:', err);
+    }
+    
+    // 2. Yedek: Standart arşiv indirme linki
+    return `https://archive.org/download/${identifier}/${identifier}.pdf`;
+}
+
+// PDF Dosyasını Doğrudan Bilgisayarın / Telefonun İndirilenler Klasörüne İndiren Motor
 async function downloadPdfDirectly(identifier, title) {
     if (!identifier) return;
     
     const bookTitle = title || 'Kitap';
     showLiveDownloadProgressModal(bookTitle);
-    updateLiveDownloadProgress(10, 'Sunucuya bağlanılıyor...');
-    
-    const directPdfUrl = `https://archive.org/download/${identifier}/${identifier}.pdf`;
+    updateLiveDownloadProgress(20, 'Arşivde PDF dosyası aranıyor...');
     
     try {
-        // PDF verisini canlı yüzdelik takibiyle çek
-        const buffer = await fetchWithProgress(directPdfUrl, (statusMsg) => {
-            if (statusMsg.includes('%')) {
-                const match = statusMsg.match(/%(\d+)/);
-                if (match) {
-                    const pct = parseInt(match[1], 10);
-                    updateLiveDownloadProgress(pct, statusMsg);
-                }
-            } else {
-                updateLiveDownloadProgress(40, statusMsg);
-            }
-        });
+        const downloadUrl = await getRealPdfUrl(identifier);
+        updateLiveDownloadProgress(60, 'İndirme bağlantısı hazırlandı...');
         
-        if (buffer && isValidPdfBuffer(buffer)) {
-            // Blob URL Oluştur -> Tarayıcı yeni sekmede AÇAMAZ, DOĞRUDAN İNDİRİLENLER KLASÖRÜNE İNDİRİR!
-            const blob = new Blob([buffer], { type: 'application/pdf' });
-            const blobUrl = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = blobUrl;
-            a.download = `${bookTitle}.pdf`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            setTimeout(() => URL.revokeObjectURL(blobUrl), 20000);
-            
-            downloadedPdfBufferForTts = buffer;
-            downloadedPdfTitleForTts = bookTitle;
-            pdfMemoryCache[identifier] = buffer;
-            
-            updateLiveDownloadProgress(100, '🎉 PDF İndirilenler Klasörüne Kaydedildi!');
-        } else {
-            // Eğer fetch engellenirse doğrudan link ile indir
-            const a = document.createElement('a');
-            a.href = directPdfUrl;
-            a.download = `${bookTitle}.pdf`;
-            a.target = '_blank';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            updateLiveDownloadProgress(100, 'İndirme Bağlantısı Çalıştırıldı!');
+        // Tarayıcının yerel indirme tetikleyicisi
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = `${bookTitle}.pdf`;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        
+        updateLiveDownloadProgress(100, '🎉 İndirme Başlatıldı!');
+        
+        const actionContainer = document.getElementById('dl-action-container');
+        if (actionContainer) {
+            actionContainer.innerHTML = `
+                <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.8rem;">
+                    <a href="${downloadUrl}" target="_blank" download="${bookTitle}.pdf" style="display: flex; align-items: center; justify-content: center; gap: 0.4rem; background: linear-gradient(135deg, #10b981, #059669); color: white; text-decoration: none; padding: 0.85rem; border-radius: 12px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);">
+                        <i class="fa-solid fa-cloud-arrow-down"></i> Otomatik Başlamadıysa Buraya Tıkla
+                    </a>
+                    <button onclick="document.getElementById('live-download-progress-modal').style.display='none';" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; padding: 0.6rem; border-radius: 10px; font-size: 0.85rem; cursor: pointer; font-weight: 600;">
+                        Tamam / Kapat
+                    </button>
+                </div>
+            `;
+            actionContainer.style.display = 'block';
         }
-    } catch(e) {
-        window.open(directPdfUrl, '_blank');
-        updateLiveDownloadProgress(100, 'İndirme Bağlantısı Açıldı!');
+        
+        showDownloadedCompletionNotification(bookTitle);
+        
+    } catch (err) {
+        console.error('İndirme hatası:', err);
+        const fallbackUrl = `https://archive.org/details/${identifier}`;
+        window.open(fallbackUrl, '_blank');
+        updateLiveDownloadProgress(100, 'Arşiv Sayfası Açıldı!');
     }
+}
+
+function executePdfDownloadAndPromptRead() {
+    closePdfPromptModal();
+    if (currentIdentifier) {
+        downloadPdfDirectly(currentIdentifier, currentBookTitle);
+    } else if (currentBookId && currentBookId.startsWith('online_')) {
+        const identifier = currentBookId.replace('online_', '');
+        const title = document.getElementById('reader-title').textContent || 'Kitap';
+        downloadPdfDirectly(identifier, title);
+    } else {
+        alert('İndirilecek bir online kitap bulunamadı.');
+    }
+}
+
+function closePdfPromptModal() {
+    const modal = document.getElementById('pdf-download-prompt-modal');
+    if (modal) modal.style.display = 'none';
 }
 
 function showDownloadedCompletionNotification(title) {
