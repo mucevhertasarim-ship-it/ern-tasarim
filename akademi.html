@@ -362,15 +362,16 @@
         </div>
 
         <div class="hero-action-group">
-            <a href="http://localhost:8000/indir/ogrenci-atolyesi" id="akd-disp-btn-download" class="btn-download-setup">
+            <a href="http://localhost:8000/indir/ogrenci-atolyesi" id="akd-disp-btn-download" class="btn-download-setup" style="padding: 13px 28px; font-size: 1rem;">
                 <i class="fa-solid fa-download"></i> <span>Öğrenci Atölyesi Programını İndir (.exe)</span>
             </a>
-            <a href="http://localhost:8000/ogrenci" id="akd-disp-btn-stream" class="btn-join-stream">
-                <i class="fa-solid fa-play"></i> <span>Canlı Derse Bağlan (Öğrenci Paneli)</span>
+            <a href="https://wa.me/905453699990?text=Merhaba%20Hocam,%202026-2027%20Akademi%20CAD%20Eğitimi%20için%20kayıt%20olup%20ders%20kodu%20almak%20istiyorum." id="akd-disp-btn-wa" target="_blank" class="btn-join-stream" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: #fff; box-shadow: 0 0 25px rgba(37, 211, 102, 0.35); padding: 13px 28px; font-size: 1rem;">
+                <i class="fa-brands fa-whatsapp"></i> <span>Kayıt Ol & Canlı Ders Kodu Al</span>
             </a>
-            <a href="https://wa.me/905453699990?text=Merhaba%20Hocam,%202026-2027%20Akademi%20CAD%20Eğitimi%20hakkında%20bilgi%20almak%20istiyorum." id="akd-disp-btn-wa" target="_blank" class="btn-outline" style="padding: 12px 22px; border-radius: 30px; font-weight: 700;">
-                <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> WhatsApp'tan Bilgi Al
-            </a>
+        </div>
+        <div style="margin-top: 1.2rem; font-size: 0.83rem; color: #94a3b8; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <i class="fa-solid fa-shield-halved" style="color: #38bdf8;"></i>
+            <span><b>Güvenli Yayın Protokolü:</b> Canlı ders yayını yüksek güvenlikli ve şifrelidir. Yalnızca Öğrenci Atölyesi masaüstü programı ve kişiye özel tek kullanımlık ders kodu ile giriş yapılabilir.</span>
         </div>
     </section>
 
@@ -409,17 +410,17 @@
 
         <!-- PROGRAM İNDİRME ÇAĞRISI (CTA) -->
         <div class="cta-download-box">
-            <div style="font-size: 2.2rem; margin-bottom: 8px;">💎 💻 🚀</div>
+            <div style="font-size: 2.2rem; margin-bottom: 8px;">💎 💻 🛡️</div>
             <h2 class="cta-download-title">Siz de Canlı CAD Eğitimine Katılmak İster misiniz?</h2>
             <p class="cta-download-sub">
-                Eğitmenin 60 FPS ultra net 3D Matrix ekranını izlemek, bilgisayarınızda eşzamanlı tasarlamak ve mikrofondan canlı soru sormak için <b>Öğrenci Atölyesi Programını</b> bilgisayarınıza indirin.
+                Eğitmenin 60 FPS ultra net 3D Matrix ekranını izlemek, bilgisayarınızda eşzamanlı tasarlamak ve mikrofondan canlı soru sormak için <b>Öğrenci Atölyesi Programını</b> bilgisayarınıza kurun ve WhatsApp üzerinden kayıt kodunuzu alın.
             </p>
             <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
-                <a href="http://localhost:8000/indir/ogrenci-atolyesi" id="akd-disp-cta-download" class="btn-gold" style="padding: 12px 30px; font-size: 1rem; font-weight: 800; border-radius: 30px;">
+                <a href="http://localhost:8000/indir/ogrenci-atolyesi" id="akd-disp-cta-download" class="btn-gold" style="padding: 14px 32px; font-size: 1.05rem; font-weight: 800; border-radius: 30px;">
                     <i class="fa-solid fa-download"></i> ERN Öğrenci Atölyesi Setup İndir (.exe)
                 </a>
-                <a href="http://localhost:8000/ogrenci" id="akd-disp-cta-stream" class="btn-outline" style="padding: 12px 24px; border-radius: 30px; font-weight: 700;">
-                    <i class="fa-solid fa-globe"></i> Web Tarayıcısından İzle
+                <a href="https://wa.me/905453699990?text=Merhaba%20Hocam,%202026-2027%20Akademi%20CAD%20Eğitimi%20için%20kayıt%20olup%20ders%20kodu%20almak%20istiyorum." id="akd-disp-cta-wa" target="_blank" class="btn-outline" style="padding: 14px 26px; border-radius: 30px; font-weight: 700; color: #25D366; border-color: rgba(37,211,102,0.5);">
+                    <i class="fa-brands fa-whatsapp"></i> WhatsApp'tan Kayıt Ol
                 </a>
             </div>
         </div>
@@ -648,18 +649,13 @@
             if (btnDownload) btnDownload.href = setupUrl;
             if (ctaDownload) ctaDownload.href = setupUrl;
 
-            const btnStream = document.getElementById('akd-disp-btn-stream');
-            const ctaStream = document.getElementById('akd-disp-cta-stream');
-            const streamUrl = settings.streamUrl || DEFAULT_SETTINGS.streamUrl;
-            if (btnStream) btnStream.href = streamUrl;
-            if (ctaStream) ctaStream.href = streamUrl;
-
             const btnWa = document.getElementById('akd-disp-btn-wa');
-            if (btnWa) {
-                const phoneClean = (settings.whatsappPhone || DEFAULT_SETTINGS.whatsappPhone).replace(/\D/g, '');
-                const finalPhone = phoneClean.startsWith('0') ? '9' + phoneClean : (phoneClean.startsWith('90') ? phoneClean : '90' + phoneClean);
-                btnWa.href = `https://wa.me/${finalPhone}?text=${encodeURIComponent('Merhaba Hocam, ' + (settings.seasonBadge || 'Akademi') + ' CAD Eğitimi hakkında bilgi almak istiyorum.')}`;
-            }
+            const ctaWa = document.getElementById('akd-disp-cta-wa');
+            const phoneClean = (settings.whatsappPhone || DEFAULT_SETTINGS.whatsappPhone).replace(/\D/g, '');
+            const finalPhone = phoneClean.startsWith('0') ? '9' + phoneClean : (phoneClean.startsWith('90') ? phoneClean : '90' + phoneClean);
+            const waUrl = `https://wa.me/${finalPhone}?text=${encodeURIComponent('Merhaba Hocam, ' + (settings.seasonBadge || 'Akademi') + ' CAD Eğitimi için kayıt olup ders kodu almak istiyorum.')}`;
+            if (btnWa) btnWa.href = waUrl;
+            if (ctaWa) ctaWa.href = waUrl;
 
             // 2. Sezon Bilgi Kartları
             const cardSeason = document.getElementById('akd-disp-card-season');
