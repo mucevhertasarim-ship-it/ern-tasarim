@@ -3501,10 +3501,20 @@
                         <input type="text" id="akd-proj-status" class="form-control" placeholder="Örn: Döküme Hazır, 3D Mum Baskı, Üretime Alındı">
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="akd-proj-image">Görsel URL / Emoji İkonu</label>
-                        <input type="text" id="akd-proj-image" class="form-control" placeholder="Örn: 💍 veya https://resim-linki.jpg">
+                        <label class="form-label" for="akd-proj-image">Görsel URL veya Yükleme</label>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" id="akd-proj-image" class="form-control" oninput="updateAkademiProjectPreview(this.value)" placeholder="https://resim-linki.jpg veya Yükleyin">
+                            <input type="file" id="akd-proj-file" accept="image/*" style="display: none;" onchange="handleAkademiProjectFile(this)">
+                            <button type="button" onclick="document.getElementById('akd-proj-file').click()" class="btn-outline" style="white-space: nowrap; padding: 0 14px; font-size: 0.8rem; border-color: rgba(212,175,55,0.4); color: var(--admin-gold-light);">
+                                <i class="fa-solid fa-upload"></i> Fotoğraf Seç
+                            </button>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Görsel Canlı Önizleme Kutusu -->
+                <div id="akd-proj-preview-box" style="display: none; margin-bottom: 1.25rem; background: #04060a; border: 1px dashed rgba(212,175,55,0.3); border-radius: 10px; padding: 8px; text-align: center;"></div>
+
                 <div class="form-group" style="margin-bottom: 1.5rem;">
                     <label class="form-label" for="akd-proj-desc">Proje Açıklaması & Teknik Detaylar</label>
                     <textarea id="akd-proj-desc" class="form-control" rows="3" placeholder="Pırlanta taş yuvası (krap), tırnak açıları, taş oturtma toleransları ve parmağa konforlu oturan bombeli şank tasarımı."></textarea>
@@ -10514,7 +10524,7 @@
                 student: "Ahmet K. (İstanbul)",
                 category: "Tektaş & Krap",
                 software: "MatrixGold CAD",
-                image: "💍",
+                image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&auto=format&fit=crop&q=80",
                 desc: "Pırlanta taş yuvası (krap), tırnak açıları, taş oturtma toleransları ve parmağa konforlu oturan bombeli şank tasarımı.",
                 status: "Döküme Hazır"
             },
@@ -10523,7 +10533,7 @@
                 student: "Selin Y. (İzmir)",
                 category: "Kanal Mıhlama",
                 software: "Rhino 3D + Matrix",
-                image: "💎",
+                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&auto=format&fit=crop&q=80",
                 desc: "Kanal içi taş dizilimi, mikromıhlama aralıkları, delik delme toleransları ve döküm sonrası tesviye payları.",
                 status: "3D Mum Baskı"
             },
@@ -10532,7 +10542,7 @@
                 student: "Murat D. (Kapalıçarşı)",
                 category: "Alyans Serisi",
                 software: "MatrixGold",
-                image: "👑",
+                image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=800&auto=format&fit=crop&q=80",
                 desc: "Erkek ve bayan alyans profilleri, yüzeye desen sarma, relief rölyef kabartmalar ve konforlu iç bombelik.",
                 status: "Tezgâh Uyumlu"
             },
@@ -10541,7 +10551,7 @@
                 student: "Emre T. (Bursa)",
                 category: "Fantezi Kolye",
                 software: "CAD Sadekârlık",
-                image: "📿",
+                image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&auto=format&fit=crop&q=80",
                 desc: "Kulp (bale) tasarımı, hareketli mafsal bağlantıları, menteşe ve yaylı kilit yuvalarının milimetrik modellemesi.",
                 status: "Hassas Döküm"
             },
@@ -10550,7 +10560,7 @@
                 student: "Canan B. (Antalya)",
                 category: "Ajur & Hafifletme",
                 software: "İskelet CAD",
-                image: "🪙",
+                image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?w=800&auto=format&fit=crop&q=80",
                 desc: "Ağır gelen takılarda alt boşaltma (ajur / petek açma), altın gramajı optimizasyonu ve kauçuk kalıp çekme payı.",
                 status: "Gramaj Tasarrufu"
             },
@@ -10559,7 +10569,7 @@
                 student: "Volkan S. (Ankara)",
                 category: "3D Render",
                 software: "Keyshot Pro",
-                image: "✨",
+                image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80",
                 desc: "Sarı, beyaz, rose altın materyalleri, pırlanta kırılma indisleri, stüdyo HDRI ışıklandırma ve müşteri sunumu.",
                 status: "4K Katalog"
             }
@@ -10642,37 +10652,71 @@
                 return;
             }
 
-            container.innerHTML = projects.map((p, idx) => `
-                <div style="background: #090e17; border: 1px solid rgba(212,175,55,0.25); border-radius: 12px; padding: 1.2rem; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.2s;">
-                    <div>
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.6rem;">
-                            <span style="background: rgba(212,175,55,0.15); color: #ffd700; font-size: 0.72rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(212,175,55,0.3);">
-                                ${p.category || 'Tasarım'}
-                            </span>
-                            <span style="font-size: 0.72rem; color: #34d399; font-weight: 600;">
-                                <i class="fa-solid fa-circle-check"></i> ${p.status || 'Döküme Hazır'}
-                            </span>
+            container.innerHTML = projects.map((p, idx) => {
+                const isImg = p.image && (p.image.startsWith('data:image') || p.image.startsWith('http') || p.image.includes('/') || p.image.includes('.'));
+                const visualHtml = isImg 
+                    ? `<div style="width: 100%; height: 140px; border-radius: 8px; overflow: hidden; margin-bottom: 0.8rem; background: #04060a; border: 1px solid rgba(255,255,255,0.06);"><img src="${p.image}" style="width: 100%; height: 100%; object-fit: cover;"></div>`
+                    : `<div style="width: 100%; height: 100px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 3rem; background: #04060a; margin-bottom: 0.8rem;">${p.image || '💎'}</div>`;
+
+                return `
+                    <div style="background: #090e17; border: 1px solid rgba(212,175,55,0.25); border-radius: 12px; padding: 1.2rem; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.2s;">
+                        <div>
+                            ${visualHtml}
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.6rem;">
+                                <span style="background: rgba(212,175,55,0.15); color: #ffd700; font-size: 0.72rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(212,175,55,0.3);">
+                                    ${p.category || 'Tasarım'}
+                                </span>
+                                <span style="font-size: 0.72rem; color: #34d399; font-weight: 600;">
+                                    <i class="fa-solid fa-circle-check"></i> ${p.status || 'Döküme Hazır'}
+                                </span>
+                            </div>
+                            <h4 style="font-size: 0.98rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem; line-height: 1.3;">
+                                ${p.title}
+                            </h4>
+                            <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.5rem;">
+                                <i class="fa-solid fa-user-graduate" style="color: var(--admin-gold);"></i> ${p.student || 'Öğrenci'} &bull; <i class="fa-solid fa-microchip"></i> ${p.software || 'CAD'}
+                            </div>
+                            <p style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                                ${p.desc || ''}
+                            </p>
                         </div>
-                        <h4 style="font-size: 0.98rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem; line-height: 1.3;">
-                            ${p.title}
-                        </h4>
-                        <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.5rem;">
-                            <i class="fa-solid fa-user-graduate" style="color: var(--admin-gold);"></i> ${p.student || 'Öğrenci'} &bull; <i class="fa-solid fa-microchip"></i> ${p.software || 'CAD'}
+                        <div style="display: flex; justify-content: flex-end; gap: 6px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.75rem;">
+                            <button type="button" onclick="showAddAkademiProjectModal(${idx})" class="btn-edit-sm" style="padding: 4px 10px; font-size: 0.75rem;">
+                                <i class="fa-solid fa-pen-to-square"></i> Düzenle
+                            </button>
+                            <button type="button" onclick="deleteAkademiProject(${idx})" class="btn-del-sm" style="padding: 4px 10px; font-size: 0.75rem;">
+                                <i class="fa-solid fa-trash"></i> Sil
+                            </button>
                         </div>
-                        <p style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
-                            ${p.desc || ''}
-                        </p>
                     </div>
-                    <div style="display: flex; justify-content: flex-end; gap: 6px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.75rem;">
-                        <button type="button" onclick="showAddAkademiProjectModal(${idx})" class="btn-edit-sm" style="padding: 4px 10px; font-size: 0.75rem;">
-                            <i class="fa-solid fa-pen-to-square"></i> Düzenle
-                        </button>
-                        <button type="button" onclick="deleteAkademiProject(${idx})" class="btn-del-sm" style="padding: 4px 10px; font-size: 0.75rem;">
-                            <i class="fa-solid fa-trash"></i> Sil
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
+        }
+
+        function handleAkademiProjectFile(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64 = e.target.result;
+                document.getElementById('akd-proj-image').value = base64;
+                updateAkademiProjectPreview(base64);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateAkademiProjectPreview(url) {
+            const box = document.getElementById('akd-proj-preview-box');
+            if (!box) return;
+            if (url && (url.startsWith('data:image') || url.startsWith('http') || url.includes('/') || url.includes('.'))) {
+                box.innerHTML = `<img src="${url}" style="width: 100%; max-height: 160px; object-fit: contain; border-radius: 8px; border: 1px solid var(--admin-gold);">`;
+                box.style.display = 'block';
+            } else if (url && url.length <= 4) {
+                box.innerHTML = `<div style="font-size: 3rem; text-align: center; padding: 0.5rem;">${url}</div>`;
+                box.style.display = 'block';
+            } else {
+                box.style.display = 'none';
+            }
         }
 
         function showAddAkademiProjectModal(idx = -1) {
@@ -10693,10 +10737,12 @@
                 document.getElementById('akd-proj-status').value = item.status || '';
                 document.getElementById('akd-proj-image').value = item.image || '';
                 document.getElementById('akd-proj-desc').value = item.desc || '';
+                updateAkademiProjectPreview(item.image);
             } else {
                 titleEl.innerHTML = `<i class="fa-solid fa-gem" style="color: var(--admin-gold);"></i> Yeni Öğrenci Projesi Ekle`;
                 editIdxInput.value = -1;
                 document.getElementById('akd-project-form').reset();
+                updateAkademiProjectPreview('');
             }
 
             modal.style.display = 'flex';
@@ -10718,7 +10764,7 @@
                 category: document.getElementById('akd-proj-category').value.trim() || 'Tasarım',
                 software: document.getElementById('akd-proj-software').value.trim() || 'MatrixGold CAD',
                 status: document.getElementById('akd-proj-status').value.trim() || 'Döküme Hazır',
-                image: document.getElementById('akd-proj-image').value.trim() || '💎',
+                image: document.getElementById('akd-proj-image').value.trim() || 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&auto=format&fit=crop&q=80',
                 desc: document.getElementById('akd-proj-desc').value.trim()
             };
 
