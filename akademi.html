@@ -358,20 +358,7 @@
 
         <div class="season-status-box" id="akd-disp-status-box">
             <span class="status-dot-pulse"></span>
-            <span id="akd-disp-status-text"><b>2026 - 2027 1. Sezon Canlı Dersleri Devam Ediyor</b> &bull; VIP Sınıf Kontenjanı Açık (Maks. 10 Kişi)</span>
-        </div>
-
-        <div class="hero-action-group">
-            <a href="http://localhost:8000/indir/ogrenci-atolyesi" id="akd-disp-btn-download" class="btn-download-setup" style="padding: 13px 28px; font-size: 1rem;">
-                <i class="fa-solid fa-download"></i> <span>Öğrenci Atölyesi Programını İndir (.exe)</span>
-            </a>
-            <a href="https://wa.me/905453699990?text=Merhaba%20Hocam,%202026-2027%20Akademi%20CAD%20Eğitimi%20için%20kayıt%20olup%20ders%20kodu%20almak%20istiyorum." id="akd-disp-btn-wa" target="_blank" class="btn-join-stream" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: #fff; box-shadow: 0 0 25px rgba(37, 211, 102, 0.35); padding: 13px 28px; font-size: 1rem;">
-                <i class="fa-brands fa-whatsapp"></i> <span>Kayıt Ol & Canlı Ders Kodu Al</span>
-            </a>
-        </div>
-        <div style="margin-top: 1.2rem; font-size: 0.83rem; color: #94a3b8; display: flex; align-items: center; justify-content: center; gap: 8px;">
-            <i class="fa-solid fa-shield-halved" style="color: #38bdf8;"></i>
-            <span><b>Güvenli Yayın Protokolü:</b> Canlı ders yayını yüksek güvenlikli ve şifrelidir. Yalnızca Öğrenci Atölyesi masaüstü programı ve kişiye özel tek kullanımlık ders kodu ile giriş yapılabilir.</span>
+            <span id="akd-disp-status-text"><b>2026 - 2027 Sezonu Kayıtları Başladı</b> &bull; VIP Sınıf Kontenjanı Açık (Maks. 10 Kişi)</span>
         </div>
     </section>
 
@@ -473,7 +460,7 @@
     <script>
         const DEFAULT_SETTINGS = {
             seasonBadge: "2026 - 2027 SEZONU | 1. DÖNEM MASTERCLASS",
-            seasonStatus: "2026 - 2027 1. Sezon Canlı Dersleri Devam Ediyor • VIP Sınıf Kontenjanı Açık (Maks. 10 Kişi)",
+            seasonStatus: "2026 - 2027 Sezonu Kayıtları Başladı • VIP Sınıf Kontenjanı Açık (Maks. 10 Kişi)",
             heroTitle: "Bilgisayar Destekli Sadekârlık ve Mücevher Tasarımı Canlı Atölyesi",
             heroDesc: "30 yıllık Kapalıçarşı tezgâh ustalığı ve CAD tecrübesiyle; <b>MatrixGold, Rhino ve Keyshot</b> üzerinde sıfırdan döküme ve mıhlamaya tam uyumlu profesyonel takı modelleme eğitimi.",
             lessonTime: "Haftalık 21:00",
@@ -544,38 +531,45 @@
 
         const DEFAULT_CURRICULUM = [
             {
-                week: "Ders 1",
+                week: "1. Hafta (1. Modül)",
                 title: "Arayüz Tanıtımı, Rhino/Matrix Temelleri & Ölçülü Çizgi Teknikleri",
                 desc: "Milimetrik grid ayarları, yüzük ölçüsü çemberi ve kuyumculuk temel toleransları.",
-                duration: "3 Saat",
-                status: "completed"
+                duration: "3 Saat Canlı",
+                status: "upcoming"
             },
             {
-                week: "Ders 2",
+                week: "2. Hafta (2. Modül)",
                 title: "Tektaş Yüzük Gövdesi (Şank) Modelleme & Ergonomi",
                 desc: "Parmağa oturan konforlu bombeli şank formları, sweep komutları ve tezgâh payları.",
-                duration: "3 Saat",
-                status: "completed"
+                duration: "3 Saat Canlı",
+                status: "upcoming"
             },
             {
-                week: "Ders 3",
+                week: "3. Hafta (3. Modül)",
                 title: "4 & 6 Tırnaklı Taş Yuvası (Krap) & Mıhlama Mantığı",
                 desc: "Pırlanta kesim taş geometrisi, tırnak açıları, taş yuvası oturtma ve döküm payı.",
-                duration: "3 Saat",
-                status: "completed"
+                duration: "3 Saat Canlı",
+                status: "upcoming"
             },
             {
-                week: "Ders 4",
+                week: "4. Hafta (4. Modül)",
                 title: "Kanal Mıhlama, Taş Dizimi & Milimetrik Boşluk Payları",
                 desc: "Ray/kanal içine dizilen taşlar, mikromıhlama delikleri ve döküm sonrası delik temizleme payları.",
                 duration: "3 Saat Canlı",
-                status: "active"
+                status: "upcoming"
             },
             {
-                week: "Ders 5",
+                week: "5. Hafta (5. Modül)",
                 title: "Alyans, Sarmal Motifler & Yüzey Kabartma Teknikleri",
                 desc: "Erkek ve kadın alyans formları, desen sarma, relief kabartma ve CNC/Döküm hazırlığı.",
-                duration: "3 Saat",
+                duration: "3 Saat Canlı",
+                status: "upcoming"
+            },
+            {
+                week: "6. Hafta (6. Modül)",
+                title: "Keyshot Fotogerçekçi Render & STL Dilimleme",
+                desc: "Altın/pırlanta materyal ayarları, stüdyo ışığı ve 3D mum yazıcı döküm hazırlığı.",
+                duration: "3 Saat Canlı",
                 status: "upcoming"
             }
         ];
