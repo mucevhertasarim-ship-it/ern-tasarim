@@ -1339,6 +1339,13 @@
                         <span>Giriş & Ziyaretçi</span>
                     </a>
                 </li>
+                <li class="sidebar-item" id="menu-akademi">
+                    <a href="javascript:void(0)" onclick="switchTab('akademi')">
+                        <i class="fa-solid fa-graduation-cap" style="color: #f5b942;"></i>
+                        <span>Canlı Akademi & Sezon</span>
+                        <span class="sidebar-badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4);">CANLI</span>
+                    </a>
+                </li>
                 <li class="sidebar-item" id="menu-ads">
                     <a href="javascript:void(0)" onclick="switchTab('ads')">
                         <i class="fa-solid fa-bullhorn"></i>
@@ -2879,6 +2886,137 @@
                 </div>
             </div>
 
+            <!-- TAB: CANLI AKADEMİ & SEZON YÖNETİMİ -->
+            <div id="tab-akademi" class="tab-content">
+                <div class="panel-header">
+                    <div>
+                        <h1 class="panel-title"><i class="fa-solid fa-graduation-cap" style="color: var(--admin-gold);"></i> Canlı Akademi & Sezon Yönetimi</h1>
+                        <div class="panel-subtitle">Sitedeki Akademi sayfasını, aktif sezon/dönem bilgilerini, öğrenci proje vitrinini ve müfredatı canlı yönetin.</div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <a href="akademi.html" target="_blank" class="btn-outline" style="padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; color: var(--admin-gold-light); border-color: rgba(212,175,55,0.4);">
+                            <i class="fa-solid fa-eye"></i> Akademi Sayfasını Aç
+                        </a>
+                        <button onclick="saveAkademiAdminSettings()" class="btn-gold-sm">
+                            <i class="fa-solid fa-floppy-disk"></i> Değişiklikleri Canlıya Al
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 1. Sezon & Başlık Bilgileri -->
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h3 class="content-card-title">
+                            <i class="fa-solid fa-calendar-star" style="color: var(--admin-gold);"></i> 1. Aktif Sezon & Dönem Başlıkları
+                        </h3>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="akd-season-badge">Dönem & Sezon Rozeti</label>
+                            <input type="text" id="akd-season-badge" class="form-control" placeholder="Örn: 2026 - 2027 SEZONU | 1. DÖNEM MASTERCLASS">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="akd-season-status">Canlı Durum Şeridi Metni</label>
+                            <input type="text" id="akd-season-status" class="form-control" placeholder="Örn: 2026 - 2027 1. Sezon Canlı Dersleri Devam Ediyor • VIP Sınıf Kontenjanı Açık (Maks. 10 Kişi)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="akd-hero-title">Ana Eğitim Başlığı</label>
+                        <input type="text" id="akd-hero-title" class="form-control" placeholder="Bilgisayar Destekli Sadekârlık ve Mücevher Tasarımı Canlı Atölyesi">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="akd-hero-desc">Eğitim Tanıtım & Alt Açıklama Metni</label>
+                        <textarea id="akd-hero-desc" class="form-control" rows="2" placeholder="30 yıllık Kapalıçarşı tezgâh ustalığı ve CAD tecrübesiyle; MatrixGold, Rhino ve Keyshot üzerinde sıfırdan döküme ve mıhlamaya tam uyumlu profesyonel takı modelleme eğitimi."></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="akd-lesson-time">Canlı Ders Günü & Saati</label>
+                            <input type="text" id="akd-lesson-time" class="form-control" placeholder="Örn: Haftalık 21:00 (3 Saat Blok Canlı CAD)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="akd-quota-text">VIP Sınıf Kontenjanı</label>
+                            <input type="text" id="akd-quota-text" class="form-control" placeholder="Örn: Maksimum 10 Öğrenci">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="akd-price-usd">Ders Başı Ücret (USD $)</label>
+                            <input type="number" id="akd-price-usd" class="form-control" placeholder="50" min="1" max="10000" value="50">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="akd-custom-rate">Özel Sabit Kur (Opsiyonel / Boşsa Canlı)</label>
+                            <input type="number" step="0.01" id="akd-custom-rate" class="form-control" placeholder="Örn: 50.00 (Boşsa anlık kur)">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Öğrenci Setup & Canlı Yayın Bağlantıları -->
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h3 class="content-card-title">
+                            <i class="fa-solid fa-download" style="color: var(--admin-gold);"></i> 2. Öğrenci Programı & İletişim Bağlantıları
+                        </h3>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="akd-setup-url">Öğrenci Programı İndirme Linki (Setup .exe)</label>
+                            <input type="text" id="akd-setup-url" class="form-control" placeholder="http://localhost:8000/indir/ogrenci-atolyesi">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="akd-stream-url">Canlı Öğrenci Paneli Linki</label>
+                            <input type="text" id="akd-stream-url" class="form-control" placeholder="http://localhost:8000/ogrenci">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="akd-whatsapp-phone">WhatsApp Danışma Numarası</label>
+                            <input type="text" id="akd-whatsapp-phone" class="form-control" placeholder="0545 369 99 90">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Öğrenci Çalışmaları & Proje Vitrini (Galeri) Yönetimi -->
+                <div class="content-card">
+                    <div class="content-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <h3 class="content-card-title">
+                            <i class="fa-solid fa-gem" style="color: var(--admin-gold);"></i> 3. Öğrenci & Atölye Çalışmaları Vitrini (Galeri)
+                        </h3>
+                        <button type="button" onclick="showAddAkademiProjectModal()" class="btn-gold-sm" style="font-size: 0.8rem;">
+                            <i class="fa-solid fa-plus"></i> Yeni Öğrenci Projesi Ekle
+                        </button>
+                    </div>
+                    <div style="font-size: 0.84rem; color: #94a3b8; margin-bottom: 1rem;">
+                        Buradan ekleyeceğiniz veya düzenleyeceğiniz öğrenci 3D CAD modelleri, akademi sayfasındaki <b>Öğrenci & Atölye Vitrini</b> bölümünde anında sergilenir.
+                    </div>
+
+                    <div id="akd-projects-admin-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+                        <!-- JS doldurur -->
+                    </div>
+                </div>
+
+                <!-- 4. Müfredat & Ders Takibi Yönetimi -->
+                <div class="content-card">
+                    <div class="content-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <h3 class="content-card-title">
+                            <i class="fa-solid fa-list-ol" style="color: var(--admin-gold);"></i> 4. Sezon Ders Müfredatı & İlerleme Durumu
+                        </h3>
+                        <button type="button" onclick="showAddAkademiCurriculumModal()" class="btn-gold-sm" style="font-size: 0.8rem;">
+                            <i class="fa-solid fa-plus"></i> Yeni Ders Ekle
+                        </button>
+                    </div>
+                    <div style="font-size: 0.84rem; color: #94a3b8; margin-bottom: 1rem;">
+                        İşlenen dersin durumunu <b>"Tamamlandı"</b> veya <b>"Şu An İşleniyor"</b> yaparak akademi sayfasında canlı ilerlemeyi gösterin.
+                    </div>
+
+                    <div id="akd-curriculum-admin-list" style="display: flex; flex-direction: column; gap: 10px;">
+                        <!-- JS doldurur -->
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem; margin-bottom: 2rem;">
+                    <button onclick="saveAkademiAdminSettings()" class="btn-gold-sm" style="padding: 0.8rem 2rem; font-size: 0.95rem;">
+                        <i class="fa-solid fa-check-double"></i> Tüm Akademi Ayarlarını Canlıya Al & Kaydet
+                    </button>
+                </div>
+            </div>
+
             <!-- TAB 6: CMS CONTENT & TEXT BUILDER -->
             <div id="tab-cms" class="tab-content">
                 <div class="panel-header">
@@ -3321,6 +3459,108 @@
                             <i class="fa-solid fa-paper-plane"></i> E-Postayı Gönder
                         </button>
                     </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: AKADEMİ ÖĞRENCİ PROJESİ EKLE / DÜZENLE -->
+    <div class="modal-overlay" id="add-akademi-project-modal" style="display: none; align-items: center; justify-content: center;">
+        <div class="modal-content" style="max-width: 650px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="akd-project-modal-title">
+                    <i class="fa-solid fa-gem" style="color: var(--admin-gold);"></i> Öğrenci Projesi Ekle / Düzenle
+                </h3>
+                <button type="button" class="modal-close" onclick="closeAkademiProjectModal()">&times;</button>
+            </div>
+            <form id="akd-project-form" onsubmit="submitAkademiProjectModal(event)" style="padding: 1.5rem;">
+                <input type="hidden" id="akd-proj-edit-index" value="-1">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="akd-proj-title">Model / Proje Başlığı *</label>
+                        <input type="text" id="akd-proj-title" class="form-control" required placeholder="Örn: 4 & 6 Tırnaklı Tektaş ve Ergonomik Şank">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="akd-proj-student">Öğrenci / Çizen Bilgisi</label>
+                        <input type="text" id="akd-proj-student" class="form-control" placeholder="Örn: Ahmet K. (İstanbul Atölye)">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="akd-proj-category">Kategori / Model Türü *</label>
+                        <input type="text" id="akd-proj-category" class="form-control" required placeholder="Örn: Tektaş & Krap, Kanal Mıhlama, Alyans">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="akd-proj-software">Kullanılan Program / Motor</label>
+                        <input type="text" id="akd-proj-software" class="form-control" placeholder="Örn: MatrixGold CAD, Keyshot Pro">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="akd-proj-status">Üretim / Not Durumu Rozeti</label>
+                        <input type="text" id="akd-proj-status" class="form-control" placeholder="Örn: Döküme Hazır, 3D Mum Baskı, Üretime Alındı">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="akd-proj-image">Görsel URL / Emoji İkonu</label>
+                        <input type="text" id="akd-proj-image" class="form-control" placeholder="Örn: 💍 veya https://resim-linki.jpg">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label class="form-label" for="akd-proj-desc">Proje Açıklaması & Teknik Detaylar</label>
+                    <textarea id="akd-proj-desc" class="form-control" rows="3" placeholder="Pırlanta taş yuvası (krap), tırnak açıları, taş oturtma toleransları ve parmağa konforlu oturan bombeli şank tasarımı."></textarea>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+                    <button type="button" onclick="closeAkademiProjectModal()" class="btn-edit-sm">Vazgeç</button>
+                    <button type="submit" class="btn-gold-sm">
+                        <i class="fa-solid fa-check"></i> Projeyi Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: AKADEMİ MÜFREDAT DERSİ EKLE / DÜZENLE -->
+    <div class="modal-overlay" id="add-akademi-curriculum-modal" style="display: none; align-items: center; justify-content: center;">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="akd-curriculum-modal-title">
+                    <i class="fa-solid fa-list-ol" style="color: var(--admin-gold);"></i> Müfredat Dersi Ekle / Düzenle
+                </h3>
+                <button type="button" class="modal-close" onclick="closeAkademiCurriculumModal()">&times;</button>
+            </div>
+            <form id="akd-curriculum-form" onsubmit="submitAkademiCurriculumModal(event)" style="padding: 1.5rem;">
+                <input type="hidden" id="akd-curr-edit-index" value="-1">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="akd-curr-week">Ders / Modül No *</label>
+                        <input type="text" id="akd-curr-week" class="form-control" required placeholder="Örn: Ders 4 veya 1. Modül">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="akd-curr-duration">Ders Süresi</label>
+                        <input type="text" id="akd-curr-duration" class="form-control" placeholder="Örn: 3 Saat Canlı">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label class="form-label" for="akd-curr-title">Ders Konusu & Başlığı *</label>
+                    <input type="text" id="akd-curr-title" class="form-control" required placeholder="Örn: Kanal Mıhlama, Taş Dizimi & Milimetrik Boşluk Payları">
+                </div>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label class="form-label" for="akd-curr-desc">Ders İçerik Özeti & Kazanımlar</label>
+                    <textarea id="akd-curr-desc" class="form-control" rows="3" placeholder="Ray/kanal içine dizilen taşlar, mikromıhlama delikleri ve döküm sonrası delik temizleme payları."></textarea>
+                </div>
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label class="form-label" for="akd-curr-status">Ders İlerleme Durumu *</label>
+                    <select id="akd-curr-status" class="form-control">
+                        <option value="completed">✅ Tamamlandı (Kayıt Mevcut)</option>
+                        <option value="active">🟢 Şu An İşleniyor (Canlı Ders)</option>
+                        <option value="upcoming">⏳ Sıradaki Ders (Gelecek Hafta)</option>
+                    </select>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+                    <button type="button" onclick="closeAkademiCurriculumModal()" class="btn-edit-sm">Vazgeç</button>
+                    <button type="submit" class="btn-gold-sm">
+                        <i class="fa-solid fa-check"></i> Dersi Kaydet
+                    </button>
                 </div>
             </form>
         </div>
@@ -6904,6 +7144,7 @@
             if (tabName === 'analytics') { loadAnalyticsTab(); fetchLiveProgramUsers(); }
             if (tabName === 'ads') loadAdsTab();
             if (tabName === 'cms') loadCmsTab();
+            if (tabName === 'akademi') loadAkademiAdminData();
             if (tabName === 'security') loadSecurityTab();
         }
 
@@ -10250,6 +10491,437 @@
             showToast('Tüm ana sayfa ve mağaza metinleri başarıyla kaydedildi!');
         }
 
+        // ==========================================
+        // CANLI AKADEMİ & SEZON YÖNETİMİ (ADMIN LOGIC)
+        // ==========================================
+        const DEFAULT_AKADEMI_SETTINGS = {
+            seasonBadge: "2026 - 2027 SEZONU | 1. DÖNEM MASTERCLASS",
+            seasonStatus: "2026 - 2027 1. Sezon Canlı Dersleri Devam Ediyor • VIP Sınıf Kontenjanı Açık (Maks. 10 Kişi)",
+            heroTitle: "Bilgisayar Destekli Sadekârlık ve Mücevher Tasarımı Canlı Atölyesi",
+            heroDesc: "30 yıllık Kapalıçarşı tezgâh ustalığı ve CAD tecrübesiyle; MatrixGold, Rhino ve Keyshot üzerinde sıfırdan döküme ve mıhlamaya tam uyumlu profesyonel takı modelleme eğitimi.",
+            lessonTime: "Haftalık 21:00 (3 Saat Blok Canlı CAD)",
+            quotaText: "Maksimum 10 Kişilik VIP Grup",
+            priceUsd: 50,
+            customRate: "",
+            setupUrl: "http://localhost:8000/indir/ogrenci-atolyesi",
+            streamUrl: "http://localhost:8000/ogrenci",
+            whatsappPhone: "0545 369 99 90"
+        };
+
+        const DEFAULT_AKADEMI_PROJECTS = [
+            {
+                title: "4 & 6 Tırnaklı Tektaş ve Ergonomik Şank",
+                student: "Ahmet K. (İstanbul)",
+                category: "Tektaş & Krap",
+                software: "MatrixGold CAD",
+                image: "💍",
+                desc: "Pırlanta taş yuvası (krap), tırnak açıları, taş oturtma toleransları ve parmağa konforlu oturan bombeli şank tasarımı.",
+                status: "Döküme Hazır"
+            },
+            {
+                title: "Ray (Kanal) & Mikro Taş Dizilimi",
+                student: "Selin Y. (İzmir)",
+                category: "Kanal Mıhlama",
+                software: "Rhino 3D + Matrix",
+                image: "💎",
+                desc: "Kanal içi taş dizilimi, mikromıhlama aralıkları, delik delme toleransları ve döküm sonrası tesviye payları.",
+                status: "3D Mum Baskı"
+            },
+            {
+                title: "Sarmal Motifli & Kabartma Çift Alyans",
+                student: "Murat D. (Kapalıçarşı)",
+                category: "Alyans Serisi",
+                software: "MatrixGold",
+                image: "👑",
+                desc: "Erkek ve bayan alyans profilleri, yüzeye desen sarma, relief rölyef kabartmalar ve konforlu iç bombelik.",
+                status: "Tezgâh Uyumlu"
+            },
+            {
+                title: "Sallantılı Kolye Ucu & Menteşeli Kilit",
+                student: "Emre T. (Bursa)",
+                category: "Fantezi Kolye",
+                software: "CAD Sadekârlık",
+                image: "📿",
+                desc: "Kulp (bale) tasarımı, hareketli mafsal bağlantıları, menteşe ve yaylı kilit yuvalarının milimetrik modellemesi.",
+                status: "Hassas Döküm"
+            },
+            {
+                title: "Petek Ajur & Gramaj Düşürme",
+                student: "Canan B. (Antalya)",
+                category: "Ajur & Hafifletme",
+                software: "İskelet CAD",
+                image: "🪙",
+                desc: "Ağır gelen takılarda alt boşaltma (ajur / petek açma), altın gramajı optimizasyonu ve kauçuk kalıp çekme payı.",
+                status: "Gramaj Tasarrufu"
+            },
+            {
+                title: "Keyshot ile 14K/18K Altın & Pırlanta Işıltısı",
+                student: "Volkan S. (Ankara)",
+                category: "3D Render",
+                software: "Keyshot Pro",
+                image: "✨",
+                desc: "Sarı, beyaz, rose altın materyalleri, pırlanta kırılma indisleri, stüdyo HDRI ışıklandırma ve müşteri sunumu.",
+                status: "4K Katalog"
+            }
+        ];
+
+        const DEFAULT_AKADEMI_CURRICULUM = [
+            {
+                week: "Ders 1",
+                title: "Arayüz Tanıtımı, Rhino/Matrix Temelleri & Ölçülü Çizgi Teknikleri",
+                desc: "Milimetrik grid ayarları, yüzük ölçüsü çemberi ve kuyumculuk temel toleransları.",
+                duration: "3 Saat",
+                status: "completed"
+            },
+            {
+                week: "Ders 2",
+                title: "Tektaş Yüzük Gövdesi (Şank) Modelleme & Ergonomi",
+                desc: "Parmağa oturan konforlu bombeli şank formları, sweep komutları ve tezgâh payları.",
+                duration: "3 Saat",
+                status: "completed"
+            },
+            {
+                week: "Ders 3",
+                title: "4 & 6 Tırnaklı Taş Yuvası (Krap) & Mıhlama Mantığı",
+                desc: "Pırlanta kesim taş geometrisi, tırnak açıları, taş yuvası oturtma ve döküm payı.",
+                duration: "3 Saat",
+                status: "completed"
+            },
+            {
+                week: "Ders 4",
+                title: "Kanal Mıhlama, Taş Dizimi & Milimetrik Boşluk Payları",
+                desc: "Ray/kanal içine dizilen taşlar, mikromıhlama delikleri ve döküm sonrası delik temizleme payları.",
+                duration: "3 Saat Canlı",
+                status: "active"
+            },
+            {
+                week: "Ders 5",
+                title: "Alyans, Sarmal Motifler & Yüzey Kabartma Teknikleri",
+                desc: "Erkek ve kadın alyans formları, desen sarma, relief kabartma ve CNC/Döküm hazırlığı.",
+                duration: "3 Saat",
+                status: "upcoming"
+            }
+        ];
+
+        function getAkademiSettings() {
+            try {
+                const saved = localStorage.getItem('ern_akademi_settings');
+                return saved ? { ...DEFAULT_AKADEMI_SETTINGS, ...JSON.parse(saved) } : DEFAULT_AKADEMI_SETTINGS;
+            } catch (e) {
+                return DEFAULT_AKADEMI_SETTINGS;
+            }
+        }
+
+        function getAkademiProjects() {
+            try {
+                const saved = localStorage.getItem('ern_akademi_projects');
+                return saved ? JSON.parse(saved) : DEFAULT_AKADEMI_PROJECTS;
+            } catch (e) {
+                return DEFAULT_AKADEMI_PROJECTS;
+            }
+        }
+
+        function getAkademiCurriculum() {
+            try {
+                const saved = localStorage.getItem('ern_akademi_curriculum');
+                return saved ? JSON.parse(saved) : DEFAULT_AKADEMI_CURRICULUM;
+            } catch (e) {
+                return DEFAULT_AKADEMI_CURRICULUM;
+            }
+        }
+
+        function loadAkademiAdminData() {
+            const settings = getAkademiSettings();
+            if (document.getElementById('akd-season-badge')) document.getElementById('akd-season-badge').value = settings.seasonBadge || '';
+            if (document.getElementById('akd-season-status')) document.getElementById('akd-season-status').value = settings.seasonStatus || '';
+            if (document.getElementById('akd-hero-title')) document.getElementById('akd-hero-title').value = settings.heroTitle || '';
+            if (document.getElementById('akd-hero-desc')) document.getElementById('akd-hero-desc').value = settings.heroDesc || '';
+            if (document.getElementById('akd-lesson-time')) document.getElementById('akd-lesson-time').value = settings.lessonTime || '';
+            if (document.getElementById('akd-quota-text')) document.getElementById('akd-quota-text').value = settings.quotaText || '';
+            if (document.getElementById('akd-price-usd')) document.getElementById('akd-price-usd').value = settings.priceUsd || 50;
+            if (document.getElementById('akd-custom-rate')) document.getElementById('akd-custom-rate').value = settings.customRate || '';
+            if (document.getElementById('akd-setup-url')) document.getElementById('akd-setup-url').value = settings.setupUrl || '';
+            if (document.getElementById('akd-stream-url')) document.getElementById('akd-stream-url').value = settings.streamUrl || '';
+            if (document.getElementById('akd-whatsapp-phone')) document.getElementById('akd-whatsapp-phone').value = settings.whatsappPhone || '';
+
+            renderAkademiProjectsAdmin();
+            renderAkademiCurriculumAdmin();
+        }
+
+        function saveAkademiAdminSettings() {
+            const settings = {
+                seasonBadge: document.getElementById('akd-season-badge').value.trim() || DEFAULT_AKADEMI_SETTINGS.seasonBadge,
+                seasonStatus: document.getElementById('akd-season-status').value.trim() || DEFAULT_AKADEMI_SETTINGS.seasonStatus,
+                heroTitle: document.getElementById('akd-hero-title').value.trim() || DEFAULT_AKADEMI_SETTINGS.heroTitle,
+                heroDesc: document.getElementById('akd-hero-desc').value.trim() || DEFAULT_AKADEMI_SETTINGS.heroDesc,
+                lessonTime: document.getElementById('akd-lesson-time').value.trim() || DEFAULT_AKADEMI_SETTINGS.lessonTime,
+                quotaText: document.getElementById('akd-quota-text').value.trim() || DEFAULT_AKADEMI_SETTINGS.quotaText,
+                priceUsd: parseFloat(document.getElementById('akd-price-usd').value) || 50,
+                customRate: document.getElementById('akd-custom-rate').value.trim(),
+                setupUrl: document.getElementById('akd-setup-url').value.trim() || DEFAULT_AKADEMI_SETTINGS.setupUrl,
+                streamUrl: document.getElementById('akd-stream-url').value.trim() || DEFAULT_AKADEMI_SETTINGS.streamUrl,
+                whatsappPhone: document.getElementById('akd-whatsapp-phone').value.trim() || DEFAULT_AKADEMI_SETTINGS.whatsappPhone
+            };
+
+            localStorage.setItem('ern_akademi_settings', JSON.stringify(settings));
+            showToast('Canlı Akademi ve Sezon ayarları başarıyla kaydedildi!');
+        }
+
+        // AKADEMİ PROJELERİ CRUD
+        function renderAkademiProjectsAdmin() {
+            const container = document.getElementById('akd-projects-admin-list');
+            if (!container) return;
+            const projects = getAkademiProjects();
+
+            if (projects.length === 0) {
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #64748b; font-size: 0.9rem;">Henüz kayıtlı proje yok. "Yeni Öğrenci Projesi Ekle" butonuna basarak ekleyebilirsiniz.</div>`;
+                return;
+            }
+
+            container.innerHTML = projects.map((p, idx) => `
+                <div style="background: #090e17; border: 1px solid rgba(212,175,55,0.25); border-radius: 12px; padding: 1.2rem; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.2s;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.6rem;">
+                            <span style="background: rgba(212,175,55,0.15); color: #ffd700; font-size: 0.72rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(212,175,55,0.3);">
+                                ${p.category || 'Tasarım'}
+                            </span>
+                            <span style="font-size: 0.72rem; color: #34d399; font-weight: 600;">
+                                <i class="fa-solid fa-circle-check"></i> ${p.status || 'Döküme Hazır'}
+                            </span>
+                        </div>
+                        <h4 style="font-size: 0.98rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem; line-height: 1.3;">
+                            ${p.title}
+                        </h4>
+                        <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.5rem;">
+                            <i class="fa-solid fa-user-graduate" style="color: var(--admin-gold);"></i> ${p.student || 'Öğrenci'} &bull; <i class="fa-solid fa-microchip"></i> ${p.software || 'CAD'}
+                        </div>
+                        <p style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                            ${p.desc || ''}
+                        </p>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; gap: 6px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.75rem;">
+                        <button type="button" onclick="showAddAkademiProjectModal(${idx})" class="btn-edit-sm" style="padding: 4px 10px; font-size: 0.75rem;">
+                            <i class="fa-solid fa-pen-to-square"></i> Düzenle
+                        </button>
+                        <button type="button" onclick="deleteAkademiProject(${idx})" class="btn-del-sm" style="padding: 4px 10px; font-size: 0.75rem;">
+                            <i class="fa-solid fa-trash"></i> Sil
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showAddAkademiProjectModal(idx = -1) {
+            const modal = document.getElementById('add-akademi-project-modal');
+            const titleEl = document.getElementById('akd-project-modal-title');
+            const editIdxInput = document.getElementById('akd-proj-edit-index');
+
+            if (idx >= 0) {
+                const projects = getAkademiProjects();
+                const item = projects[idx];
+                if (!item) return;
+                titleEl.innerHTML = `<i class="fa-solid fa-gem" style="color: var(--admin-gold);"></i> Öğrenci Projesini Düzenle`;
+                editIdxInput.value = idx;
+                document.getElementById('akd-proj-title').value = item.title || '';
+                document.getElementById('akd-proj-student').value = item.student || '';
+                document.getElementById('akd-proj-category').value = item.category || '';
+                document.getElementById('akd-proj-software').value = item.software || '';
+                document.getElementById('akd-proj-status').value = item.status || '';
+                document.getElementById('akd-proj-image').value = item.image || '';
+                document.getElementById('akd-proj-desc').value = item.desc || '';
+            } else {
+                titleEl.innerHTML = `<i class="fa-solid fa-gem" style="color: var(--admin-gold);"></i> Yeni Öğrenci Projesi Ekle`;
+                editIdxInput.value = -1;
+                document.getElementById('akd-project-form').reset();
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeAkademiProjectModal() {
+            const modal = document.getElementById('add-akademi-project-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function submitAkademiProjectModal(e) {
+            e.preventDefault();
+            const idx = parseInt(document.getElementById('akd-proj-edit-index').value);
+            const projects = getAkademiProjects();
+
+            const projectObj = {
+                title: document.getElementById('akd-proj-title').value.trim(),
+                student: document.getElementById('akd-proj-student').value.trim() || 'Öğrenci Çalışması',
+                category: document.getElementById('akd-proj-category').value.trim() || 'Tasarım',
+                software: document.getElementById('akd-proj-software').value.trim() || 'MatrixGold CAD',
+                status: document.getElementById('akd-proj-status').value.trim() || 'Döküme Hazır',
+                image: document.getElementById('akd-proj-image').value.trim() || '💎',
+                desc: document.getElementById('akd-proj-desc').value.trim()
+            };
+
+            if (idx >= 0 && idx < projects.length) {
+                projects[idx] = projectObj;
+            } else {
+                projects.unshift(projectObj);
+            }
+
+            localStorage.setItem('ern_akademi_projects', JSON.stringify(projects));
+            closeAkademiProjectModal();
+            renderAkademiProjectsAdmin();
+            showToast('Öğrenci projesi başarıyla kaydedildi!');
+        }
+
+        function deleteAkademiProject(idx) {
+            if (confirm('Bu öğrenci projesini listeden silmek istediğinize emin misiniz?')) {
+                const projects = getAkademiProjects();
+                projects.splice(idx, 1);
+                localStorage.setItem('ern_akademi_projects', JSON.stringify(projects));
+                renderAkademiProjectsAdmin();
+                showToast('Öğrenci projesi silindi.');
+            }
+        }
+
+        // AKADEMİ MÜFREDAT DERSLERİ CRUD
+        function renderAkademiCurriculumAdmin() {
+            const container = document.getElementById('akd-curriculum-admin-list');
+            if (!container) return;
+            const list = getAkademiCurriculum();
+
+            if (list.length === 0) {
+                container.innerHTML = `<div style="text-align: center; padding: 2rem; color: #64748b; font-size: 0.9rem;">Henüz ders eklenmemiş. "Yeni Ders Ekle" butonuna basabilirsiniz.</div>`;
+                return;
+            }
+
+            container.innerHTML = list.map((c, idx) => {
+                let badgeHtml = '';
+                if (c.status === 'completed') {
+                    badgeHtml = `<span style="background: rgba(56,189,248,0.2); color: #38bdf8; border: 1px solid #38bdf8; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700;">✅ Tamamlandı</span>`;
+                } else if (c.status === 'active') {
+                    badgeHtml = `<span style="background: rgba(16,185,129,0.25); color: #34d399; border: 1px solid #10b981; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; box-shadow: 0 0 10px rgba(16,185,129,0.3);">🟢 ŞU AN İŞLENİYOR</span>`;
+                } else {
+                    badgeHtml = `<span style="background: rgba(148,163,184,0.15); color: #94a3b8; border: 1px solid #64748b; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700;">⏳ Sıradaki Ders</span>`;
+                }
+
+                return `
+                    <div style="background: #090e17; border: 1px solid ${c.status === 'active' ? '#10b981' : 'rgba(212,175,55,0.2)'}; border-radius: 10px; padding: 1rem 1.2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 260px;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+                                <span style="font-size: 0.78rem; font-weight: 800; color: var(--admin-gold); text-transform: uppercase;">${c.week || 'Ders'}</span>
+                                ${badgeHtml}
+                                <span style="font-size: 0.75rem; color: #64748b;"><i class="fa-solid fa-clock"></i> ${c.duration || '3 Saat'}</span>
+                            </div>
+                            <div style="font-weight: 700; color: #fff; font-size: 0.95rem; margin-bottom: 2px;">
+                                ${c.title}
+                            </div>
+                            <div style="font-size: 0.82rem; color: #94a3b8;">
+                                ${c.desc || ''}
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <select onchange="setAkademiCurriculumStatus(${idx}, this.value)" class="form-control" style="width: auto; padding: 4px 8px; font-size: 0.75rem; height: auto;">
+                                <option value="completed" ${c.status === 'completed' ? 'selected' : ''}>✅ Tamamlandı</option>
+                                <option value="active" ${c.status === 'active' ? 'selected' : ''}>🟢 Canlı İşleniyor</option>
+                                <option value="upcoming" ${c.status === 'upcoming' ? 'selected' : ''}>⏳ Sıradaki Ders</option>
+                            </select>
+                            <button type="button" onclick="showAddAkademiCurriculumModal(${idx})" class="btn-edit-sm" style="padding: 4px 8px; font-size: 0.75rem;">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button type="button" onclick="deleteAkademiCurriculum(${idx})" class="btn-del-sm" style="padding: 4px 8px; font-size: 0.75rem;">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function showAddAkademiCurriculumModal(idx = -1) {
+            const modal = document.getElementById('add-akademi-curriculum-modal');
+            const titleEl = document.getElementById('akd-curriculum-modal-title');
+            const editIdxInput = document.getElementById('akd-curr-edit-index');
+
+            if (idx >= 0) {
+                const list = getAkademiCurriculum();
+                const item = list[idx];
+                if (!item) return;
+                titleEl.innerHTML = `<i class="fa-solid fa-list-ol" style="color: var(--admin-gold);"></i> Müfredat Dersini Düzenle`;
+                editIdxInput.value = idx;
+                document.getElementById('akd-curr-week').value = item.week || '';
+                document.getElementById('akd-curr-duration').value = item.duration || '3 Saat';
+                document.getElementById('akd-curr-title').value = item.title || '';
+                document.getElementById('akd-curr-desc').value = item.desc || '';
+                document.getElementById('akd-curr-status').value = item.status || 'upcoming';
+            } else {
+                titleEl.innerHTML = `<i class="fa-solid fa-list-ol" style="color: var(--admin-gold);"></i> Yeni Müfredat Dersi Ekle`;
+                editIdxInput.value = -1;
+                document.getElementById('akd-curriculum-form').reset();
+                document.getElementById('akd-curr-duration').value = '3 Saat Canlı';
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeAkademiCurriculumModal() {
+            const modal = document.getElementById('add-akademi-curriculum-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function submitAkademiCurriculumModal(e) {
+            e.preventDefault();
+            const idx = parseInt(document.getElementById('akd-curr-edit-index').value);
+            const list = getAkademiCurriculum();
+
+            const itemObj = {
+                week: document.getElementById('akd-curr-week').value.trim(),
+                duration: document.getElementById('akd-curr-duration').value.trim() || '3 Saat Canlı',
+                title: document.getElementById('akd-curr-title').value.trim(),
+                desc: document.getElementById('akd-curr-desc').value.trim(),
+                status: document.getElementById('akd-curr-status').value
+            };
+
+            // Eğer "Şu An İşleniyor" seçildiyse diğer aktifleri sıradakine çekebiliriz
+            if (itemObj.status === 'active') {
+                list.forEach((it, i) => {
+                    if (i !== idx && it.status === 'active') it.status = 'completed';
+                });
+            }
+
+            if (idx >= 0 && idx < list.length) {
+                list[idx] = itemObj;
+            } else {
+                list.push(itemObj);
+            }
+
+            localStorage.setItem('ern_akademi_curriculum', JSON.stringify(list));
+            closeAkademiCurriculumModal();
+            renderAkademiCurriculumAdmin();
+            showToast('Müfredat dersi kaydedildi!');
+        }
+
+        function setAkademiCurriculumStatus(idx, status) {
+            const list = getAkademiCurriculum();
+            if (list[idx]) {
+                if (status === 'active') {
+                    list.forEach((it, i) => {
+                        if (i !== idx && it.status === 'active') it.status = 'completed';
+                    });
+                }
+                list[idx].status = status;
+                localStorage.setItem('ern_akademi_curriculum', JSON.stringify(list));
+                renderAkademiCurriculumAdmin();
+                showToast(`Ders durumu "${status === 'active' ? 'Şu An İşleniyor' : status === 'completed' ? 'Tamamlandı' : 'Sıradaki'}" olarak güncellendi.`);
+            }
+        }
+
+        function deleteAkademiCurriculum(idx) {
+            if (confirm('Bu dersi müfredattan silmek istediğinize emin misiniz?')) {
+                const list = getAkademiCurriculum();
+                list.splice(idx, 1);
+                localStorage.setItem('ern_akademi_curriculum', JSON.stringify(list));
+                renderAkademiCurriculumAdmin();
+                showToast('Ders müfredattan silindi.');
+            }
+        }
+
         // BACKUP & RESTORE (JSON EXPORT/IMPORT)
         function exportDataBackup() {
             const backup = {
@@ -10262,6 +10934,9 @@
                 settings: getSettings(),
                 ads: JSON.parse(localStorage.getItem('ern_ads_settings') || '{}'),
                 cms: JSON.parse(localStorage.getItem('ern_site_content') || '{}'),
+                akademiSettings: getAkademiSettings(),
+                akademiProjects: getAkademiProjects(),
+                akademiCurriculum: getAkademiCurriculum(),
                 dailyVisitors: JSON.parse(localStorage.getItem('ern_daily_visitors') || '{}'),
                 totalViews: localStorage.getItem('ern_total_views') || '0',
                 totalUniques: localStorage.getItem('ern_total_uniques') || '0',
@@ -10293,6 +10968,9 @@
                     if (backup.settings) localStorage.setItem('ern_site_settings', JSON.stringify(backup.settings));
                     if (backup.ads) localStorage.setItem('ern_ads_settings', JSON.stringify(backup.ads));
                     if (backup.cms) localStorage.setItem('ern_site_content', JSON.stringify(backup.cms));
+                    if (backup.akademiSettings) localStorage.setItem('ern_akademi_settings', JSON.stringify(backup.akademiSettings));
+                    if (backup.akademiProjects) localStorage.setItem('ern_akademi_projects', JSON.stringify(backup.akademiProjects));
+                    if (backup.akademiCurriculum) localStorage.setItem('ern_akademi_curriculum', JSON.stringify(backup.akademiCurriculum));
                     if (backup.dailyVisitors) localStorage.setItem('ern_daily_visitors', JSON.stringify(backup.dailyVisitors));
                     if (backup.totalViews) localStorage.setItem('ern_total_views', backup.totalViews);
                     if (backup.totalUniques) localStorage.setItem('ern_total_uniques', backup.totalUniques);
