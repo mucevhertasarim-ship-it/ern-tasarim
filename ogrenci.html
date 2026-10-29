@@ -75,6 +75,19 @@
         </div>
     </div>
     <script>
+        async function testUrlAlive(targetUrl) {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 2500);
+                // no-cors fetch test: eger DNS cozulemezse veya sunucu yoksa reject olur
+                await fetch(targetUrl, { mode: 'no-cors', cache: 'no-store', signal: controller.signal });
+                clearTimeout(timeoutId);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
         async function connect() {
             try {
                 // 1. live_bridge.json kontrol et
@@ -82,20 +95,24 @@
                 if (res.ok) {
                     const data = await res.json();
                     if (data && data.stream_url && data.status === 'online') {
-                        window.location.replace(data.stream_url);
-                        return;
+                        // KÖRLÜKLE YÖNLENDİRME YAPMA! Önce tünelin gerçekten hayatta olduğunu doğrula
+                        const isAlive = await testUrlAlive(data.stream_url);
+                        if (isAlive) {
+                            window.location.replace(data.stream_url);
+                            return;
+                        }
                     }
                 }
             } catch(e) {}
 
-            // Bulunamadıysa
+            // Canli kopru kapaliysa veya eski tunel olmüsse "Site Bulunamiyor" hatasina dusurme, sik bekleme ekrani goster
             setTimeout(() => {
                 const sp = document.getElementById('spinner');
                 if (sp) sp.style.display = 'none';
                 document.getElementById('title').textContent = 'Canlı Yayın Bekleniyor';
-                document.getElementById('desc').textContent = 'Eğitmen stüdyodan dersi henüz başlatmadı veya ders istirahat arasında. Lütfen stüdyo açıldığında tekrar deneyiniz.';
+                document.getElementById('desc').textContent = 'Usta Eğitmen stüdyodan canlı dersi henüz başlatmadı veya ders istirahat arasında. Lütfen stüdyo açıldığında tekrar deneyiniz.';
                 document.getElementById('actionArea').style.display = 'block';
-            }, 1200);
+            }, 600);
         }
         connect();
     </script>
