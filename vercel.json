@@ -9,6 +9,14 @@
     {
       "source": "/mesaj",
       "destination": "/mesaj.html"
+    },
+    {
+      "source": "/indir/ogrenci-apk",
+      "destination": "/ERN_Tasarim_Ogrenci.apk"
+    },
+    {
+      "source": "/indir/ogrenci-atolyesi",
+      "destination": "https://raw.githubusercontent.com/mucevhertasarim-ship-it/mucevhertasarim-akademi/main/ERN_Tasarim_Ogrenci_Atolyesi_Setup.zip"
     }
   ],
   "headers": [
@@ -18,6 +26,19 @@
         {
           "key": "Access-Control-Allow-Origin",
           "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/(.*).apk",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/vnd.android.package-archive"
+        },
+        {
+          "key": "Content-Disposition",
+          "value": "attachment; filename=\"ERN_Tasarim_Ogrenci.apk\""
         }
       ]
     },
