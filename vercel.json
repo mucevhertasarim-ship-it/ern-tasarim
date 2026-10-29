@@ -3,6 +3,10 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/ogrenci",
+      "destination": "/ogrenci.html"
+    },
+    {
       "source": "/reklam",
       "destination": "/reklam.html"
     },
