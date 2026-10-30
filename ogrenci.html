@@ -2,84 +2,597 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ERN Tasarım - Canlı Akademiye Bağlanılıyor...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ERN Tasarım Akademi - Öğrenci Masası & Canlı Ders Bekleme Salonu</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --gold-primary: #d4af37;
+            --gold-light: #f5b942;
+            --gold-dark: #aa820a;
+            --bg-dark: #070a12;
+            --bg-card: rgba(15, 23, 42, 0.94);
+            --border-gold: rgba(212, 175, 55, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
             margin: 0;
             padding: 0;
-            background: #05070c;
-            color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: radial-gradient(circle at 50% 20%, #111a2e 0%, #060913 100%);
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Üst Header */
+        header {
+            width: 100%;
+            padding: 12px 18px;
+            background: rgba(10, 15, 28, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-gold);
             display: flex;
             align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            box-sizing: border-box;
-            padding: 20px;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .box {
-            max-width: 440px;
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo {
+            font-size: 1.5rem;
+            filter: drop-shadow(0 0 10px rgba(212,175,55,0.5));
+        }
+
+        .brand-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            color: #fff;
+        }
+
+        .brand-badge {
+            font-size: 0.68rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: #fff;
+            padding: 2px 7px;
+            border-radius: 5px;
+            margin-left: 6px;
+            border: 1px solid #38bdf8;
+        }
+
+        .container {
             width: 100%;
-            padding: 36px 24px;
-            background: rgba(15, 23, 42, 0.88);
-            border: 1.5px solid rgba(212, 175, 55, 0.35);
-            border-radius: 24px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.7);
+            max-width: 680px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
         }
-        .spinner {
+
+        /* Canlı Durum Kartı */
+        .live-status-card {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border-gold);
+            border-radius: 18px;
+            padding: 18px 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 25px rgba(212,175,55,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .radar-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             width: 48px;
             height: 48px;
-            border: 4px solid rgba(212, 175, 55, 0.2);
-            border-top: 4px solid #d4af37;
             border-radius: 50%;
-            animation: spin 0.9s linear infinite;
-            margin: 0 auto 20px auto;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1.5px solid #ef4444;
+            color: #ef4444;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            animation: pulse-red 2s infinite;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        h2 { font-size: 1.3rem; margin: 0 0 10px 0; color: #f8fafc; font-weight: 800; }
-        p { font-size: 0.92rem; color: #94a3b8; line-height: 1.55; margin: 0 0 20px 0; }
-        .btn {
+
+        .radar-box.online {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: #10b981;
+            color: #34d399;
+            animation: pulse-green 1.5s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 16px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .status-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #f8fafc;
+            margin: 0 0 6px 0;
+        }
+
+        .status-desc {
+            font-size: 0.86rem;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin: 0 0 14px 0;
+        }
+
+        .btn-live-connect {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: #fff;
-            text-decoration: none;
-            padding: 13px 26px;
-            border-radius: 30px;
+            padding: 10px 22px;
+            border-radius: 25px;
             font-weight: 800;
-            font-size: 0.95rem;
+            font-size: 0.88rem;
+            text-decoration: none;
+            border: 1px solid #60a5fa;
             cursor: pointer;
-            border: none;
-            box-shadow: 0 0 20px rgba(16,185,129,0.35);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+            transition: all 0.2s;
         }
-        .btn-wa {
-            background: #25D366;
-            margin-top: 10px;
+
+        .btn-live-connect:active {
+            transform: scale(0.97);
+        }
+
+        /* 7/24 Aktif Butonlar Grid */
+        .hub-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        /* Dijital Kitap Kartı */
+        .hub-card {
+            background: linear-gradient(135deg, rgba(26, 35, 60, 0.9) 0%, rgba(13, 20, 36, 0.95) 100%);
+            border: 1.5px solid var(--border-gold);
+            border-radius: 16px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .hub-card:active {
+            transform: scale(0.98);
+        }
+
+        .hub-icon-wrap {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            flex-shrink: 0;
+        }
+
+        .hub-icon-book {
+            background: linear-gradient(135deg, rgba(245, 185, 66, 0.25) 0%, rgba(212, 175, 55, 0.1) 100%);
+            border: 1.5px solid var(--gold-primary);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .hub-icon-game {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.25) 0%, rgba(126, 34, 206, 0.1) 100%);
+            border: 1.5px solid #c084fc;
+            box-shadow: 0 0 15px rgba(192, 132, 252, 0.3);
+        }
+
+        .hub-icon-curriculum {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.25) 0%, rgba(3, 105, 161, 0.1) 100%);
+            border: 1.5px solid #38bdf8;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .hub-icon-wa {
+            background: linear-gradient(135deg, rgba(37, 211, 102, 0.25) 0%, rgba(18, 140, 68, 0.1) 100%);
+            border: 1.5px solid #25D366;
+            box-shadow: 0 0 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .hub-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .hub-title {
+            font-size: 0.98rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hub-badge {
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 1px 6px;
+            border-radius: 4px;
+            background: rgba(245, 185, 66, 0.2);
+            color: #fde047;
+            border: 1px solid rgba(245, 185, 66, 0.5);
+        }
+
+        .hub-desc {
+            font-size: 0.76rem;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        .hub-arrow {
+            color: var(--gold-primary);
+            font-size: 1.1rem;
+            padding-left: 4px;
+        }
+
+        /* Modal (Kitap & Oyun İçin) */
+        .app-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            padding: 10px 16px;
+            background: #0b101d;
+            border-bottom: 1.5px solid var(--border-gold);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-modal-close {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Tetris Oyun Alanı */
+        #gameArea {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            background: #050811;
+        }
+
+        .tetris-wrap {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        #tetrisCanvas {
+            border: 2px solid var(--gold-primary);
+            border-radius: 8px;
+            background: #020408;
+            box-shadow: 0 0 25px rgba(212,175,55,0.3);
+        }
+
+        .tetris-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 80px;
+        }
+
+        .stat-box {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--border-gold);
+            border-radius: 8px;
+            padding: 6px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.62rem;
+            color: #94a3b8;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .stat-val {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--gold-light);
+            font-family: monospace;
+        }
+
+        .game-touch-controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            width: 100%;
+            max-width: 320px;
+            margin-top: 12px;
+        }
+
+        .touch-btn {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1.5px solid var(--border-gold);
+            color: #fde047;
+            padding: 12px 0;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+
+        .touch-btn:active {
+            background: var(--gold-primary);
+            color: #000;
+            transform: scale(0.95);
+        }
+
+        /* Kitap Iframe */
+        #bookIframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #000;
         }
     </style>
 </head>
 <body>
-    <div class="box">
-        <div class="spinner" id="spinner"></div>
-        <h2 id="title">Canlı Derse Bağlanılıyor...</h2>
-        <p id="desc">Eğitmen stüdyosuna güvenli internet köprüsü kuruluyor, lütfen bekleyiniz.</p>
-        <div id="actionArea" style="display:none;">
-            <button onclick="window.location.reload()" class="btn"><i class="fa-solid fa-rotate-right"></i> Tekrar Bağlan</button>
-            <div style="margin-top: 14px;">
-                <a href="https://wa.me/905453699990?text=Hocam%20derse%20baglanamiyorum" target="_blank" class="btn btn-wa"><i class="fa-brands fa-whatsapp"></i> WhatsApp Destek</a>
+
+    <!-- Header -->
+    <header>
+        <div class="brand-box">
+            <span class="brand-logo">💎</span>
+            <div>
+                <div class="brand-title">ERN TASARIM AKADEMİ <span class="brand-badge">ÖĞRENCİ MASASI</span></div>
+            </div>
+        </div>
+        <button onclick="checkLiveBridge(true)" class="btn-live-connect" style="padding: 5px 12px; font-size: 0.78rem;">
+            <i class="fas fa-rotate"></i> Yenile
+        </button>
+    </header>
+
+    <div class="container">
+
+        <!-- 1. CANLI YAYIN DURUMU & OTOMATİK BAĞLANTI KARTI -->
+        <div class="live-status-card">
+            <div class="radar-box" id="statusRadar">
+                <i class="fas fa-tower-broadcast"></i>
+            </div>
+            <h2 class="status-title" id="statusTitle">Canlı Yayın Bekleniyor...</h2>
+            <p class="status-desc" id="statusDesc">
+                Usta Eğitmen stüdyoyu açtığında canlı ders ekranı otomatik olarak başlayacaktır. Dersi beklerken aşağıdaki <b>Dijital Kitap</b> veya <b>Mini Oyunları</b> kullanabilirsiniz.
+            </p>
+            <div id="liveActionBox">
+                <button onclick="checkLiveBridge(true)" class="btn-live-connect" id="btnManualConnect">
+                    <i class="fas fa-play"></i> Canlı Yayını Kontrol Et
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. 7/24 AKTİF MATERYAL VE EĞLENCE MENÜSÜ -->
+        <div class="hub-grid">
+
+            <!-- 📖 MATRİXGOLD DİJİTAL KİTAP (SESLİ OKUMA) -->
+            <div class="hub-card" onclick="openBookModal()">
+                <div class="hub-icon-wrap hub-icon-book">
+                    📖
+                </div>
+                <div class="hub-info">
+                    <div class="hub-title">
+                        MatrixGold Dijital Kitap <span class="hub-badge">7/24 SESLİ OKUMA</span>
+                    </div>
+                    <div class="hub-desc">
+                        22 Bölümlük Usta Kitabı • Tezgâh İpuçları • Canlı Sesli Anlatım & Türkçe Okuma
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right hub-arrow"></i>
+            </div>
+
+            <!-- 🎮 MÜCEVHER TETRİSİ (MİNİ OYUNLAR) -->
+            <div class="hub-card" onclick="openGameModal()">
+                <div class="hub-icon-wrap hub-icon-game">
+                    🎮
+                </div>
+                <div class="hub-info">
+                    <div class="hub-title">
+                        Mücevher Tetrisi & Mini Oyun <span class="hub-badge" style="background: rgba(192,132,252,0.2); color: #c084fc; border-color: #c084fc;">DERS BEKLERKEN</span>
+                    </div>
+                    <div class="hub-desc">
+                        Pırlanta & Değerli Taş Tetrisi • Dokunmatik Kontroller • Yüksek Skor Masası
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right hub-arrow"></i>
+            </div>
+
+            <!-- 🎓 EĞİTİM MÜFREDATI -->
+            <div class="hub-card" onclick="openCurriculumModal()">
+                <div class="hub-icon-wrap hub-icon-curriculum">
+                    🎓
+                </div>
+                <div class="hub-info">
+                    <div class="hub-title">
+                        2026 - 2027 Eğitim Müfredatı
+                    </div>
+                    <div class="hub-desc">
+                        Haftalık Canlı CAD Ders Planı • Rhino & Keyshot • Sıfırdan Döküme
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right hub-arrow"></i>
+            </div>
+
+            <!-- 💬 WHATSAPP USTA EĞİTMEN DESTEK -->
+            <a href="https://wa.me/905453699990?text=Hocam%20merhaba,%20akademiden%20yaziyorum." target="_blank" class="hub-card">
+                <div class="hub-icon-wrap hub-icon-wa">
+                    <i class="fab fa-whatsapp" style="color: #25D366;"></i>
+                </div>
+                <div class="hub-info">
+                    <div class="hub-title">
+                        Usta Eğitmen WhatsApp Hattı
+                    </div>
+                    <div class="hub-desc">
+                        Kayıt, IBAN onayı ve teknik destek için Özkan Hoca ile anında görüşün
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right hub-arrow"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- ==================== MODAL: DİJİTAL KİTAP ==================== -->
+    <div id="modalBook" class="app-modal">
+        <div class="modal-header">
+            <div class="modal-title">
+                <span>📖</span> MatrixGold Usta Kitabı (Sesli Okuma)
+            </div>
+            <button class="btn-modal-close" onclick="closeBookModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <iframe id="bookIframe" src="" title="Dijital Kitap"></iframe>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: MÜCEVHER TETRİSİ ==================== -->
+    <div id="modalGame" class="app-modal">
+        <div class="modal-header">
+            <div class="modal-title">
+                <span>🎮</span> Mücevher Tetrisi Masası
+            </div>
+            <button class="btn-modal-close" onclick="closeGameModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="gameArea">
+            <div class="tetris-wrap">
+                <canvas id="tetrisCanvas" width="200" height="380"></canvas>
+                <div class="tetris-sidebar">
+                    <div class="stat-box">
+                        <div class="stat-label">Skor</div>
+                        <div class="stat-val" id="gameScore">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Satır</div>
+                        <div class="stat-val" id="gameLines">0</div>
+                    </div>
+                    <button onclick="startTetris()" class="btn-live-connect" style="padding: 6px; font-size: 0.7rem; justify-content: center; width: 100%;">
+                        Yeniden
+                    </button>
+                </div>
+            </div>
+            <div class="game-touch-controls">
+                <button class="touch-btn" onclick="moveLeft()"><i class="fas fa-arrow-left"></i></button>
+                <button class="touch-btn" onclick="rotatePiece()"><i class="fas fa-rotate"></i></button>
+                <button class="touch-btn" onclick="moveRight()"><i class="fas fa-arrow-right"></i></button>
+                <button class="touch-btn" onclick="dropFast()"><i class="fas fa-arrow-down"></i></button>
             </div>
         </div>
     </div>
+
+    <!-- ==================== MODAL: MÜFREDAT ==================== -->
+    <div id="modalCurriculum" class="app-modal">
+        <div class="modal-header">
+            <div class="modal-title">
+                <span>🎓</span> 2026 - 2027 Eğitim Müfredatı
+            </div>
+            <button class="btn-modal-close" onclick="closeCurriculumModal()">&times;</button>
+        </div>
+        <div class="modal-body" style="padding: 20px; overflow-y: auto;">
+            <div style="background: rgba(15,23,42,0.9); border: 1.5px solid var(--border-gold); border-radius: 14px; padding: 18px; margin-bottom: 14px;">
+                <h3 style="color: var(--gold-light); margin: 0 0 10px 0; font-size: 1.05rem;">💎 Bölüm 1: MatrixGold Temelleri & Sadekar Mantığı</h3>
+                <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.5; margin: 0;">Arayüz, kısayollar, taş yuvaları, tırnak açma mantığı, döküm payı ve çekme toleransları.</p>
+            </div>
+            <div style="background: rgba(15,23,42,0.9); border: 1.5px solid var(--border-gold); border-radius: 14px; padding: 18px; margin-bottom: 14px;">
+                <h3 style="color: var(--gold-light); margin: 0 0 10px 0; font-size: 1.05rem;">💍 Bölüm 2: Tektaş, Beştaş & Fantezi Yüzükler</h3>
+                <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.5; margin: 0;">Kanal mıhlama, mikro pavé dizimler, bombeli kollar, hafifletme (hollow/petek) tasarımı.</p>
+            </div>
+            <div style="background: rgba(15,23,42,0.9); border: 1.5px solid var(--border-gold); border-radius: 14px; padding: 18px; margin-bottom: 14px;">
+                <h3 style="color: var(--gold-light); margin: 0 0 10px 0; font-size: 1.05rem;">✨ Bölüm 3: Bilezik, Kolye & Keyshot Fotogerçekçi Render</h3>
+                <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.5; margin: 0;">Kilit mekanizmaları, menteşe ve pim sistemleri, müşteri onayına hazır 4K mücevher renderı.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT: CANLI YAYIN TESPİTİ & OYUN MOTORU -->
     <script>
+        // 1. CANLI KÖPRÜ DEDEKTÖRÜ (ARKA PLANDA HER 3.5 SANİYEDE BİR YOKLAR)
+        let isConnecting = false;
+
         async function testUrlAlive(targetUrl) {
             try {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 2500);
-                // no-cors fetch test: eger DNS cozulemezse veya sunucu yoksa reject olur
                 await fetch(targetUrl, { mode: 'no-cors', cache: 'no-store', signal: controller.signal });
                 clearTimeout(timeoutId);
                 return true;
@@ -88,33 +601,276 @@
             }
         }
 
-        async function connect() {
+        async function checkLiveBridge(manualClick = false) {
+            if (isConnecting) return;
+            isConnecting = true;
+
+            const rBox = document.getElementById("statusRadar");
+            const sTitle = document.getElementById("statusTitle");
+            const sDesc = document.getElementById("statusDesc");
+            const actBtn = document.getElementById("btnManualConnect");
+
+            if (manualClick) {
+                if (actBtn) actBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Kontrol Ediliyor...';
+            }
+
             try {
-                // 1. live_bridge.json kontrol et
                 const res = await fetch('/live_bridge.json?t=' + Date.now(), { cache: 'no-store' });
                 if (res.ok) {
                     const data = await res.json();
                     if (data && data.stream_url && data.status === 'online') {
-                        // KÖRLÜKLE YÖNLENDİRME YAPMA! Önce tünelin gerçekten hayatta olduğunu doğrula
-                        const isAlive = await testUrlAlive(data.stream_url);
-                        if (isAlive) {
-                            window.location.replace(data.stream_url);
+                        const alive = await testUrlAlive(data.stream_url);
+                        if (alive) {
+                            if (rBox) rBox.className = "radar-box online";
+                            if (sTitle) sTitle.innerHTML = "🎉 Canlı Yayın Aktif! Bağlanılıyor...";
+                            if (sDesc) sDesc.innerText = "Usta Eğitmenin canlı ders yayını açıldı, aktarılıyorsunuz...";
+                            setTimeout(() => {
+                                window.location.replace(data.stream_url);
+                            }, 400);
                             return;
                         }
                     }
                 }
-            } catch(e) {}
+            } catch (e) {}
 
-            // Canli kopru kapaliysa veya eski tunel olmüsse "Site Bulunamiyor" hatasina dusurme, sik bekleme ekrani goster
-            setTimeout(() => {
-                const sp = document.getElementById('spinner');
-                if (sp) sp.style.display = 'none';
-                document.getElementById('title').textContent = 'Canlı Yayın Bekleniyor';
-                document.getElementById('desc').textContent = 'Usta Eğitmen stüdyodan canlı dersi henüz başlatmadı veya ders istirahat arasında. Lütfen stüdyo açıldığında tekrar deneyiniz.';
-                document.getElementById('actionArea').style.display = 'block';
-            }, 600);
+            // Hoca çevrimdışı
+            if (rBox) rBox.className = "radar-box";
+            if (manualClick) {
+                if (actBtn) actBtn.innerHTML = '<i class="fas fa-play"></i> Canlı Yayını Kontrol Et';
+                if (sDesc) sDesc.innerText = "Usta Eğitmen henüz bilgisayardan yayını başlatmadı. Sayfa arka planda otomatik kontrole devam ediyor.";
+            }
+            isConnecting = false;
         }
-        connect();
+
+        // İlk açılışta hemen kontrol et
+        checkLiveBridge(false);
+        // Her 3.5 saniyede bir arka planda sessizce tara
+        setInterval(() => { checkLiveBridge(false); }, 3500);
+
+        // 2. MODAL YÖNETİMİ (KİTAP & MÜFREDAT)
+        function openBookModal() {
+            const m = document.getElementById("modalBook");
+            const ifr = document.getElementById("bookIframe");
+            if (m && ifr) {
+                m.style.display = "flex";
+                if (!ifr.src || ifr.src === "" || ifr.src === window.location.href) {
+                    ifr.src = "/kitap/index.html?t=" + Date.now();
+                }
+            }
+        }
+
+        function closeBookModal() {
+            const m = document.getElementById("modalBook");
+            if (m) m.style.display = "none";
+        }
+
+        function openCurriculumModal() {
+            const m = document.getElementById("modalCurriculum");
+            if (m) m.style.display = "flex";
+        }
+
+        function closeCurriculumModal() {
+            const m = document.getElementById("modalCurriculum");
+            if (m) m.style.display = "none";
+        }
+
+        // 3. MÜCEVHER TETRİSİ MOTORU
+        const COLS = 10;
+        const ROWS = 19;
+        const BLOCK = 20;
+        let tetrisGrid = [];
+        let curPiece = null;
+        let gameScore = 0;
+        let gameLines = 0;
+        let gameTimer = null;
+        let isGameRunning = false;
+
+        const PIECES = [
+            { shape: [[1,1,1,1]], color: "#38bdf8" }, // Elmas Mavi
+            { shape: [[1,1],[1,1]], color: "#facc15" }, // Altın Sarı
+            { shape: [[0,1,0],[1,1,1]], color: "#c084fc" }, // Ametist Mor
+            { shape: [[0,1,1],[1,1,0]], color: "#4ade80" }, // Zümrüt Yeşil
+            { shape: [[1,1,0],[0,1,1]], color: "#f87171" }, // Yakut Kırmızı
+            { shape: [[1,0,0],[1,1,1]], color: "#60a5fa" }, // Safir
+            { shape: [[0,0,1],[1,1,1]], color: "#fb923c" }  // Kehribar
+        ];
+
+        function openGameModal() {
+            const m = document.getElementById("modalGame");
+            if (m) {
+                m.style.display = "flex";
+                startTetris();
+            }
+        }
+
+        function closeGameModal() {
+            const m = document.getElementById("modalGame");
+            if (m) m.style.display = "none";
+            isGameRunning = false;
+            if (gameTimer) clearInterval(gameTimer);
+        }
+
+        function startTetris() {
+            tetrisGrid = Array.from({ length: ROWS }, () => new Array(COLS).fill(0));
+            gameScore = 0;
+            gameLines = 0;
+            isGameRunning = true;
+            updateGameStats();
+            spawnPiece();
+            if (gameTimer) clearInterval(gameTimer);
+            gameTimer = setInterval(gameTick, 550);
+            drawGame();
+        }
+
+        function spawnPiece() {
+            const p = PIECES[Math.floor(Math.random() * PIECES.length)];
+            curPiece = {
+                shape: p.shape.map(r => [...r]),
+                color: p.color,
+                x: Math.floor((COLS - p.shape[0].length) / 2),
+                y: 0
+            };
+            if (checkCollision(curPiece, 0, 0)) {
+                isGameRunning = false;
+                if (gameTimer) clearInterval(gameTimer);
+                alert("Oyun Bitti! Skorunuz: " + gameScore);
+            }
+        }
+
+        function checkCollision(piece, ox, oy, shape) {
+            const s = shape || piece.shape;
+            for (let r = 0; r < s.length; r++) {
+                for (let c = 0; c < s[r].length; c++) {
+                    if (s[r][c]) {
+                        const nx = piece.x + c + ox;
+                        const ny = piece.y + r + oy;
+                        if (nx < 0 || nx >= COLS || ny >= ROWS) return true;
+                        if (ny >= 0 && tetrisGrid[ny][nx]) return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        function gameTick() {
+            if (!isGameRunning || !curPiece) return;
+            if (!checkCollision(curPiece, 0, 1)) {
+                curPiece.y++;
+                drawGame();
+            } else {
+                lockPiece();
+            }
+        }
+
+        function lockPiece() {
+            for (let r = 0; r < curPiece.shape.length; r++) {
+                for (let c = 0; c < curPiece.shape[r].length; c++) {
+                    if (curPiece.shape[r][c]) {
+                        const gy = curPiece.y + r;
+                        const gx = curPiece.x + c;
+                        if (gy >= 0) tetrisGrid[gy][gx] = curPiece.color;
+                    }
+                }
+            }
+            let cleared = 0;
+            for (let r = ROWS - 1; r >= 0; r--) {
+                if (tetrisGrid[r].every(cell => cell !== 0)) {
+                    tetrisGrid.splice(r, 1);
+                    tetrisGrid.unshift(new Array(COLS).fill(0));
+                    cleared++;
+                    r++;
+                }
+            }
+            if (cleared > 0) {
+                gameLines += cleared;
+                gameScore += (cleared === 1 ? 100 : cleared === 2 ? 300 : cleared === 3 ? 500 : 800);
+                updateGameStats();
+            }
+            spawnPiece();
+            drawGame();
+        }
+
+        function updateGameStats() {
+            const s = document.getElementById("gameScore");
+            const l = document.getElementById("gameLines");
+            if (s) s.innerText = gameScore;
+            if (l) l.innerText = gameLines;
+        }
+
+        function drawGame() {
+            const canvas = document.getElementById("tetrisCanvas");
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Çizgi ve grid
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    if (tetrisGrid[r][c]) {
+                        drawJewelBlock(ctx, c * BLOCK, r * BLOCK, tetrisGrid[r][c]);
+                    } else {
+                        ctx.strokeStyle = "rgba(255,255,255,0.04)";
+                        ctx.strokeRect(c * BLOCK, r * BLOCK, BLOCK, BLOCK);
+                    }
+                }
+            }
+
+            // Aktif parça
+            if (curPiece) {
+                for (let r = 0; r < curPiece.shape.length; r++) {
+                    for (let c = 0; c < curPiece.shape[r].length; c++) {
+                        if (curPiece.shape[r][c]) {
+                            drawJewelBlock(ctx, (curPiece.x + c) * BLOCK, (curPiece.y + r) * BLOCK, curPiece.color);
+                        }
+                    }
+                }
+            }
+        }
+
+        function drawJewelBlock(ctx, x, y, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x + 1, y + 1, BLOCK - 2, BLOCK - 2);
+            ctx.strokeStyle = "rgba(255,255,255,0.4)";
+            ctx.strokeRect(x + 2, y + 2, BLOCK - 4, BLOCK - 4);
+        }
+
+        function moveLeft() {
+            if (!isGameRunning || !curPiece) return;
+            if (!checkCollision(curPiece, -1, 0)) { curPiece.x--; drawGame(); }
+        }
+
+        function moveRight() {
+            if (!isGameRunning || !curPiece) return;
+            if (!checkCollision(curPiece, 1, 0)) { curPiece.x++; drawGame(); }
+        }
+
+        function rotatePiece() {
+            if (!isGameRunning || !curPiece) return;
+            const s = curPiece.shape;
+            const rotated = s[0].map((_, c) => s.map(r => r[c]).reverse());
+            if (!checkCollision(curPiece, 0, 0, rotated)) {
+                curPiece.shape = rotated;
+                drawGame();
+            }
+        }
+
+        function dropFast() {
+            if (!isGameRunning || !curPiece) return;
+            if (!checkCollision(curPiece, 0, 1)) {
+                curPiece.y++;
+                gameScore += 1;
+                updateGameStats();
+                drawGame();
+            }
+        }
+
+        window.addEventListener("keydown", (e) => {
+            if (!isGameRunning) return;
+            if (e.key === "ArrowLeft") moveLeft();
+            else if (e.key === "ArrowRight") moveRight();
+            else if (e.key === "ArrowUp") rotatePiece();
+            else if (e.key === "ArrowDown") dropFast();
+        });
     </script>
 </body>
 </html>
