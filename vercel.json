@@ -3,6 +3,18 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/kitap",
+      "destination": "/kitap/matrixgold.html"
+    },
+    {
+      "source": "/kitap/",
+      "destination": "/kitap/matrixgold.html"
+    },
+    {
+      "source": "/kitap/index.html",
+      "destination": "/kitap/matrixgold.html"
+    },
+    {
       "source": "/ogrenci",
       "destination": "/ogrenci.html"
     },
