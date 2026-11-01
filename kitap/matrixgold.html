@@ -44,7 +44,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MatrixGold Dijital Kitap - erntasarim.com</title>
-  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
 /* === dynamic_commands_data.js === */
 // =====================================================================
@@ -28238,6 +28238,12 @@ window.findManufacturingCommand = findManufacturingCommand;
         </select>
       </div>
       <div class="flex items-center gap-2">
+        <button id="btn-unlock-audio" type="button" onclick="unlockMobileAudioAndSpeech()" 
+                class="px-3 py-1 rounded-lg bg-gradient-to-r from-amber-500/25 to-amber-600/25 hover:from-amber-500/40 hover:to-amber-600/40 text-amber-300 border border-amber-500/50 font-bold flex items-center gap-1.5 shadow-sm active:scale-95 transition-all cursor-pointer"
+                title="Mobil Cihazlarda ve Tarayıcıda Ses Çıkışını Aktifleştir">
+          <span class="text-sm">🔊</span>
+          <span id="btn-unlock-audio-text">Sesi Aç / İzin Ver</span>
+        </button>
         <span id="tts-status" class="text-xs text-emerald-400 font-semibold hidden">🔊 Şu an sesli okunuyor...</span>
         <button onclick="stopSpeaking()" class="px-3 py-1 rounded-lg bg-red-500/20 text-red-300 border border-red-500/30 hover:bg-red-500/30 font-semibold">
           ⏹️ Sesi Durdur
@@ -30790,6 +30796,60 @@ let currentLang = "tr";
     let activePinIndex = 0;
     let availableVoices = [];
 
+    let isAudioUnlocked = false;
+
+    function unlockMobileAudioAndSpeech(quiet = false) {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) {
+          if (!window._ernAudioCtx) {
+            window._ernAudioCtx = new AudioCtx();
+          }
+          if (window._ernAudioCtx.state === "suspended") {
+            window._ernAudioCtx.resume();
+          }
+          if (!quiet) {
+            const osc = window._ernAudioCtx.createOscillator();
+            const gain = window._ernAudioCtx.createGain();
+            gain.gain.value = 0.05;
+            osc.frequency.value = 587.33;
+            osc.connect(gain);
+            gain.connect(window._ernAudioCtx.destination);
+            osc.start(0);
+            osc.stop(window._ernAudioCtx.currentTime + 0.12);
+          }
+        }
+
+        if ("speechSynthesis" in window) {
+          window.speechSynthesis.resume();
+          window.speechSynthesis.cancel();
+          loadVoices();
+
+          if (!quiet) {
+            setTimeout(() => {
+              const u = new SpeechSynthesisUtterance("Sesli okuma aktif, dinlemeye hazır.");
+              u.lang = currentLang === "en" ? "en-US" : "tr-TR";
+              u.rate = 1.0;
+              const voice = getSelectedVoice();
+              if (voice) u.voice = voice;
+              window.speechSynthesis.speak(u);
+            }, 100);
+          }
+        }
+
+        isAudioUnlocked = true;
+        const btnText = document.getElementById("btn-unlock-audio-text");
+        const btn = document.getElementById("btn-unlock-audio");
+        if (btnText && btn) {
+          btnText.innerText = "Ses Açık (Aktif)";
+          btn.className = "px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold flex items-center gap-1.5";
+        }
+      } catch(e) {
+        console.warn("Audio unlock hatasi:", e);
+      }
+    }
+    window.unlockMobileAudioAndSpeech = unlockMobileAudioAndSpeech;
+
     // TARAYICIDAKİ EN DOĞAL SESLERİ YÜKLE
     function loadVoices() {
       const select = document.getElementById("voice-select");
@@ -30797,7 +30857,7 @@ let currentLang = "tr";
       const langObj = WORLD_LANGUAGES.find(l => l.code === currentLang) || WORLD_LANGUAGES[0];
 
       if (!("speechSynthesis" in window)) {
-        select.innerHTML = `<option value="__cloud_voice__">🌟 Doğal Bulut Spikeri (${langObj.native} - HD)</option>`;
+        select.innerHTML = `<option value="__native_voice__">📱 Cihaz Spikeri (${langObj.native})</option>`;
         return;
       }
 
@@ -30806,7 +30866,7 @@ let currentLang = "tr";
       const matching = availableVoices.filter(v => v.lang.toLowerCase().startsWith(langPrefix));
 
       if (matching.length === 0) {
-        select.innerHTML = `<option value="__cloud_voice__">🌟 Doğal Bulut Spikeri (${langObj.native} - HD Net Ses)</option>`;
+        select.innerHTML = `<option value="__native_voice__" selected>📱 Telefon Doğal Spikeri (${langObj.native})</option>`;
         return;
       }
 
@@ -30820,7 +30880,7 @@ let currentLang = "tr";
           ${v.name.replace("Microsoft ", "").replace("Online (Natural)", "🌟 Doğal İnsan Sesi")} (${v.lang})
         </option>
       `).join("") + `
-        <option value="__cloud_voice__">🌟 Doğal Bulut Spikeri (${langObj.native} - HD Yedek)</option>
+        <option value="__native_voice__">📱 Telefon Sistem Spikeri (${langObj.native})</option>
       `;
     }
 
@@ -30840,15 +30900,14 @@ let currentLang = "tr";
       loadVoices();
     }
 
-    // Mobil Cihazlar (iPhone / Android) için İlk Dokunuşta TTS Ses Motorunu Aktifleştir
-    document.addEventListener("touchstart", function unlockSpeechOnce() {
-      if ("speechSynthesis" in window) {
-        try {
-          const silent = new SpeechSynthesisUtterance("");
-          window.speechSynthesis.speak(silent);
-        } catch(e) {}
-      }
-    }, { once: true });
+    // Mobil Cihazlar (iPhone / Android) için İlk Dokunuşta TTS & WebAudio Motorunu Aktifleştir
+    function onFirstMobileInteraction() {
+      unlockMobileAudioAndSpeech(true);
+      document.removeEventListener("touchstart", onFirstMobileInteraction);
+      document.removeEventListener("click", onFirstMobileInteraction);
+    }
+    document.addEventListener("touchstart", onFirstMobileInteraction, { passive: true });
+    document.addEventListener("click", onFirstMobileInteraction, { passive: true });
 
     function onHoverRibbonTab(idx, evt) {
       const tab = matrixRibbonTabs[idx];
@@ -32540,45 +32599,55 @@ let currentLang = "tr";
           stopSpeaking();
         }
 
-        // Bulut sesi seçildiyse veya tarayıcıda bu dil için ses desteği yoksa (özellikle Windows Arapça ve diğer diller için)
-        if (selVoiceVal === "__cloud_voice__" || (!chosenVoice && currentLang !== "tr" && currentLang !== "en")) {
-          speakWithCloudAudio(cleaned, currentLang, finishSpeaking);
-          return;
+        // Doğrudan Cihaz / Tarayıcı SpeechSynthesis motoru ile oku (Android & iPhone tam destekler)
+        if ("speechSynthesis" in window) {
+          try {
+            if (window.speechSynthesis.paused) {
+              window.speechSynthesis.resume();
+            }
+            window.speechSynthesis.cancel(); // Askıda kalan kuyruğu temizle
+
+            const u = new SpeechSynthesisUtterance(cleaned);
+            u.lang = langCode;
+            if (chosenVoice) {
+              u.voice = chosenVoice;
+            }
+            u.rate = rateVal;
+            u.pitch = 1.0;
+
+            window._ttsUtterances.push(u);
+
+            u.onend = () => {
+              if (_ttsSessionId !== currentSession) return;
+              finishSpeaking();
+            };
+
+            u.onerror = (evt) => {
+              if (_ttsSessionId !== currentSession) return;
+              if (evt.error === "canceled" || evt.error === "interrupted") return;
+              console.warn("SpeechSynthesis error:", evt.error);
+              finishSpeaking();
+            };
+
+            window.speechSynthesis.speak(u);
+
+            if (_ttsResumeTimer) clearInterval(_ttsResumeTimer);
+            _ttsResumeTimer = setInterval(() => {
+              if (_ttsSessionId !== currentSession) {
+                clearInterval(_ttsResumeTimer);
+                _ttsResumeTimer = null;
+              } else if (window.speechSynthesis.paused) {
+                window.speechSynthesis.resume();
+              }
+            }, 1000);
+            return;
+          } catch(synthErr) {
+            console.warn("SpeechSynthesis speak hatası:", synthErr);
+          }
         }
 
-        // Tarayıcı SpeechSynthesis motoru ile oku
-        if (!("speechSynthesis" in window)) {
-          speakWithCloudAudio(cleaned, currentLang, finishSpeaking);
-          return;
-        }
-
-        if (window.speechSynthesis.paused) {
-          window.speechSynthesis.resume();
-        }
-
-        const u = new SpeechSynthesisUtterance(cleaned);
-        u.lang = langCode;
-        if (chosenVoice) {
-          u.voice = chosenVoice;
-        }
-        u.rate = rateVal;
-        u.pitch = 1.0;
-
-        window._ttsUtterances.push(u);
-
-        u.onend = () => {
-          if (_ttsSessionId !== currentSession) return;
-          finishSpeaking();
-        };
-
-        u.onerror = (evt) => {
-          if (_ttsSessionId !== currentSession) return;
-          if (evt.error === "canceled" || evt.error === "interrupted") return;
-          console.warn("SpeechSynthesis error:", evt.error, "Voice:", u.voice?.name, "Falling back to Cloud Audio...");
-          speakWithCloudAudio(cleaned, currentLang, finishSpeaking);
-        };
-
-        window.speechSynthesis.speak(u);
+        // Desteklenmeyen durumlarda bitir
+        finishSpeaking();
 
         if (_ttsResumeTimer) clearInterval(_ttsResumeTimer);
         _ttsResumeTimer = setInterval(() => {
@@ -33434,9 +33503,15 @@ let currentLang = "tr";
 function returnToStudentPanel(e) {
   if (e && e.preventDefault) e.preventDefault();
   try {
-    if (window.parent && window.parent !== window && typeof window.parent.closeBookModal === "function") {
-      window.parent.closeBookModal();
-      return;
+    if (window.parent && window.parent !== window) {
+      if (typeof window.parent.closeStudentDigitalBookModal === "function") {
+        window.parent.closeStudentDigitalBookModal();
+        return;
+      }
+      if (typeof window.parent.closeBookModal === "function") {
+        window.parent.closeBookModal();
+        return;
+      }
     }
   } catch(err) {}
   try {
@@ -33445,10 +33520,20 @@ function returnToStudentPanel(e) {
       return;
     }
   } catch(err) {}
+  // Eger iframe icindeyse recursive yuklemeyi onle
+  if (window.self !== window.top) {
+    try {
+      if (window.parent && typeof window.parent.closeStudentDigitalBookModal === "function") {
+        window.parent.closeStudentDigitalBookModal();
+        return;
+      }
+    } catch(e) {}
+    return;
+  }
   const isLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
   const params = window.location.search || "";
   if (isLocal) {
-    window.location.href = "http://127.0.0.1:28888/ogrenci" + params;
+    window.location.href = "http://127.0.0.1:8000/ogrenci" + params;
   } else {
     window.location.href = "/ogrenci" + params;
   }

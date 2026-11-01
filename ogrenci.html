@@ -223,6 +223,19 @@
             box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
         }
 
+        
+        .hub-icon-apple {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(148, 163, 184, 0.1) 100%);
+            border: 1.5px solid #e2e8f0;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.25);
+        }
+
+        .hub-icon-android {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.1) 100%);
+            border: 1.5px solid #10b981;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+        }
+    
         .hub-icon-wa {
             background: linear-gradient(135deg, rgba(37, 211, 102, 0.25) 0%, rgba(18, 140, 68, 0.1) 100%);
             border: 1.5px solid #25D366;
@@ -408,6 +421,14 @@
             background: #000;
         }
     </style>
+    <!-- Apple iOS / PWA Standalone App Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ERN Akademi">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
 </head>
 <body>
 
@@ -498,6 +519,39 @@
                 <i class="fas fa-chevron-right hub-arrow"></i>
             </div>
 
+            
+            <!-- 🍎 IPHONE & IPAD (IOS) UYGULAMASI -->
+            <div class="hub-card" onclick="openIOSModal()">
+                <div class="hub-icon-wrap hub-icon-apple">
+                    🍎
+                </div>
+                <div class="hub-info">
+                    <div class="hub-title">
+                        iPhone & iPad (iOS) Uygulaması <span class="hub-badge" style="background: rgba(255,255,255,0.2); color: #fff; border-color: #fff;">TAM EKRAN APP</span>
+                    </div>
+                    <div class="hub-desc">
+                        Safari'den 2 dokunuşla ana ekrana ekleyin • Tam ekran uygulama • App Store gerekmez
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right hub-arrow"></i>
+            </div>
+
+            <!-- 🤖 ANDROID UYGULAMASI (APK) -->
+            <a href="/ERN_Tasarim_Ogrenci.apk" class="hub-card" download>
+                <div class="hub-icon-wrap hub-icon-android">
+                    🤖
+                </div>
+                <div class="hub-info">
+                    <div class="hub-title">
+                        Android Uygulaması <span class="hub-badge" style="background: rgba(16,185,129,0.2); color: #34d399; border-color: #10b981;">v2.5 APK</span>
+                    </div>
+                    <div class="hub-desc">
+                        Android telefonlar için özel uygulama (172 KB) • Yüzen Yan Çevir tuşu & Bildirimler
+                    </div>
+                </div>
+                <i class="fas fa-download hub-arrow" style="font-size: 1rem; color: #10b981;"></i>
+            </a>
+    
             <!-- 💬 WHATSAPP USTA EĞİTMEN DESTEK -->
             <a href="https://wa.me/905453699990?text=Hocam%20merhaba,%20akademiden%20yaziyorum." target="_blank" class="hub-card">
                 <div class="hub-icon-wrap hub-icon-wa">
@@ -519,12 +573,81 @@
     </div>
 
     <!-- ==================== MODAL: DİJİTAL KİTAP ==================== -->
+    <!-- ==================== MODAL: IPHONE (IOS) KURULUM REHBERİ ==================== -->
+    <div id="modalIOSInstall" class="app-modal">
+        <div class="modal-header">
+            <div class="modal-title">
+                <span>🍎</span> iPhone & iPad (iOS) Uygulama Kurulumu
+            </div>
+            <button class="btn-modal-close" onclick="closeIOSModal()">&times;</button>
+        </div>
+        <div class="modal-body" style="padding: 20px; overflow-y: auto; background: #070b14; color: #e2e8f0;">
+            <div style="max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px;">
+                
+                <div style="text-align: center; padding: 10px 0;">
+                    <img src="/apple-touch-icon.png" style="width: 72px; height: 72px; border-radius: 18px; box-shadow: 0 4px 20px rgba(212,175,55,0.4); border: 1.5px solid var(--border-gold);" alt="App Icon">
+                    <h3 style="color: #fff; font-size: 1.15rem; font-weight: 800; margin: 10px 0 4px 0;">ERN Tasarım Akademi</h3>
+                    <p style="color: #94a3b8; font-size: 0.82rem; margin: 0;">App Store indirmesine gerek olmadan 3 saniyede iPhone'unuza tam ekran uygulama olarak kurun.</p>
+                </div>
+
+                <!-- Adımlar -->
+                <div style="background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border-gold); border-radius: 14px; padding: 14px; display: flex; align-items: flex-start; gap: 12px;">
+                    <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(56, 189, 248, 0.2); border: 1px solid #38bdf8; color: #38bdf8; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.95rem; flex-shrink: 0;">1</div>
+                    <div>
+                        <div style="font-weight: 800; color: #fff; font-size: 0.92rem; margin-bottom: 2px;">Safari'de Paylaş Simgesine Dokunun</div>
+                        <div style="font-size: 0.8rem; color: #94a3b8; line-height: 1.4;">
+                            iPhone'unuzun alt çubuğundaki <b style="color: #38bdf8;">Paylaş</b> butonuna (kare içinde yukarı ok ⬆️ simgesi) dokunun.
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border-gold); border-radius: 14px; padding: 14px; display: flex; align-items: flex-start; gap: 12px;">
+                    <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #fde047; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.95rem; flex-shrink: 0;">2</div>
+                    <div>
+                        <div style="font-weight: 800; color: #fff; font-size: 0.92rem; margin-bottom: 2px;">"Ana Ekrana Ekle" Seçeneğine Basın</div>
+                        <div style="font-size: 0.8rem; color: #94a3b8; line-height: 1.4;">
+                            Açılan menüyü aşağı kaydırıp <b style="color: #fde047;">"Ana Ekrana Ekle" (➕)</b> butonuna dokunun.
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border-gold); border-radius: 14px; padding: 14px; display: flex; align-items: flex-start; gap: 12px;">
+                    <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #34d399; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.95rem; flex-shrink: 0;">3</div>
+                    <div>
+                        <div style="font-weight: 800; color: #fff; font-size: 0.92rem; margin-bottom: 2px;">Sağ Üstteki "Ekle" Butonuna Basın</div>
+                        <div style="font-size: 0.8rem; color: #94a3b8; line-height: 1.4;">
+                            Tebrikler! ERN Akademi artık iPhone ana ekranınızda bağımsız, reklamsız ve tam ekran bir uygulama olarak çalışacaktır.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alternatif: MobileConfig Profili -->
+                <div style="margin-top: 6px; padding: 14px; background: rgba(30, 41, 59, 0.5); border: 1px dashed rgba(255,255,255,0.2); border-radius: 12px; text-align: center;">
+                    <div style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 8px;">
+                        İsterseniz doğrudan Apple Konfigürasyon Profilini indirerek de ana ekrana tek tıkla simge ekleyebilirsiniz:
+                    </div>
+                    <a href="/ERN_Akademi_iOS_Kurulum.mobileconfig" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 20px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; text-decoration: none; font-size: 0.82rem; font-weight: 700;">
+                        <span>📲</span> iOS Kurulum Profilini İndir (.mobileconfig)
+                    </a>
+                </div>
+
+                <button onclick="closeIOSModal()" style="margin-top: 8px; width: 100%; padding: 12px; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-weight: 800; border: none; cursor: pointer; font-size: 0.9rem;">
+                    Anladım, Harika!
+                </button>
+
+            </div>
+        </div>
+    </div>
+
     <div id="modalBook" class="app-modal">
         <div class="modal-header">
             <div class="modal-title">
                 <span>📖</span> MatrixGold Usta Kitabı (Sesli & Lisanslı)
             </div>
             <div style="display: flex; gap: 8px; align-items: center;">
+                <button type="button" onclick="triggerBookAudioUnlock()" style="padding: 5px 10px; background: rgba(16, 185, 129, 0.25); border: 1px solid #10b981; color: #34d399; font-weight: 800; font-size: 0.78rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;" title="Ses motorunu test et ve hoparlörü aç">
+                    🔊 Sesi Aç / İzin Ver
+                </button>
                 <button type="button" onclick="if(window.AndroidApp&&window.AndroidApp.toggleOrientation){window.AndroidApp.toggleOrientation();}" style="padding: 5px 10px; background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #fde047; font-weight: 700; font-size: 0.78rem; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                     🔄 Yan / Dikey Çevir
                 </button>
@@ -532,7 +655,7 @@
             </div>
         </div>
         <div class="modal-body">
-            <iframe id="bookIframe" src="" title="Dijital Kitap"></iframe>
+            <iframe id="bookIframe" src="" title="Dijital Kitap" allow="autoplay *; encrypted-media *; fullscreen *; microphone *; speaker *"></iframe>
         </div>
     </div>
 
