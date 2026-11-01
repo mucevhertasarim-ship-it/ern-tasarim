@@ -620,21 +620,55 @@
             }
 
             try {
-                const res = await fetch('/live_bridge.json?t=' + Date.now(), { cache: 'no-store' });
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data && data.stream_url && data.status === 'online') {
-                        const alive = await testUrlAlive(data.stream_url);
-                        if (alive) {
-                            if (rBox) rBox.className = "radar-box online";
-                            if (window.AndroidApp && window.AndroidApp.onLessonStarted) { try { window.AndroidApp.onLessonStarted("Canlı Yayın Aktif!"); } catch(e){} }
-                            if (sTitle) sTitle.innerHTML = "🎉 Canlı Yayın Aktif! Bağlanılıyor...";
-                            if (sDesc) sDesc.innerText = "Usta Eğitmenin canlı ders yayını açıldı, aktarılıyorsunuz...";
-                            setTimeout(() => {
-                                window.location.replace(data.stream_url);
-                            }, 400);
-                            return;
+                let streamUrl = null;
+                // 1. live_bridge.json kontrolu
+                try {
+                    const res = await fetch('/live_bridge.json?t=' + Date.now(), { cache: 'no-store' });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data && data.stream_url && data.status === 'online') {
+                            streamUrl = data.stream_url;
                         }
+                    }
+                } catch(e) {}
+
+                // 2. ntfy canli kopru kontrolu (Vercel deploy gecikmesini aninda asar)
+                if (!streamUrl) {
+                    try {
+                        const ntfyRes = await fetch('https://ntfy.sh/ern_tasarim_live_bridge_2026/raw?poll=1', { cache: 'no-store' });
+                        if (ntfyRes.ok) {
+                            const rawTxt = await ntfyRes.text();
+                            const lines = rawTxt.split('\n');
+                            for (let i = lines.length - 1; i >= 0; i--) {
+                                const l = lines[i].trim();
+                                if (l.startsWith('{')) {
+                                    try {
+                                        const p = JSON.parse(l);
+                                        if (p.stream_url && p.event !== 'OFFLINE') {
+                                            streamUrl = p.stream_url;
+                                            break;
+                                        }
+                                    } catch(ex){}
+                                } else if (l.startsWith('http://') || l.startsWith('https://')) {
+                                    streamUrl = l.endsWith('/ogrenci') ? l : (l.replace(/\/+$/, '') + '/ogrenci');
+                                    break;
+                                }
+                            }
+                        }
+                    } catch(ne) {}
+                }
+
+                if (streamUrl) {
+                    const alive = await testUrlAlive(streamUrl);
+                    if (alive) {
+                        if (rBox) rBox.className = "radar-box online";
+                        if (window.AndroidApp && window.AndroidApp.onLessonStarted) { try { window.AndroidApp.onLessonStarted("Canlı Yayın Aktif!"); } catch(e){} }
+                        if (sTitle) sTitle.innerHTML = "🎉 Canlı Yayın Aktif! Bağlanılıyor...";
+                        if (sDesc) sDesc.innerText = "Usta Eğitmenin canlı ders yayını açıldı, aktarılıyorsunuz...";
+                        setTimeout(() => {
+                            window.location.replace(streamUrl);
+                        }, 400);
+                        return;
                     }
                 }
             } catch (e) {}
