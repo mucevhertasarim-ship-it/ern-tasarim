@@ -427,6 +427,9 @@
                 <a href="/indir/ogrenci-apk" id="akd-disp-cta-apk" class="btn-gold" style="padding: 14px 26px; font-size: 1.05rem; font-weight: 800; border-radius: 30px; cursor:pointer; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border: 1.5px solid #38bdf8; box-shadow: 0 0 25px rgba(56,189,248,0.45); display:inline-flex; align-items:center; gap:8px;" title="Android Telefon & Tablet İçin Doğrudan APK İndir">
                     <i class="fa-brands fa-android" style="font-size: 1.35rem; color: #a7f3d0;"></i> <span>Android Uygulaması (.apk)</span>
                 </a>
+                <a href="/ERN_Akademi_iOS_Kurulum.mobileconfig" id="akd-disp-cta-ios" class="btn-gold" style="padding: 14px 26px; font-size: 1.05rem; font-weight: 800; border-radius: 30px; cursor:pointer; background: linear-gradient(135deg, #475569 0%, #1e293b 100%); border: 1.5px solid #94a3b8; box-shadow: 0 0 25px rgba(148,163,184,0.3); display:inline-flex; align-items:center; gap:8px;" title="iPhone & iPad İçin Kurulum Profili İndir">
+                    <i class="fa-brands fa-apple" style="font-size: 1.35rem; color: #fff;"></i> <span>iPhone / iPad (iOS)</span>
+                </a>
                 <a href="https://wa.me/905453699990?text=Merhaba%20Hocam,%202026-2027%20Akademi%20CAD%20Eğitimi%20için%20kayıt%20olup%20ders%20kodu%20almak%20istiyorum." id="akd-disp-cta-wa" target="_blank" class="btn-outline" style="padding: 14px 26px; border-radius: 30px; font-weight: 700; color: #25D366; border-color: rgba(37,211,102,0.5);">
                     <i class="fa-brands fa-whatsapp"></i> WhatsApp'tan Kayıt Ol
                 </a>
@@ -876,6 +879,9 @@
                     <a href="/indir/ogrenci-apk" style="display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color:#fff; font-weight:800; font-size:0.86rem; padding:10px 16px; border-radius:10px; text-decoration:none;">
                         <i class="fa-brands fa-android"></i> Android (.apk)
                     </a>
+                    <a href="/ERN_Akademi_iOS_Kurulum.mobileconfig" style="display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg, #475569 0%, #1e293b 100%); color:#fff; font-weight:800; font-size:0.86rem; padding:10px 16px; border-radius:10px; text-decoration:none;" title="iPhone & iPad Kurulum Profili">
+                        <i class="fa-brands fa-apple"></i> iPhone & iPad (iOS)
+                    </a>
                 </div>
                 <div style="font-size:0.76rem; color:#94a3b8; line-height:1.4;">
                     İndirme otomatik başlamadıysa: <a href="https://raw.githubusercontent.com/mucevhertasarim-ship-it/mucevhertasarim-akademi/main/ERN_Tasarim_Ogrenci_Atolyesi_Setup.zip" download style="color:#38bdf8; font-weight:bold; text-decoration:underline;">Buraya Tıklayın (.rar Kurulum İndir)</a>
@@ -968,6 +974,31 @@
                 closeStudentDownloadLeadModal();
             }
         });
-    </script>
+    
+        // iPhone / iPad kullanıcısı yanlışlıkla APK butonuna basarsa akıllı koruma
+        const apkBtn = document.getElementById("akd-disp-cta-apk");
+        if (apkBtn) {
+            apkBtn.addEventListener("click", function(e) {
+                const isApple = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                if (isApple) {
+                    e.preventDefault();
+                    alert("ℹ️ iPhone/iPad cihazlarda APK çalışmaz.\nSizin için Apple Kurulum Profili indiriliyor!");
+                    window.location.href = "/ERN_Akademi_iOS_Kurulum.mobileconfig";
+                }
+            });
+        }
+    
+</script>
+
+<!-- 📌 MOBİL VE UYGULAMA İÇİN HER ZAMAN GÖRÜNEN 'ÖĞRENCİ MASASINA DÖN' YÜZEN BUTONU -->
+<div class="no-print" style="position: fixed; bottom: 20px; left: 20px; z-index: 99999;">
+    <a href="/ogrenci" onclick="if(window.AndroidApp&&window.AndroidApp.goBackToStudent){window.AndroidApp.goBackToStudent(); return false;} else if(window.history.length>1){window.history.back(); return false;}" 
+       style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 25px; background: rgba(15, 23, 42, 0.95); border: 1.5px solid #d4af37; color: #fde047; font-weight: 800; font-size: 0.82rem; text-decoration: none; box-shadow: 0 4px 20px rgba(0,0,0,0.6); backdrop-filter: blur(8px); cursor: pointer;"
+       title="Canlı Derse ve Öğrenci Masasına Geri Dön">
+        <span style="font-size: 1rem;">⬅️</span>
+        <span style="color: #fff;">Öğrenci Masasına Dön</span>
+    </a>
+</div>
+
 </body>
 </html>
