@@ -4,19 +4,35 @@
   "rewrites": [
     {
       "source": "/kitap",
-      "destination": "/kitap/matrixgold.html"
+      "destination": "/kitap/index.html"
     },
     {
       "source": "/kitap/",
+      "destination": "/kitap/index.html"
+    },
+    {
+      "source": "/dijital-kitap",
       "destination": "/kitap/matrixgold.html"
     },
     {
-      "source": "/kitap/index.html",
+      "source": "/matrixgold-kitap",
       "destination": "/kitap/matrixgold.html"
     },
     {
       "source": "/ogrenci",
       "destination": "/ogrenci.html"
+    },
+    {
+      "source": "/mobil",
+      "destination": "/mobile.html"
+    },
+    {
+      "source": "/mobil/",
+      "destination": "/mobile.html"
+    },
+    {
+      "source": "/m",
+      "destination": "/mobile.html"
     },
     {
       "source": "/reklam",
